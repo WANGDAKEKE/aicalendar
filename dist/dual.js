@@ -111,20 +111,11 @@ function setSystem(view) {
   $('systemCalendar').hidden=view!=='calendar'; $('systemLock').hidden=view!=='lock';
   document.querySelectorAll('[data-system]').forEach(button=>button.classList.toggle('selected',button.dataset.system===view));
 }
-function setFlow(title, description, step, direction='→') {
-  $('connectionTitle').textContent=title; $('connectionText').textContent=description; $('connectionIcon').textContent=direction;
-  ['Subscribe','Notify','Watch'].forEach((key,index)=>$('flow'+key).classList.toggle('complete',index<step));
-}
 function upcomingRow() {return rows.find(row=>row[2]>state.available);}
 function nextRow() {return upcomingRow() || rows[rows.length-1];}
 function render() {
   renderEpisodes();
   const next=nextRow();
-  $('historyProgress').textContent=`你已看到第${state.watched}集`;
-  const caughtUp=state.watched>=state.available;
-  $('continueWatch').disabled=caughtUp;
-  $('continueWatch').textContent=caughtUp?'已追平':'继续看 ›';
-  $('continueWatch').setAttribute('aria-label',caughtUp?'已追平当前更新':`继续观看第${state.watched+1}集`);
   $('nextUpdateLabel').textContent=upcomingRow()?`${next[1]} 18:00 · SVIP ${next[3]}`:'本剧已全部更新';
   $('reminderAction').textContent=state.subscribed?'管理提醒':'加入手机日历';
   $('reminderEpisode').textContent=next[3]; $('reminderWhen').textContent=`${next[1]} 18:00 更新`;
@@ -160,7 +151,7 @@ function openSheet(open) {
 function subscribe() {
   state.alarm=Number($('alarmTime').value); state.subscribed=true; state.selectedDay=parseInt(nextRow()[1].slice(2));
   render();openSheet(false);setSystem('calendar');
-  setFlow('日程已同步','更新日期出现在手机日历，到点自动提醒。',1); showToast('已添加到右侧手机日历');
+  showToast('已添加到右侧手机日历');
   document.querySelector('.system-phone').classList.remove('sync-flash');
   requestAnimationFrame(()=>document.querySelector('.system-phone').classList.add('sync-flash'));
 }
@@ -168,8 +159,7 @@ function startWatching(fromNotification=false) {
   if(state.watched>=state.available)return;
   const episode=state.watched+1;
   playEpisode(episode);
-  if(fromNotification){state.notification=null;render();setFlow('已返回续播',`由观看历史定位第${episode}集，无需重新寻找。`,3,'←');}
-  else setFlow('从上次接着看','当前集数在选集栏高亮，播完后自动切到下一集。',state.subscribed?3:0,'←');
+  if(fromNotification){state.notification=null;render();}
 }
 function playEpisode(episode){
   if(!Number.isInteger(episode)||episode<1||episode>state.available)return;
@@ -188,7 +178,6 @@ function completeViewing() {
   if(state.notification && state.watched>=state.notification[2])state.notification=null;
   state.selectedDay=parseInt(rows.find(r=>r[2]>=finishedEpisode)[1].slice(2));
   render();setSystem('calendar');
-  setFlow('观看记录已同步',state.subscribed?'已看日程自动标记，后续更新提醒继续保留。':'进度自动记录，下一次更新随时可查。',state.subscribed?3:0,'↔');
   const newlyEarned=badges.find(b=>b.episode>previousWatched && b.episode<=state.watched);
   if(newlyEarned){$('toast').hidden=true;showReward(newlyEarned.episode,true);}
   else if(finishedEpisode<state.available)playEpisode(finishedEpisode+1);
@@ -201,7 +190,7 @@ function triggerNotification() {
   $('lockDate').textContent=`${release[1]} · 剧集更新日`; $('lockTime').textContent='18:00'; $('systemClock').textContent='18:00';
   $('notificationTitle').textContent=`《长安的荔枝》${release[3]}已更新`;
   $('notificationBody').textContent=`你已看到第${state.watched}集，点击从第${state.watched+1}集接着看。`;
-  render();setSystem('lock');setFlow('更新提醒已送达','点击右侧通知，直接回到腾讯视频续看。',2);
+  render();setSystem('lock');
 }
 document.addEventListener('click',event=>{
   const badge=event.target.closest('[data-badge]');if(badge)showReward(Number(badge.dataset.badge));
@@ -215,7 +204,7 @@ document.addEventListener('click',event=>{
 });
 $('openReminder').onclick=()=>openSheet(true);$('closeReminder').onclick=()=>openSheet(false);$('pushOnly').onclick=()=>openSheet(false);
 $('reminderSheet').onclick=event=>{if(event.target===$('reminderSheet'))openSheet(false);};
-$('addCalendar').onclick=subscribe; $('continueWatch').onclick=()=>startWatching(); $('finishEpisode').onclick=completeViewing;
+$('addCalendar').onclick=subscribe; $('finishEpisode').onclick=completeViewing;
 $('triggerReminder').onclick=triggerNotification; $('lockNotification').onclick=()=>startWatching(true);
 $('openCollection').onclick=()=>showReward();$('closeReward').onclick=closeReward;
 $('rewardOverlay').onclick=event=>{if(event.target===$('rewardOverlay'))closeReward();};
@@ -226,7 +215,7 @@ $('resetDemo').onclick=()=>{
   saveProgress();
   $('alarmTime').value='0';$('reminderSheet').hidden=true;$('toast').hidden=true;
   $('lockDate').textContent='9月5日 星期三';$('lockTime').textContent='18:05';$('systemClock').textContent='18:05';
-  render();setSystem('calendar');showScreen('calendar');setFlow('约好下一集','在左侧加入手机日历，在右侧接收更新提醒。',0);
+  render();setSystem('calendar');showScreen('calendar');
 };
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'){
@@ -241,5 +230,5 @@ document.addEventListener('keydown',event=>{
   }
 });
 window.addEventListener('popstate',()=>showScreen(location.hash.slice(1)||'calendar',false));
-function fitStage(){document.documentElement.style.setProperty('--demo-scale',Math.min(1,(window.innerWidth-24)/1016));}
+function fitStage(){document.documentElement.style.setProperty('--demo-scale',Math.min(1,(window.innerWidth-24)/860));}
 window.addEventListener('resize',fitStage);fitStage();render();showScreen(location.hash.slice(1)||'calendar',false);

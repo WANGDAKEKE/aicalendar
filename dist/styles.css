@@ -239,15 +239,15 @@ body { background: radial-gradient(circle at 67% 30%, #30302d 0, #181818 38%, #1
 
 /* Two-phone presentation canvas. */
 body { background: radial-gradient(ellipse at 50% 40%, #30302c, #161819 65%); }
-.presentation-header { max-width: 1016px; margin: 0 auto; padding: 30px 20px 20px; display: flex; justify-content: space-between; align-items: center; }
+.presentation-header { max-width: 860px; margin: 0 auto; padding: 30px 20px 20px; display: flex; justify-content: space-between; align-items: center; }
 .presentation-header h1 { margin: 10px 0; font-size: 28px; font-weight: 500; letter-spacing: .03em; }
 .presentation-header p { color: #999d9b; font-size: 13px; margin: 0; }
 .presentation-header .eyebrow { font-size: 10px; }
 #resetDemo { color: #d7d4cc; border: 1px solid #4b4c46; background: #ffffff05; border-radius: 30px; padding: 11px 16px; cursor: pointer; font-size: 12px; white-space: nowrap; }
-.presentation-labels { width: 960px; margin: 0 auto 14px; display: flex; justify-content: space-between; zoom: var(--demo-scale,1); }
+.presentation-labels { width: 804px; margin: 0 auto 14px; display: flex; justify-content: space-between; zoom: var(--demo-scale,1); }
 .presentation-labels > span { width: 374px; padding: 0 12px; color: #d3d4cd; font-size: 13px; }
 .presentation-labels i { font-size: 10px; font-style: normal; color: #808880; margin-left: 12px; }
-.demo-stage { display: grid; width: 1016px; min-height: 0; margin: 0 auto; padding: 0 28px; grid-template-columns: 374px 212px 374px; gap: 0; zoom: var(--demo-scale,1); align-items: center; }
+.demo-stage { display: grid; width: 860px; min-height: 0; margin: 0 auto; padding: 0 28px; grid-template-columns: 374px 374px; gap: 0 56px; zoom: var(--demo-scale,1); align-items: start; }
 .demo-notes { display: none; }
 .phone { width: 374px; height: 760px; min-height: 760px; overflow: clip; border: 7px solid #090b0b; border-radius: 38px; box-shadow: 0 22px 48px #0005, 0 0 0 1px #555a52; }
 .phone::before { display: none; }
@@ -375,7 +375,7 @@ body { background: radial-gradient(ellipse at 50% 40%, #30302c, #161819 65%); }
 .episode-strip .episode-tile.selected,.episode-grid button.episode-tile.selected { background: #e2f9f8; color: #0bb9b6; }
 .episode-strip .episode-tile:disabled,.episode-grid button.episode-tile:disabled { color: #bdbdbd; cursor: default; }
 .episode-tile .episode-pending { position: absolute; bottom: 3px; font-size: 8px; color: #aaa; }
-.playback-demo { margin-top: 24px; padding-top: 18px; border-top: 1px solid #ffffff15; }
+.playback-demo { grid-column: 1; grid-row: 2; margin-top: 18px; padding: 12px 20px; text-align: center; border: 1px solid #ffffff15; border-radius: 12px; }
 .playback-demo[hidden] { display: none; }
 .playback-demo > small,.playback-demo > span { display: block; font-size: 9px; color: #9d998c; line-height: 1.8; }
 .playback-demo button { margin: 10px -10px; width: calc(100% + 20px); border: 1px solid #b7ab8160; border-radius: 7px; padding: 10px 3px; background: #a3956030; color: #e7d7ad; cursor: pointer; font-size: 11px; }

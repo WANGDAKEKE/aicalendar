@@ -86,15 +86,6 @@
           <section class="calendar-content">
             <p class="calendar-copy">9月2日18点解锁大结局点映礼包，会员每日18点更新<br />SVIP抢先看一集</p>
 
-            <div class="watch-progress" aria-label="观看历史同步状态">
-              <span class="sync-icon">✓</span>
-              <div>
-                <small>观看历史已自动同步</small>
-                <strong id="historyProgress">你已看到第8集</strong>
-              </div>
-              <button id="continueWatch" type="button" aria-label="继续观看第9集">继续看 ›</button>
-            </div>
-
             <button class="reminder-card" id="openReminder" type="button" aria-haspopup="dialog">
               <span class="bell">◉</span>
               <span><small>下一次更新</small><strong id="nextUpdateLabel">今天 18:00 · SVIP 第9–10集</strong></span>
@@ -158,7 +149,6 @@
         </div>
         <div class="toast" id="toast" role="status" aria-live="polite" hidden>已生成追剧日程</div>
       </section>
-      <aside class="connection-panel" aria-live="polite"><span class="connection-icon" id="connectionIcon">→</span><strong id="connectionTitle">约好下一集</strong><p id="connectionText">在左侧加入手机日历<br>在右侧接收更新提醒</p><ol><li id="flowSubscribe">01 订阅日程</li><li id="flowNotify">02 到点提醒</li><li id="flowWatch">03 一键续播</li></ol><small>同一部手机的两个场景</small><div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode" type="button">快进到本集结束 →</button><span id="playbackDemoHint">播完后自动切换下一集</span></div></aside>
       <section class="phone system-phone" aria-label="手机系统演示">
         <div class="system-status"><strong id="systemClock">18:05</strong><span>▮▮▮　◉　▰</span></div>
         <nav class="system-tabs" aria-label="系统场景"><button data-system="calendar" class="selected">日历</button><button data-system="lock">锁屏</button></nav>
@@ -174,6 +164,7 @@
         <div class="system-demo-controls"><span>演示控制</span><button id="triggerReminder" disabled>模拟下一次更新提醒 →</button><small id="systemHint">先在左侧添加追剧日历</small></div>
         <div class="home-indicator"></div>
       </section>
+      <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode" type="button">快进到本集结束 →</button><span id="playbackDemoHint">播完后自动切换下一集</span></div>
     </main>
     <footer class="presentation-footer"><span>订阅 → 提醒 → 续播 → 自动同步</span><small>交互原型 · 观看历史、系统日历和通知均为模拟数据；视频使用提供的录屏素材。</small></footer>
     <script src="./dual.js"></script>
