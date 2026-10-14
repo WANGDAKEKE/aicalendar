@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+.openai/
+/*-preview.jpg
+/参考视频.mp4
+/render-preview.swift
+/dist/app.js
+/dist/assets/drama-mock.mp4
