@@ -25,6 +25,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Validate JavaScript
         run: node --check dist/dual.js
+      - name: Test release calendar model
+        run: node --test tests/calendar-model.test.mjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload static site

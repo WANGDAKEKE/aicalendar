@@ -1,172 +1,64 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#090909" />
-    <title>追剧日历 Demo</title>
-    <meta name="description" content="腾讯视频追剧日历交互演示" />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="presentation-header"><div><span class="eyebrow">腾讯视频 · 产品交互提案 / 02</span><h1>每一次更新，都能如约相见。</h1><p>追剧日历 × 手机日历，让下一集的约定走出 App。</p></div><button id="resetDemo">↻ 重新演示</button></header>
-    <div class="presentation-labels"><span>01 / 腾讯视频 <i>观看与订阅</i></span><span>02 / 手机日历 <i>提醒与回访</i></span></div>
-    <main class="demo-stage">
-      <aside class="demo-notes" aria-label="演示说明">
-        <p class="eyebrow">MOBILE PROTOTYPE</p>
-        <h1>追剧日历</h1>
-        <p>看懂更新节奏，到点被提醒，并从观看历史直接续看下一集。</p>
-        <ol class="step-list">
-          <li data-step="detail" class="active"><span>01</span>详情页</li>
-          <li data-step="episodes"><span>02</span>选集页</li>
-          <li data-step="calendar"><span>03</span>追剧日历</li>
-        </ol>
-        <p class="tip">点击手机内高亮区域体验完整链路</p>
-      </aside>
-
-      <section class="phone" aria-label="手机端追剧日历 Demo">
-        <div class="screen active" id="detail" aria-label="剧集详情页">
-          <div class="video-poster" aria-label="长安的荔枝剧集播放画面">
-            <button class="icon-button back-icon" aria-label="返回">‹</button>
-            <div class="player-actions" aria-hidden="true"><span>▣</span><span>↗</span><span>•••</span></div>
-            <div class="player-controls" aria-hidden="true">
-              <span class="pause">Ⅱ</span><small>00:05</small><i><b></b></i><small>00:20</small><span>▯</span>
-            </div>
-          </div>
-
-          <div class="membership-bar"><span>精彩抢先看 首月仅19元/月</span><b>去开通 ›</b></div>
-          <nav class="tabs" aria-label="内容导航"><b>详情</b><span>讨论<small>2.3k</small></span><span>买周边</span><span>云包场</span><span>一起玩</span></nav>
-
-          <div class="detail-content">
-            <div class="title-row"><h2>长安的荔枝</h2><span>☷</span><span>⇩</span></div>
-            <p class="meta">♨ 13942 · 评分7.2 · 电视剧热播榜TOP1　简介 ›</p>
-            <p class="synopsis"><em>AI看点</em> 一骑向长安，荔枝赴约而来。跟随李善德踏上荔枝转运之路，见证小人物的奔赴与坚守。</p>
-
-            <button class="episodes-entry primary-jump" data-target="episodes" aria-label="进入选集页">
-              <span><strong>选集</strong><small>全30集 ›</small></span><b>查看全部 ›</b>
-            </button>
-            <div class="detail-episode-tabs"><b>剧集</b><span>主创直播</span><span>剧综</span></div>
-            <div class="episode-strip" role="group" aria-label="选择播放集数"></div>
-
-            <div class="ad-card"><div class="watch">◉</div><div><strong>肩并肩，大步跑</strong><small>⌚ WATCH｜NIKE</small></div><i>广告</i></div>
-            <h3>长安的荔枝二创</h3>
-            <div class="recommendations"><div><span>月下相望</span></div><div><span>宿命相逢</span></div></div>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f7f7" />
+  <title>追剧日历 · 月历版 Demo</title>
+  <meta name="description" content="按用户权益呈现的通用追剧月历交互原型" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="presentation-header"><div><span class="eyebrow">腾讯视频 · 追剧日历 / 03</span><h1>更新安排，一眼看清。</h1></div><button id="resetDemo" type="button">↻ 重置演示</button></header>
+  <main class="demo-stage">
+    <section class="phone" aria-label="腾讯视频手机演示">
+      <div class="screen" id="detail" aria-label="剧集详情页">
+        <div class="video-poster"><video controls muted playsinline preload="metadata" aria-label="剧集录屏播放"></video></div>
+        <div class="membership-bar"><span>精彩抢先看 首月仅19元/月</span><b>去开通 ›</b></div>
+        <nav class="tabs" aria-label="内容导航"><b>详情</b><span>讨论<small>2.3k</small></span><span>买周边</span><span>云包场</span><span>一起玩</span></nav>
+        <div class="detail-content">
+          <div class="title-row"><h2 data-drama-title>长安的荔枝</h2><span>☷</span><span>⇩</span></div>
+          <p class="meta">♨ 13942 · 评分7.2 · 电视剧热播榜TOP1　简介 ›</p>
+          <p class="synopsis"><em>AI看点</em> 一骑向长安，荔枝赴约而来。跟随李善德踏上荔枝转运之路，见证小人物的奔赴与坚守。</p>
+          <button class="episodes-entry" data-target="episodes" aria-label="进入选集页"><span><strong>选集</strong><small data-total>全30集 ›</small></span><b>查看全部 ›</b></button>
+          <div class="detail-episode-tabs"><b>剧集</b><span>主创直播</span><span>剧综</span></div><div class="episode-strip" role="group" aria-label="选择播放集数"></div>
+          <div class="ad-card"><div class="watch">◉</div><div><strong>肩并肩，大步跑</strong><small>⌚ WATCH｜NIKE</small></div><i>广告</i></div>
+          <h3>精彩片段</h3><div class="recommendations"><div><span>一骑向长安</span></div><div><span>荔枝赴约而来</span></div></div>
         </div>
-
-        <div class="screen" id="episodes" aria-label="选集页">
-          <div class="mini-player">
-            <div class="mini-top"><button class="icon-button nav-back" data-target="detail" aria-label="返回详情页">‹</button><b>采访谢征 第...</b><span>开通会员</span><i>•••</i></div>
-            <div class="mini-controls" aria-hidden="true"><strong>Ⅱ</strong><small>00:05</small><i><b></b></i><small>00:20</small><span>▯</span></div>
-          </div>
-
-          <div class="episodes-panel">
-            <nav class="episode-tabs"><b>选集</b><span>主创陪看</span><span>主创直播</span><small>分集标题 ◯⌄</small></nav>
-            <button class="calendar-entry primary-jump" data-target="calendar" aria-label="打开追剧日历">
-              <span><strong>追剧日历</strong><small>会员每日18点更新，查看完整更新安排</small></span><b>›</b>
-            </button>
-            <div class="episode-groups"><b>全部剧集 · 1–30</b></div>
-            <div class="episode-grid" aria-label="剧集列表"></div>
-            <div class="extras"><span>采访·彩蛋 ›</span><span>为你推荐 ›</span></div>
-          </div>
+      </div>
+      <div class="screen" id="episodes" aria-label="选集页">
+        <div class="mini-player"><video controls muted playsinline preload="metadata" aria-label="选集页录屏预览"></video><button class="video-back" data-target="detail" aria-label="返回详情页">‹</button></div>
+        <div class="episodes-panel">
+          <nav class="episode-tabs"><b>选集</b><span>主创陪看</span><span>主创直播</span><small>分集标题 ◯⌄</small></nav>
+          <button class="calendar-entry" data-target="calendar" aria-label="打开追剧日历"><span><strong>追剧日历</strong><small id="entrySummary"></small></span><b>›</b></button>
+          <div class="episode-groups"><b data-total>全部剧集 · 1–30</b></div><div class="episode-grid" aria-label="剧集列表"></div>
         </div>
-
-        <div class="screen calendar-screen" id="calendar" aria-label="追剧日历页">
-          <div class="calendar-player">
-            <video class="calendar-preview" src="./assets/drama-recording.mp4" controls muted loop playsinline preload="metadata" aria-label="剧集录屏预览"></video>
-            <button class="video-back" data-target="episodes" aria-label="返回选集页">‹</button>
-          </div>
-          <header class="calendar-topbar">
-            <strong>《长安的荔枝》追剧日历</strong>
-            <button class="collapse" data-target="episodes" aria-label="收起追剧日历">⌄</button>
-          </header>
-          <div class="calendar-scroll" id="calendarScroll" role="region" aria-label="追剧日历内容" tabindex="0">
-          <div class="calendar-hero" role="img" aria-label="长安的荔枝追剧日历主视觉"></div>
-
-          <section class="calendar-content">
-            <p class="calendar-copy">9月2日18点解锁大结局点映礼包，会员每日18点更新<br />SVIP抢先看一集</p>
-
-            <button class="reminder-card" id="openReminder" type="button" aria-haspopup="dialog">
-              <span class="bell">◉</span>
-              <span><small>下一次更新</small><strong id="nextUpdateLabel">今天 18:00 · SVIP 第9–10集</strong></span>
-              <b id="reminderAction">加入手机日历</b>
-            </button>
-
-            <button class="collection-entry" id="openCollection" type="button" aria-haspopup="dialog">
-              <span class="collection-seal" aria-hidden="true">藏</span>
-              <span><strong>我的追剧收藏 <small id="collectionCount">0 / 3</small></strong><small id="collectionNext">再看完2集，解锁「荔枝初程」</small></span>
-              <b aria-hidden="true">›</b>
-            </button>
-            <div class="calendar-table" role="table" aria-label="剧集更新日历">
-              <div class="calendar-row table-head" role="row">
-                <div role="columnheader">日期</div><div role="columnheader">SVIP</div><div role="columnheader">VIP</div><div role="columnheader">非VIP</div>
-              </div>
-              <div class="calendar-body" id="calendarRows"></div>
-            </div>
-            <p class="update-note">更新时间可能受不可抗力影响发生临时调整</p>
+      </div>
+      <div class="screen calendar-screen active" id="calendar" aria-label="追剧日历页">
+        <div class="calendar-player"><video class="calendar-preview" controls muted loop playsinline preload="metadata" aria-label="剧集录屏预览"></video><button class="video-back" data-target="episodes" aria-label="返回选集页">‹</button></div>
+        <header class="calendar-topbar"><strong id="calendarTitle">《长安的荔枝》追剧日历</strong><button class="collapse" data-target="episodes" aria-label="收起追剧日历">⌄</button></header>
+        <div class="calendar-scroll" id="calendarScroll" role="region" aria-label="追剧日历内容" tabindex="0">
+          <section class="today-summary" aria-label="今日更新"><div class="today-context"><span id="todayDate"></span><span id="accountTier" class="identity-chip"></span></div><h2 id="todayHeadline"></h2><p id="todayCaption"></p></section>
+          <section class="release-calendar" aria-labelledby="monthHeading">
+            <header class="month-toolbar"><h3 id="monthHeading"></h3><div><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
+            <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+            <div id="releaseGrid" class="release-grid" role="group" aria-label="月份更新日历"></div>
+            <div id="selectedRelease" class="selected-release" aria-live="polite" hidden></div>
           </section>
-
-          <footer class="calendar-footer">
-            <span class="stamp">腾讯视频出品剧集</span>
-            <strong>独家热播</strong>
-            <div class="brand"><i>▶</i> 腾讯视频 <em></em> 极光TV</div>
-          </footer>
+          <div class="key-dates">
+            <button id="jumpNext" class="key-date"><small>下一次更新 <span>↗</span></small><strong id="nextDate"></strong><span id="nextEpisodes"></span></button>
+            <button id="jumpFinale" class="key-date finale-date"><small>大结局 <span>↗</span></small><strong id="finaleDate"></strong><span id="finaleEpisodes"></span></button>
           </div>
+          <button id="toggleReminder" class="remind-button" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4M12 1v1"/></svg><span id="reminderLabel">更新时提醒我</span></button>
+          <div class="calendar-footnote"><span>排期如有调整，以实际播出为准</span><button id="openCollection">追剧收藏 <span id="collectionCount">0</span> ›</button></div>
         </div>
-
-        <div class="sheet-backdrop" id="reminderSheet" hidden>
-          <section class="reminder-sheet" role="dialog" aria-modal="true" aria-labelledby="reminderTitle">
-            <div class="sheet-handle" aria-hidden="true"></div>
-            <header>
-              <div><small>追剧提醒</small><h2 id="reminderTitle">同步到手机日历</h2></div>
-              <button type="button" id="closeReminder" aria-label="关闭提醒设置">×</button>
-            </header>
-
-            <div class="reminder-summary">
-              <span>下一集</span>
-              <div><strong id="reminderEpisode">第9–10集</strong><small id="reminderWhen">今天 18:00 更新</small></div>
-              <em>SVIP</em>
-            </div>
-
-            <p class="scope-copy">订阅本剧后续更新 · 按 SVIP 更新节奏</p>
-
-            <div class="reminder-time">
-              <span><small>提醒时间</small><strong>有新集时提醒我</strong></span>
-              <select id="alarmTime" aria-label="提醒时间"><option value="0">更新时</option></select>
-            </div>
-
-            <p class="calendar-note">确认后，在右侧手机中展示订阅日程与提醒。此处为联动效果演示。</p>
-            <button class="add-calendar" id="addCalendar" type="button"><span>▣</span> 添加到手机日历</button>
-            <button class="push-only" id="pushOnly" type="button">暂不添加</button>
-          </section>
-        </div>
-
-        <div class="reward-backdrop" id="rewardOverlay" hidden>
-          <section class="reward-sheet" role="dialog" aria-modal="true" aria-labelledby="rewardTitle">
-            <header><div><small id="rewardEyebrow">长安的荔枝 · 追剧收藏</small><h2 id="rewardTitle">我的追剧收藏</h2></div><button id="closeReward" aria-label="关闭追剧收藏">×</button></header>
-            <div id="rewardContent"></div>
-          </section>
-        </div>
-        <div class="toast" id="toast" role="status" aria-live="polite" hidden>已生成追剧日程</div>
-      </section>
-      <section class="phone system-phone" aria-label="手机系统演示">
-        <div class="system-status"><strong id="systemClock">18:05</strong><span>▮▮▮　◉　▰</span></div>
-        <nav class="system-tabs" aria-label="系统场景"><button data-system="calendar" class="selected">日历</button><button data-system="lock">锁屏</button></nav>
-        <div id="systemCalendar" class="system-view">
-          <div class="month-title"><span>‹</span><h2>9月</h2><span>＋</span></div>
-          <div class="month-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div><div id="monthGrid" class="month-grid"></div>
-          <div class="agenda-heading"><h3 id="agendaDate">9月5日 · 今天</h3><span>日程</span></div>
-          <div id="agendaEmpty" class="agenda-empty"><span>▦</span><strong>给下一集留个时间</strong><p>在腾讯视频添加追剧日历后，<br>更新日程将出现在这里。</p></div>
-          <div id="agendaEvents" hidden></div>
-          <div class="calendar-source" id="calendarSource" hidden><span>●</span> 腾讯视频 · 已订阅 <small>随观看进度更新 · 演示</small></div>
-        </div>
-        <div id="systemLock" class="system-view lock-view" hidden><div class="lock-symbol">♧</div><p id="lockDate">9月5日 星期三</p><div class="lock-time" id="lockTime">18:05</div><p class="lock-caption">下一集的约定，已经安排好了。</p><button id="lockNotification" class="notification" hidden><span class="notification-top"><i>5</i> 日历 <small>现在</small></span><strong id="notificationTitle"></strong><p id="notificationBody"></p><span class="notification-action">打开腾讯视频，继续观看 ›</span></button><p id="noNotifications" class="no-notifications">暂无新提醒</p></div>
-        <div class="system-demo-controls"><span>演示控制</span><button id="triggerReminder" disabled>模拟下一次更新提醒 →</button><small id="systemHint">先在左侧添加追剧日历</small></div>
-        <div class="home-indicator"></div>
-      </section>
-      <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode" type="button">快进到本集结束 →</button><span id="playbackDemoHint">播完后自动切换下一集</span></div>
-    </main>
-    <footer class="presentation-footer"><span>订阅 → 提醒 → 续播 → 自动同步</span><small>交互原型 · 观看历史、系统日历和通知均为模拟数据；视频使用提供的录屏素材。</small></footer>
-    <script src="./dual.js"></script>
-  </body>
+      </div>
+      <div class="reward-backdrop" id="rewardOverlay" hidden><section class="reward-sheet" role="dialog" aria-modal="true" aria-labelledby="rewardTitle"><header><div><small>观看自动记录 · 无需打卡</small><h2 id="rewardTitle">我的追剧收藏</h2></div><button id="closeReward" aria-label="关闭追剧收藏">×</button></header><div id="rewardContent"></div></section></div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </section>
+    <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode">快进到本集结束 →</button></div>
+  </main>
+  <footer class="presentation-footer"><span id="demoContext">演示账户 VIP · 模拟时间 2026.10.15 19:00</span><small>示例排期，非真实播出信息；提醒与观看记录为本机模拟。</small></footer>
+  <script type="module" src="./dual.js"></script>
+</body>
 </html>
