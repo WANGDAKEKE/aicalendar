@@ -26,7 +26,10 @@ const screens=[...document.querySelectorAll('.screen')];
 const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 document.documentElement.style.setProperty('--accent',drama.accent);
-document.querySelectorAll('video').forEach(video=>video.src=drama.video);
+// Hidden screens must not compete for the large demo recording on first load.
+function prepareVideo(video) {
+  if(video && !video.hasAttribute('src')) video.src=drama.video;
+}
 document.querySelectorAll('[data-drama-title]').forEach(node=>node.textContent=drama.title);
 document.querySelectorAll('[data-total]').forEach(node=>node.textContent=`全${drama.totalEpisodes}集 ›`);
 $('calendarTitle').textContent=`《${drama.title}》追剧日历`;
@@ -114,6 +117,7 @@ function showScreen(id,push=true) {
     const active=screen.id===id;screen.classList.toggle('active',active);screen.inert=!active;screen.setAttribute('aria-hidden',String(!active));
     if(!active)screen.querySelectorAll('video').forEach(video=>video.pause());
   });
+  prepareVideo($(id).querySelector('video'));
   $(id).scrollTop=0;
   if(id==='calendar'){
     renderCalendar();$('calendarScroll').scrollTop=0;document.querySelector('.calendar-preview').play().catch(()=>{});
@@ -124,6 +128,7 @@ function showScreen(id,push=true) {
 }
 function playEpisode(episode) {
   if(!Number.isInteger(episode)||episode<1||episode>summary.available)return;
+  prepareVideo(player);
   currentEpisode=episode;playbackActive=true;player.pause();player.currentTime=0;
   showScreen('detail');renderEpisodes();player.play().catch(()=>showToast('点击播放器开始播放'));
 }

@@ -1,6 +1,6 @@
 # 追剧日历 Demo
 
-当前汇报版本：v2.0.0（单屏通用月历）。
+当前汇报版本：v2.0.1（单屏通用月历，录屏按页面懒加载）。
 
 演示地址：https://wangdakeke.github.io/aicalendar/#calendar
 
