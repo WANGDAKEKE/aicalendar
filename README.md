@@ -1,6 +1,6 @@
 # 追剧日历 Demo
 
-当前汇报版本：v2.1.0（单屏月历 + 观看自动点亮勋章）。
+当前汇报版本：v2.1.1（单屏月历 + 观看自动点亮勋章）。
 
 演示地址：https://wangdakeke.github.io/aicalendar/#calendar
 

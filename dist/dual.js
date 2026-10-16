@@ -169,7 +169,7 @@ function showReward(episode=null,celebrate=false,earnedCount=1) {
     activeVideo?.pause();
   }
   $('rewardOverlay').hidden=false;$(activeScreen).inert=true;
-  if(celebrate)window.scrollTo({top:0,behavior:'instant'});
+  window.scrollTo({top:0,behavior:'instant'});
   const video=$(activeScreen).querySelector('video');
   $('rewardOverlay').style.top=`${video?.offsetHeight||168}px`;
   const badge=drama.badges.find(b=>b.episode===episode);
