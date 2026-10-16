@@ -1,5 +1,6 @@
-import {drama, demoSession} from './drama-config.mjs';
+import {drama, demoSession} from './drama-config.mjs?v=2.1.0';
 import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, releaseTime, getSummary} from './calendar-model.mjs';
+import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 
 const $ = id => document.getElementById(id);
 const summary = getSummary(drama, demoSession.tier, demoSession.now);
@@ -20,7 +21,7 @@ try {
 let currentEpisode = summary.available?Math.min(state.watched+1, summary.available):1;
 let playbackActive=false, activeScreen='calendar';
 let selectedDate=summary.today, visibleMonth=summary.today.slice(0,7), dateExpanded=false;
-let rewardReturn=null, toastTimer;
+let rewardReturn=null, rewardResumeVideo=null, toastTimer;
 const player=document.querySelector('.video-poster video');
 const screens=[...document.querySelectorAll('.screen')];
 const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -42,6 +43,9 @@ function showToast(message) {
   $('toast').textContent=message;$('toast').hidden=false;
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,2600);
 }
+const medalMark='<svg viewBox="0 0 16 20" fill="none" aria-hidden="true"><path d="m4 12-1 6 5-2 5 2-1-6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="5.5" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m8 4 1 2 2 .3-1.5 1.5.4 2.2L8 9l-1.9 1 .4-2.2L5 6.3 7 6Z" fill="currentColor"/></svg>';
+const badgeProgress=badge=>getBadgeProgress(badge,completed);
+const badgesForRelease=release=>release?drama.badges.filter(b=>b.episode>=release.from&&b.episode<=release.to):[];
 function renderCalendar() {
   const [year,month]=visibleMonth.split('-').map(Number);
   $('monthHeading').textContent=`${year}年 ${month}月`;
@@ -53,8 +57,9 @@ function renderCalendar() {
     const milestone=release?.milestone==='premiere'?'开播':release?.milestone==='finale'?'完结':'';
     const label=milestone || (release?episodeLabel(release):'');
     const classes=['day-cell',release?'has-release':'',released?'released':'',isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':''].filter(Boolean).join(' ');
-    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无更新'}`;
-    return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption">${label||'&nbsp;'}</span></button>`;
+    const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked);
+    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}`;
+    return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption">${label||'&nbsp;'}</span>${badges.length?`<span class="day-reward ${allEarned?'earned':''}">${medalMark}</span>`:''}</button>`;
   }).join('');
   renderSelectedRelease();
   $('nextDate').textContent=summary.next?`${shortDate(summary.next.date)} ${summary.next.time}`:'已全部更新';
@@ -67,7 +72,10 @@ function renderCalendar() {
   $('reminderLabel').textContent=state.reminded?'已开启更新提醒':'更新时提醒我';
   $('toggleReminder').disabled=!summary.next;
   if(!summary.next)$('reminderLabel').textContent='已完结，无后续更新';
-  $('collectionCount').textContent=`${drama.badges.filter(b=>b.episode<=state.watched).length}`;
+  const count=drama.badges.filter(b=>badgeProgress(b).unlocked).length;
+  $('collectionCount').textContent=`${count}/${drama.badges.length} 已点亮`;
+  $('collectionIcons').innerHTML=drama.badges.map(b=>medallion(b)).join('');
+  $('openCollection').setAttribute('aria-label',`我的勋章，已点亮${count}枚，共${drama.badges.length}枚`);
 }
 function renderSelectedRelease() {
   $('selectedRelease').hidden=!dateExpanded;
@@ -78,7 +86,7 @@ function renderSelectedRelease() {
   const title=release?`${release.time} ${released?'已更新':'更新'} ${episodeLabel(release)}`:'这一天没有更新';
   const future=summary.releases.find(r=>r.date>selectedDate);
   const description=release?(release.milestone==='premiere'?'首播上线':release.milestone==='finale'?(released?'大结局 · 全剧已更新':'大结局 · 届时全剧可看'):`${tierName}专属排期`)+(watched?' · 已看完':released?' · 可观看':' · 待上线'):(future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'此日期晚于完结日，无新增剧集':'更新安排待公布');
-  $('selectedRelease').innerHTML=`<div class="date-marker"><strong>${parseDate(selectedDate).getUTCDate()}</strong><small>${weekday(selectedDate)}</small></div><div class="release-detail"><strong>${esc(title)}</strong><p>${esc(description)}</p></div>${released?`<button class="release-action" data-episode="${watched?release.from:nextEpisode}">${watched?'再看一遍':'去观看'} ›</button>`:'<span class="release-state">'+(release?'待更新':'无更新')+'</span>'}`;
+  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="date-marker"><strong>${parseDate(selectedDate).getUTCDate()}</strong><small>${weekday(selectedDate)}</small></div><div class="release-detail"><strong>${esc(title)}</strong><p>${esc(description)}</p></div>${released?`<button class="release-action" data-episode="${watched?release.from:nextEpisode}">${watched?'再看一遍':'去观看'} ›</button>`:'<span class="release-state">'+(release?'待更新':'无更新')+'</span>'}</div>${badgesForRelease(release).map(b=>`<button class="badge-teaser" data-badge="${b.episode}">${medalMark}<span><strong>${esc(b.name)}</strong><small>${badgeProgress(b).unlocked?'已点亮 · 点击查看':`看完前${b.episode}集自动解锁`}</small></span><span aria-hidden="true">›</span></button>`).join('')}`;
 }
 function selectDate(date,focus=false) {
   selectedDate=date;visibleMonth=date.slice(0,7);dateExpanded=true;renderCalendar();
@@ -96,8 +104,9 @@ function renderEpisodes() {
   updatePlaybackControls();
 }
 function updatePlaybackControls() {
-  $('playbackDemo').hidden=activeScreen!=='detail';
+  $('playbackDemo').hidden=activeScreen!=='detail'||!$('rewardOverlay').hidden;
   $('finishEpisode').disabled=!playbackActive || !$('rewardOverlay').hidden || summary.available===0;
+  $('finishEpisode').textContent=`快进到第${currentEpisode}集结束 →`;
 }
 function showScreen(id,push=true) {
   if(!$('rewardOverlay').hidden)closeReward();
@@ -109,6 +118,7 @@ function showScreen(id,push=true) {
   });
   prepareVideo($(id).querySelector('video'));
   $(id).scrollTop=0;
+  window.scrollTo({top:0,behavior:'instant'});
   if(id==='calendar'){
     renderCalendar();$('calendarScroll').scrollTop=0;document.querySelector('.calendar-preview').play().catch(()=>{});
   }
@@ -124,36 +134,74 @@ function playEpisode(episode) {
 }
 function completeViewing() {
   if(activeScreen!=='detail'||!playbackActive||!$('rewardOverlay').hidden||currentEpisode<1||currentEpisode>summary.available)return;
-  const previousWatched=state.watched,finished=currentEpisode;
+  const beforeCompleted=new Set(completed),finished=currentEpisode;
   player.pause();playbackActive=false;completed.add(finished);
   while(completed.has(state.watched+1))state.watched++;
   saveProgress();renderCalendar();renderEpisodes();
-  const earned=drama.badges.find(b=>b.episode>previousWatched&&b.episode<=state.watched);
-  if(earned)showReward(earned.episode,true);
+  const earned=newlyUnlockedBadges(drama.badges,beforeCompleted,completed);
+  if(earned.length)showReward(earned.at(-1).episode,true,earned.length);
   else if(finished<summary.available)playEpisode(finished+1);
   else showToast('已追平当前更新，观看记录已同步');
 }
-function medallion(badge) {return `<span class="medallion ${state.watched<badge.episode?'locked':''}" aria-hidden="true">${esc(badge.glyph)}</span>`;}
-function showReward(episode=null,celebrate=false) {
-  if($('rewardOverlay').hidden)rewardReturn=document.activeElement;
+function medallion(badge,preview=false) {
+  const art={
+    lychee:'<path d="M25 24c0-10 8-13 15-13-1 9-7 14-15 13Z"/><path d="M26 29c-9-12-22-1-17 13 4 11 19 13 24 1 3-7 0-12-7-14Z"/><path d="M26 29c1-7-4-12-9-14M16 33l2 2m7 2 2 2m-13 2 2 2m8 2 1 2"/><path d="M34 28c8-2 14 4 13 11-1 8-8 13-15 9"/>',
+    journey:'<path d="m7 31 9-15 10 15M33 27l7-12 9 16M8 48h40M28 18v15c-16 0-18 7-6 8 13 1 17 4 8 7"/><path d="M28 13V6l12 4-12 4"/><circle cx="11" cy="9" r="3"/>',
+    city:'<path d="M9 47h38M13 47V28h30v19M9 28h38l-9-6H18Z"/><path d="M20 22v-8h16v8M16 14h24L28 7ZM23 47V36a5 5 0 0 1 10 0v11M17 34v4m22-4v4M28 3v4"/>',
+  };
+  return `<span class="medallion ${badgeProgress(badge).unlocked?'earned':preview?'preview':'locked'}" aria-hidden="true"><span class="medal-art">${art[badge.icon]?`<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${art[badge.icon]}</svg>`:esc(badge.glyph)}</span><span class="medal-ribbon"></span></span>`;
+}
+function progressMarkup(badge) {
+  const p=badgeProgress(badge);
+  return `<div class="badge-progress"><div><span>${p.unlocked?'已完成全部观看':`已看完 ${p.watchedCount} / ${p.total} 集`}</span><strong>${p.unlocked?'已点亮':`还差 ${p.remaining} 集`}</strong></div><div class="badge-progress-track" role="progressbar" aria-label="${esc(badge.name)}观看进度" aria-valuemin="0" aria-valuemax="${p.total}" aria-valuenow="${p.watchedCount}"><span style="width:${p.watchedCount/p.total*100}%"></span></div></div>`;
+}
+function badgeAction(badge) {
+  const p=badgeProgress(badge),release=getBadgeRelease(badge,summary.releases);
+  if(p.unlocked)return `<button class="reward-primary" data-badge-date="${badge.episode}">回日历查看勋章</button>`;
+  if(p.nextEpisode<=summary.available)return `<button class="reward-primary" data-episode="${p.nextEpisode}">继续看第${p.nextEpisode}集 <span aria-hidden="true">→</span></button>`;
+  return `<p class="badge-wait">${release?`${shortDate(release.date)} ${release.time}，解锁所需剧集全部上线`:'解锁所需剧集尚未全部上线'}</p><button class="reward-primary" data-badge-date="${badge.episode}">查看更新安排</button>`;
+}
+function showReward(episode=null,celebrate=false,earnedCount=1) {
+  if($('rewardOverlay').hidden){
+    rewardReturn=document.activeElement;
+    const activeVideo=$(activeScreen).querySelector('video');
+    rewardResumeVideo=activeVideo&&!activeVideo.paused?activeVideo:null;
+    activeVideo?.pause();
+  }
   $('rewardOverlay').hidden=false;$(activeScreen).inert=true;
+  if(celebrate)window.scrollTo({top:0,behavior:'instant'});
   const video=$(activeScreen).querySelector('video');
   $('rewardOverlay').style.top=`${video?.offsetHeight||168}px`;
   const badge=drama.badges.find(b=>b.episode===episode);
-  $('rewardTitle').textContent=celebrate?'解锁一枚追剧纪念':badge?'追剧纪念':'我的追剧收藏';
-  $('rewardContent').innerHTML=badge?`<div class="badge-detail">${medallion(badge)}<h3>${esc(badge.name)}</h3><p>${state.watched>=badge.episode?`已看完第${badge.episode}集 · 已自动收藏`:`看完第${badge.episode}集自动解锁`}<br>无需打卡，追剧的每一程都有记录。</p><button class="reward-primary" data-collection>查看我的收藏</button></div>`:`<p class="collection-intro">${esc(drama.title)} · 随故事走一程，留下一枚纪念。</p><div class="badge-grid">${drama.badges.map(b=>`<button data-badge="${b.episode}">${medallion(b)}<strong>${esc(b.name)}</strong><small>${state.watched>=b.episode?'✓ 已收藏':`第${b.episode}集解锁`}</small></button>`).join('')}</div><p class="collection-intro">观看记录自动点亮，不用手动领取。<br>这是本机演示收藏，不代表正式活动权益。</p><button class="reward-primary" data-close-reward>知道了</button>`;
+  $('rewardOverlay').classList.toggle('is-celebrating',celebrate);
+  $('rewardTitle').textContent=celebrate?'这一程，谢谢你的陪伴':badge?'勋章故事':'我的追剧勋章';
+  if(badge){
+    const p=badgeProgress(badge);
+    $('rewardContent').innerHTML=`<div class="badge-detail ${celebrate?'celebrating':''}"><div class="badge-artwork">${medallion(badge,true)}${celebrate?'<span class="badge-spark spark-one">✦</span><span class="badge-spark spark-two">✦</span><span class="badge-spark spark-three">✧</span>':''}</div><span class="badge-status">${p.unlocked?'✓ 已自动收入我的勋章':'待解锁 · 勋章预览'}</span><h3>${esc(badge.name)}</h3><p class="badge-story">${esc(badge.story||'每一段故事，都有你的陪伴。')}</p><div class="badge-rule"><strong>${p.unlocked?'你已看完':'解锁条件：看完'}前 ${badge.episode} 集</strong><span>观看历史自动同步，无需打卡或领取</span></div>${celebrate?`<p class="earned-note">${earnedCount>1?`本次点亮 ${earnedCount} 枚，已全部收入我的勋章`:'这枚勋章已点亮，随时回日历查看。'}</p><button class="reward-primary" data-close-reward>收好了</button><button class="reward-secondary" data-badge-date="${badge.episode}">回日历看看 →</button>`:`${progressMarkup(badge)}${badgeAction(badge)}<button class="reward-secondary" data-collection>查看全部勋章</button>`}</div>`;
+  }else{
+    const count=drama.badges.filter(b=>badgeProgress(b).unlocked).length,next=drama.badges.find(b=>!badgeProgress(b).unlocked);
+    $('rewardContent').innerHTML=`<div class="collection-overview"><p>《${esc(drama.title)}》</p><strong>${count}<span> / ${drama.badges.length} 枚已点亮</span></strong><small>不用每天打卡，按自己的节奏追剧就好。</small></div><div class="badge-grid">${drama.badges.map(b=>`<button data-badge="${b.episode}" aria-label="${esc(b.name)}，${badgeProgress(b).unlocked?'已点亮':`看完前${b.episode}集解锁`}">${medallion(b)}<strong>${esc(b.name)}</strong><small>${badgeProgress(b).unlocked?'✓ 已点亮':`前${b.episode}集`}</small></button>`).join('')}</div>${next?`<div class="next-badge"><small>下一枚纪念</small><strong>${esc(next.name)}</strong>${progressMarkup(next)}</div>${badgeAction(next)}`:'<div class="collection-complete">一路相伴，整段旅程都被珍藏。<br>三枚勋章已全部点亮。</div><button class="reward-primary" data-close-reward>收好了</button>'}<p class="collection-disclaimer">观看自动记录 · 本机演示纪念，无实物或会员奖励</p>`;
+  }
+  document.querySelector('.reward-sheet').scrollTop=0;
   updatePlaybackControls();$('closeReward').focus({preventScroll:true});
 }
 function closeReward() {
   $('rewardOverlay').hidden=true;$(activeScreen).inert=false;updatePlaybackControls();
+  if(rewardResumeVideo&&$(activeScreen).contains(rewardResumeVideo))rewardResumeVideo.play().catch(()=>{});
+  rewardResumeVideo=null;
   const fallback=activeScreen==='calendar'?$('openCollection'):document.querySelector('.episode-strip .selected');
-  (rewardReturn?.isConnected&&!rewardReturn.closest('[inert]')?rewardReturn:fallback)?.focus({preventScroll:true});
+  const canReturn=rewardReturn?.isConnected&&rewardReturn.matches('button:not(:disabled),[tabindex="0"]')&&!rewardReturn.closest('[inert]');
+  (canReturn?rewardReturn:fallback)?.focus({preventScroll:true});
 }
 document.addEventListener('click',event=>{
   const date=event.target.closest('[data-date]');if(date)selectDate(date.dataset.date,true);
   const route=event.target.closest('[data-target]');if(route)showScreen(route.dataset.target);
   const episode=event.target.closest('[data-episode]');if(episode)playEpisode(Number(episode.dataset.episode));
   const badge=event.target.closest('[data-badge]');if(badge)showReward(Number(badge.dataset.badge));
+  const badgeDate=event.target.closest('[data-badge-date]');if(badgeDate){
+    const b=drama.badges.find(b=>b.episode===Number(badgeDate.dataset.badgeDate)),release=b&&getBadgeRelease(b,summary.releases);
+    showScreen('calendar');if(release)selectDate(release.date,true);
+  }
   if(event.target.closest('[data-collection]'))showReward();
   if(event.target.closest('[data-close-reward]'))closeReward();
 });
@@ -175,23 +223,28 @@ $('rewardOverlay').onclick=event=>{if(event.target===$('rewardOverlay'))closeRew
 $('finishEpisode').onclick=completeViewing;
 player.addEventListener('ended',completeViewing);
 player.addEventListener('play',()=>{if(summary.available===0){player.pause();showToast('本剧尚未开播');return;}if(activeScreen==='detail'){playbackActive=true;updatePlaybackControls();}});
-$('resetDemo').onclick=()=>{
+function resetDemo() {
   if(!$('rewardOverlay').hidden)closeReward();
   state={watched:Math.min(demoSession.watched,summary.available),reminded:false};
   completed=new Set(Array.from({length:state.watched},(_,i)=>i+1));
   currentEpisode=summary.available?Math.min(state.watched+1,summary.available):1;playbackActive=false;player.pause();player.currentTime=0;
   selectedDate=summary.today;visibleMonth=summary.today.slice(0,7);dateExpanded=false;
   saveProgress();$('toast').hidden=true;showScreen('calendar');
-};
+}
+$('resetDemo').onclick=resetDemo;
+$('resetDemoMobile').onclick=resetDemo;
 document.addEventListener('keydown',event=>{
   if($('rewardOverlay').hidden)return;
   if(event.key==='Escape')closeReward();
   if(event.key==='Tab') {
-    const buttons=[...$('rewardOverlay').querySelectorAll('button')],first=buttons[0],last=buttons.at(-1);
+    const buttons=[...$('rewardOverlay').querySelectorAll('button:not(:disabled)')],first=buttons[0],last=buttons.at(-1);
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
   }
 });
 window.addEventListener('popstate',()=>showScreen(location.hash.slice(1)||'calendar',false));
-function fitStage(){document.documentElement.style.setProperty('--demo-scale',window.innerWidth<=480?1:Math.min(1,Math.max(.75,(window.innerHeight-156)/810)));}
+function fitStage(){
+  document.documentElement.style.setProperty('--demo-scale',window.innerWidth<=480?1:Math.min(1,Math.max(.75,(window.innerHeight-156)/810)));
+  if(!$('rewardOverlay').hidden)$('rewardOverlay').style.top=`${$(activeScreen).querySelector('video')?.offsetHeight||168}px`;
+}
 window.addEventListener('resize',fitStage);fitStage();renderEpisodes();renderCalendar();showScreen(location.hash.slice(1)||'calendar',false);

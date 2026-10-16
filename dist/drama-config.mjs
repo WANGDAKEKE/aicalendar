@@ -48,9 +48,9 @@ export const drama = {
     ]),
   },
   badges: [
-    {episode:10, name:'荔枝初程', glyph:'荔'},
-    {episode:18, name:'千里同路', glyph:'驿'},
-    {episode:30, name:'长安赴约', glyph:'安'},
+    {episode:10, name:'荔枝初程', glyph:'荔', icon:'lychee', story:'一颗荔枝的旅程，因为你的陪伴而开始。'},
+    {episode:18, name:'千里同路', glyph:'驿', icon:'journey', story:'山水迢迢，谢谢你陪他走过这一程。'},
+    {episode:30, name:'长安赴约', glyph:'安', icon:'city', story:'荔枝抵达长安，你也见证了故事的终章。'},
   ],
 };
 
