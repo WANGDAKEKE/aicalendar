@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f5f7f7" />
   <title>追剧日历 · 月历版 Demo</title>
   <meta name="description" content="按用户权益呈现的通用追剧月历交互原型" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=2.0.2" />
 </head>
 <body>
   <header class="presentation-header"><div><span class="eyebrow">腾讯视频 · 追剧日历 / 03</span><h1>更新安排，一眼看清。</h1></div><button id="resetDemo" type="button">↻ 重置演示</button></header>
@@ -38,9 +38,8 @@
         <div class="calendar-player"><video class="calendar-preview" controls muted loop playsinline preload="metadata" aria-label="剧集录屏预览"></video><button class="video-back" data-target="episodes" aria-label="返回选集页">‹</button></div>
         <header class="calendar-topbar"><strong id="calendarTitle">《长安的荔枝》追剧日历</strong><button class="collapse" data-target="episodes" aria-label="收起追剧日历">⌄</button></header>
         <div class="calendar-scroll" id="calendarScroll" role="region" aria-label="追剧日历内容" tabindex="0">
-          <section class="today-summary" aria-label="今日更新"><div class="today-context"><span id="todayDate"></span><span id="accountTier" class="identity-chip"></span></div><h2 id="todayHeadline"></h2><p id="todayCaption"></p></section>
           <section class="release-calendar" aria-labelledby="monthHeading">
-            <header class="month-toolbar"><h3 id="monthHeading"></h3><div><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
+            <header class="month-toolbar"><div class="month-heading"><h3 id="monthHeading"></h3><span id="accountTier" class="identity-chip"></span></div><div class="month-controls"><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
             <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
             <div id="releaseGrid" class="release-grid" role="group" aria-label="月份更新日历"></div>
             <div id="selectedRelease" class="selected-release" aria-live="polite" hidden></div>
@@ -59,6 +58,6 @@
     <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode">快进到本集结束 →</button></div>
   </main>
   <footer class="presentation-footer"><span id="demoContext">演示账户 VIP · 模拟时间 2026.10.15 19:00</span><small>示例排期，非真实播出信息；提醒与观看记录为本机模拟。</small></footer>
-  <script type="module" src="./dual.js"></script>
+  <script type="module" src="./dual.js?v=2.0.2"></script>
 </body>
 </html>

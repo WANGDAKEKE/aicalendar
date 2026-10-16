@@ -34,17 +34,7 @@ document.querySelectorAll('[data-drama-title]').forEach(node=>node.textContent=d
 document.querySelectorAll('[data-total]').forEach(node=>node.textContent=`全${drama.totalEpisodes}集 ›`);
 $('calendarTitle').textContent=`《${drama.title}》追剧日历`;
 $('demoContext').textContent=`演示账户 ${tierName} · 模拟时间 ${summary.today.replaceAll('-','.')} 19:00`;
-$('todayDate').textContent=`今天 ${shortDate(summary.today)} · ${weekday(summary.today)}`;
-$('accountTier').textContent=`${tierName} · 已匹配你的排期`;
-const todayRelease=summary.todayRelease;
-if(todayRelease) {
-  const released=releaseTime(todayRelease)<=now;
-  $('todayHeadline').innerHTML=`${released?'今天已更新':'今天将更新'} <em>${esc(episodeLabel(todayRelease))}</em>`;
-  $('todayCaption').textContent=`${todayRelease.time} ${released?'已上线':'准时更新'} · ${tierName}可看 · 全${drama.totalEpisodes}集`;
-} else {
-  $('todayHeadline').textContent=summary.available>=drama.totalEpisodes?'全剧已更新完结':summary.available===0?'尚未开播，敬请期待':'今天休更，故事待续';
-  $('todayCaption').textContent=summary.next?`下次更新：${shortDate(summary.next.date)} ${summary.next.time}`:'所有剧集均已上线，可以随时回看';
-}
+$('accountTier').textContent=`${tierName} 排期`;
 $('entrySummary').textContent=summary.finale?`${shortDate(summary.finale.date)}完结 · 查看你的更新安排`:'查看你的完整更新安排';
 
 function saveProgress() {try{localStorage.setItem(storageKey,JSON.stringify({completed:[...completed],reminded:state.reminded}));}catch{}}
