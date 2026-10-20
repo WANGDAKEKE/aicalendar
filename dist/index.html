@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f5f7f7" />
   <title>追剧日历 · 月历版 Demo</title>
   <meta name="description" content="按用户权益呈现的通用追剧月历交互原型" />
-  <link rel="stylesheet" href="./styles.css?v=2.1.0" />
+  <link rel="stylesheet" href="./styles.css?v=2.2.0" />
 </head>
 <body>
   <header class="presentation-header"><div><span class="eyebrow">腾讯视频 · 追剧日历 / 03</span><h1>更新安排，一眼看清。</h1></div><button id="resetDemo" type="button">↻ 重置演示</button></header>
@@ -22,7 +22,7 @@
           <p class="synopsis"><em>AI看点</em> 一骑向长安，荔枝赴约而来。跟随李善德踏上荔枝转运之路，见证小人物的奔赴与坚守。</p>
           <button class="episodes-entry" data-target="episodes" aria-label="进入选集页"><span><strong>选集</strong><small data-total>全30集 ›</small></span><b>查看全部 ›</b></button>
           <div class="detail-episode-tabs"><b>剧集</b><span>主创直播</span><span>剧综</span></div><div class="episode-strip" role="group" aria-label="选择播放集数"></div>
-          <div class="ad-card"><div class="watch">◉</div><div><strong>肩并肩，大步跑</strong><small>⌚ WATCH｜NIKE</small></div><i>广告</i></div>
+          <button class="editorial-entry" id="detailCalendarEntry" data-target="calendar" aria-label="从详情页打开追剧日历"></button>
           <h3>精彩片段</h3><div class="recommendations"><div><span>一骑向长安</span></div><div><span>荔枝赴约而来</span></div></div>
         </div>
       </div>
@@ -30,14 +30,15 @@
         <div class="mini-player"><video controls muted playsinline preload="metadata" aria-label="选集页录屏预览"></video><button class="video-back" data-target="detail" aria-label="返回详情页">‹</button></div>
         <div class="episodes-panel">
           <nav class="episode-tabs"><b>选集</b><span>主创陪看</span><span>主创直播</span><small>分集标题 ◯⌄</small></nav>
-          <button class="calendar-entry" data-target="calendar" aria-label="打开追剧日历"><span><strong>追剧日历</strong><small id="entrySummary"></small></span><b>›</b></button>
           <div class="episode-groups"><b data-total>全部剧集 · 1–30</b></div><div class="episode-grid" aria-label="剧集列表"></div>
+          <button class="editorial-entry" id="episodeCalendarEntry" data-target="calendar" aria-label="从选集页打开追剧日历"></button>
         </div>
       </div>
       <div class="screen calendar-screen active" id="calendar" aria-label="追剧日历页">
-        <div class="calendar-player"><video class="calendar-preview" controls muted loop playsinline preload="metadata" aria-label="剧集录屏预览"></video><button class="video-back" data-target="episodes" aria-label="返回选集页">‹</button></div>
-        <header class="calendar-topbar"><strong id="calendarTitle">《长安的荔枝》追剧日历</strong><button class="collapse" data-target="episodes" aria-label="收起追剧日历">⌄</button></header>
+        <div class="calendar-player"><video class="calendar-preview" controls muted loop playsinline preload="metadata" aria-label="剧集录屏预览"></video><button class="video-back" data-calendar-back data-target="episodes" aria-label="返回选集页">‹</button></div>
+        <header class="calendar-topbar"><strong id="calendarTitle">《长安的荔枝》追剧日历</strong><button class="collapse" data-calendar-back data-target="episodes" aria-label="收起追剧日历">⌄</button></header>
         <div class="calendar-scroll" id="calendarScroll" role="region" aria-label="追剧日历内容" tabindex="0">
+          <button id="openCollection" class="journey-entry" aria-label="查看我的勋章"><span class="journey-art" aria-hidden="true"></span><span class="journey-copy"><span class="journey-heading"><strong id="journeyBadgeName"></strong><span id="journeyProgressText"></span></span><span class="journey-track" aria-hidden="true"><span id="journeyProgressFill"></span></span><span class="journey-caption" id="journeyCaption">观看自动点亮 · 我的勋章</span></span><span class="journey-arrow" aria-hidden="true">›</span></button>
           <section class="release-calendar" aria-labelledby="monthHeading">
             <header class="month-toolbar"><div class="month-heading"><h3 id="monthHeading"></h3><span id="accountTier" class="identity-chip"></span></div><div class="month-controls"><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
             <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
@@ -49,7 +50,6 @@
             <button id="jumpFinale" class="key-date finale-date"><small>大结局 <span>↗</span></small><strong id="finaleDate"></strong><span id="finaleEpisodes"></span></button>
           </div>
           <button id="toggleReminder" class="remind-button" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4M12 1v1"/></svg><span id="reminderLabel">更新时提醒我</span></button>
-          <button id="openCollection" class="collection-entry"><span class="collection-entry-title">我的勋章</span><span id="collectionIcons" class="collection-miniatures" aria-hidden="true"></span><span id="collectionCount">0/3 已点亮</span><span aria-hidden="true">›</span></button>
           <div class="calendar-footnote"><span>排期如有调整，以实际播出为准</span></div>
         </div>
       </div>
@@ -59,6 +59,6 @@
     <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode">快进到本集结束 →</button></div>
   </main>
   <footer class="presentation-footer"><span id="demoContext">演示账户 VIP · 模拟时间 2026.10.15 19:00</span><small>示例排期，非真实播出信息；提醒与观看记录为本机模拟。</small><button id="resetDemoMobile">↻ 重置演示</button></footer>
-  <script type="module" src="./dual.js?v=2.1.1"></script>
+  <script type="module" src="./dual.js?v=2.2.0"></script>
 </body>
 </html>
