@@ -1,4 +1,4 @@
-import {drama, demoSession} from './drama-config.mjs?v=2.3.2';
+import {drama, demoSession} from './drama-config.mjs?v=2.3.3';
 import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, releaseTime, getSummary} from './calendar-model.mjs';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
@@ -65,8 +65,8 @@ function renderJourney() {
   $('openCollection').setAttribute('aria-label',`查看我的勋章，${next?`${featured.name}，已看${progress.watchedCount}集，共${progress.total}集`:'全部勋章已点亮'}`);
 }
 function operationsMarkup({highlights,events}) {
-  const notes=highlights.map(item=>`<div class="operations-note"><span class="operations-icon" aria-hidden="true">${esc(item.icon)}</span><span>${esc(item.title)}</span><small>运营看点 · 示例</small></div>`).join('');
-  const activities=events.map(event=>`<article class="screening-card" aria-label="${esc(event.title)}活动说明"><header><strong>${esc(event.title)}</strong><span>${{upcoming:'未开始',live:'进行中',ended:'已结束'}[event.status]}</span></header><div class="screening-content"><span class="screening-ticket" aria-hidden="true">🎟️</span><div><strong>${event.status==='ended'?'活动场次：':'提前看 '}${episodeLabel(event)}</strong><p>${shortDate(event.date)} ${esc(event.time)}–${esc(event.endTime)}</p></div></div><p class="screening-access">${esc(event.accessNote||'需单独活动资格，不包含在常规会员排期中。')}</p><small class="screening-disclaimer">活动示例 · 无真实交易或播放授权</small></article>`).join('');
+  const notes=highlights.map(item=>`<div class="operations-note"><span class="operations-icon" aria-hidden="true">${esc(item.icon)}</span><span>${esc(item.title)}</span><small>本集看点</small></div>`).join('');
+  const activities=events.map(event=>`<article class="screening-card" aria-label="${esc(event.title)}活动说明"><header><strong>${esc(event.title)}</strong><span>${{upcoming:'未开始',live:'进行中',ended:'已结束'}[event.status]}</span></header><div class="screening-content"><span class="screening-ticket" aria-hidden="true">🎟️</span><div><strong>${event.status==='ended'?'活动场次：':'提前看 '}${episodeLabel(event)}</strong><p>${shortDate(event.date)} ${esc(event.time)}–${esc(event.endTime)}</p></div></div><p class="screening-access">${esc(event.accessNote||'需单独活动资格，不包含在常规会员排期中。')}</p></article>`).join('');
   return notes+activities;
 }
 function renderCalendar() {
@@ -79,15 +79,15 @@ function renderCalendar() {
     const released=release && releaseTime(release)<=now;
     const milestone=release?.milestone==='premiere'?'开播':release?.milestone==='finale'?'完结':'';
     const label=milestone || (release?episodeLabel(release):'');
-    const operations=operationsForDate(date),hasEvent=operations.events.length>0,hasContent=hasEvent||operations.highlights.length>0;
-    const classes=['day-cell',release?'has-release':'',released?'released':'',isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':'',hasContent?'has-day-content':''].filter(Boolean).join(' ');
+    const operations=operationsForDate(date),hasEvent=operations.events.length>0;
+    const classes=['day-cell',release?'has-release':'',released?'released':'',isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':''].filter(Boolean).join(' ');
     const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked);
-    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${operations.highlights.length?`，运营看点示例：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
+    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${operations.highlights.length?`，本集看点：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
     const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${medalMark}</span>`:'';
     // Rewards own the corner. Content and events share the row below episodes;
     // an event takes priority there, while every note remains in date details.
-    const content=hasContent?`<span class="day-content-slot" aria-hidden="true">${hasEvent?'<span class="day-event-label">点映礼</span>':operations.highlights.slice(0,2).map(item=>`<span class="day-operation">${esc(item.icon)}</span>`).join('')}</span>`:'';
-    return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" aria-expanded="${selected&&dateExpanded}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption">${label||'&nbsp;'}</span>${content}${marker}</button>`;
+    const content=`<span class="day-content-slot" aria-hidden="true">${hasEvent?'<span class="day-event-label">点映礼</span>':operations.highlights.slice(0,2).map(item=>`<span class="day-operation">${esc(item.icon)}</span>`).join('')}</span>`;
+    return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" aria-expanded="${selected&&dateExpanded}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption"${label?'':' aria-hidden="true"'}>${label}</span>${content}${marker}</button>`;
   }).join('');
   renderSelectedRelease();
   $('toggleReminder').setAttribute('aria-pressed',String(state.reminded));
@@ -213,7 +213,7 @@ function showReward(episode=null,celebrate=false,earnedCount=1) {
     $('rewardContent').innerHTML=`<div class="badge-detail ${celebrate?'celebrating':''}"><div class="badge-artwork">${medallion(badge,true)}${celebrate?'<span class="badge-spark spark-one">✦</span><span class="badge-spark spark-two">✦</span><span class="badge-spark spark-three">✧</span>':''}</div><span class="badge-status">${p.unlocked?'✓ 已自动收入我的勋章':'待解锁 · 勋章预览'}</span><h3>${esc(badge.name)}</h3><p class="badge-story">${esc(badge.story||'每一段故事，都有你的陪伴。')}</p><div class="badge-rule"><strong>${p.unlocked?'你已看完':'解锁条件：看完'}前 ${badge.episode} 集</strong><span>观看历史自动同步，无需打卡或领取</span></div>${celebrate?`<p class="earned-note">${earnedCount>1?`本次点亮 ${earnedCount} 枚，已全部收入我的勋章`:'这枚勋章已点亮，随时回日历查看。'}</p><button class="reward-primary" data-close-reward>收好了</button><button class="reward-secondary" data-badge-date="${badge.episode}">回日历看看 →</button>`:`${progressMarkup(badge)}${badgeAction(badge)}<button class="reward-secondary" data-collection>查看全部勋章</button>`}</div>`;
   }else{
     const count=drama.badges.filter(b=>badgeProgress(b).unlocked).length,next=drama.badges.find(b=>!badgeProgress(b).unlocked);
-    $('rewardContent').innerHTML=`<div class="collection-overview"><p>《${esc(drama.title)}》</p><strong>${count}<span> / ${drama.badges.length} 枚已点亮</span></strong><small>不用每天打卡，按自己的节奏追剧就好。</small></div><div class="badge-grid">${drama.badges.map(b=>`<button data-badge="${b.episode}" aria-label="${esc(b.name)}，${badgeProgress(b).unlocked?'已点亮':`看完前${b.episode}集解锁`}">${medallion(b)}<strong>${esc(b.name)}</strong><small>${badgeProgress(b).unlocked?'✓ 已点亮':`前${b.episode}集`}</small></button>`).join('')}</div>${next?`<div class="next-badge"><small>下一枚纪念</small><strong>${esc(next.name)}</strong>${progressMarkup(next)}</div>${badgeAction(next)}`:'<div class="collection-complete">一路相伴，整段旅程都被珍藏。<br>三枚勋章已全部点亮。</div><button class="reward-primary" data-close-reward>收好了</button>'}<p class="collection-disclaimer">观看自动记录 · 本机演示纪念，无实物或会员奖励</p>`;
+    $('rewardContent').innerHTML=`<div class="collection-overview"><p>《${esc(drama.title)}》</p><strong>${count}<span> / ${drama.badges.length} 枚已点亮</span></strong><small>不用每天打卡，按自己的节奏追剧就好。</small></div><div class="badge-grid">${drama.badges.map(b=>`<button data-badge="${b.episode}" aria-label="${esc(b.name)}，${badgeProgress(b).unlocked?'已点亮':`看完前${b.episode}集解锁`}">${medallion(b)}<strong>${esc(b.name)}</strong><small>${badgeProgress(b).unlocked?'✓ 已点亮':`前${b.episode}集`}</small></button>`).join('')}</div>${next?`<div class="next-badge"><small>下一枚纪念</small><strong>${esc(next.name)}</strong>${progressMarkup(next)}</div>${badgeAction(next)}`:'<div class="collection-complete">一路相伴，整段旅程都被珍藏。<br>三枚勋章已全部点亮。</div><button class="reward-primary" data-close-reward>收好了</button>'}<p class="collection-disclaimer">观看自动记录 · 勋章随观看进度点亮</p>`;
   }
   document.querySelector('.reward-sheet').scrollTop=0;
   updatePlaybackControls();$('closeReward').focus({preventScroll:true});
@@ -247,7 +247,7 @@ for(const [id,amount] of [['prevMonth',-1],['nextMonth',1]])$(id).onclick=()=>{
 $('backToToday').onclick=()=>{dateExpanded=false;selectedDate=summary.today;visibleMonth=summary.today.slice(0,7);renderCalendar();};
 $('toggleReminder').onclick=()=>{
   state.reminded=!state.reminded;saveProgress();renderCalendar();
-  showToast(state.reminded?'已开启更新提醒（演示）':'已关闭更新提醒');
+  showToast(state.reminded?'已开启更新提醒':'已关闭更新提醒');
 };
 $('openCollection').onclick=()=>showReward();$('closeReward').onclick=closeReward;
 $('rewardOverlay').onclick=event=>{if(event.target===$('rewardOverlay'))closeReward();};
