@@ -1,4 +1,4 @@
-import {drama, demoSession} from './drama-config.mjs?v=2.2.0';
+import {drama, demoSession} from './drama-config.mjs?v=2.2.1';
 import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, releaseTime, getSummary} from './calendar-model.mjs';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getEditorialState} from './editorial-model.mjs';
@@ -101,14 +101,15 @@ function renderCalendar() {
 }
 function renderSelectedRelease() {
   $('selectedRelease').hidden=!dateExpanded;
+  $('selectedRelease').setAttribute('aria-label',`${shortDate(selectedDate)} ${weekday(selectedDate)}的更新安排`);
   const release=summary.releases.find(r=>r.date===selectedDate);
   const released=release && releaseTime(release)<=now;
   const watched=release && release.to<=state.watched;
   const nextEpisode=release?Math.min(release.to,Math.max(release.from,state.watched+1)):0;
   const title=release?`${release.time} ${released?'已更新':'更新'} ${episodeLabel(release)}`:'这一天没有更新';
   const future=summary.releases.find(r=>r.date>selectedDate);
-  const description=release?(release.milestone==='premiere'?'首播上线':release.milestone==='finale'?(released?'大结局 · 全剧已更新':'大结局 · 届时全剧可看'):`${tierName}专属排期`)+(watched?' · 已看完':released?' · 可观看':' · 待上线'):(future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'此日期晚于完结日，无新增剧集':'更新安排待公布');
-  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="date-marker"><strong>${parseDate(selectedDate).getUTCDate()}</strong><small>${weekday(selectedDate)}</small></div><div class="release-detail"><strong>${esc(title)}</strong><p>${esc(description)}</p></div>${released?`<button class="release-action" data-episode="${watched?release.from:nextEpisode}">${watched?'再看一遍':'去观看'} ›</button>`:'<span class="release-state">'+(release?'待更新':'无更新')+'</span>'}</div>${badgesForRelease(release).map(b=>`<button class="badge-teaser" data-badge="${b.episode}">${medalMark}<span><strong>${esc(b.name)}</strong><small>${badgeProgress(b).unlocked?'已点亮 · 点击查看':`看完前${b.episode}集自动解锁`}</small></span><span aria-hidden="true">›</span></button>`).join('')}`;
+  const description=release?'':future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'全剧排期已结束，无新增剧集':'更新安排待公布';
+  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="release-detail"><strong>${esc(title)}</strong>${description?`<p>${esc(description)}</p>`:''}</div>${released?`<button class="release-action" data-episode="${watched?release.from:nextEpisode}">${watched?'再看一遍':'去观看'} ›</button>`:release?'<span class="release-state">待更新</span>':''}</div>`;
   // Do not render any editorial content until the user opens its date.
   if(dateExpanded)$('selectedRelease').insertAdjacentHTML('beforeend',editorialsForDate(selectedDate).map(editorialMarkup).join(''));
 }
