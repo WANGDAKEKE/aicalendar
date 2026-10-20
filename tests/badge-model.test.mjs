@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {drama} from '../dist/drama-config.mjs';
+import {drama,demoScenarios,demoSession} from '../dist/drama-config.mjs';
 import {getSchedule} from '../dist/calendar-model.mjs';
 import {getBadgeProgress,getBadgeRelease,newlyUnlockedBadges} from '../dist/badge-model.mjs';
 
@@ -46,9 +46,9 @@ test('invalid history elements, duplicates and episodes beyond a badge do not in
 
 test('badge releases follow the independent schedule of each account tier',()=>{
   const expected={
-    vip:['2026-10-15','2026-10-20','2026-10-27'],
-    svip:['2026-10-14','2026-10-19','2026-10-26'],
-    free:['2026-10-22','2026-10-31','2026-11-14'],
+    vip:['2026-10-14','2026-10-18','2026-10-27'],
+    svip:['2026-10-13','2026-10-17','2026-10-26'],
+    free:['2026-10-19','2026-10-28','2026-11-11'],
   };
   for(const [tier,dates] of Object.entries(expected)){
     const {releases}=getSchedule(drama,tier);
@@ -73,4 +73,19 @@ test('invalid badge configuration fails explicitly',()=>{
     assert.throws(()=>getBadgeProgress({episode},completedThrough(10)),RangeError);
     assert.throws(()=>getBadgeRelease({episode},[]),RangeError);
   }
+});
+
+test('the default skipped scenario earns only actual 4/10 progress, not the highest watched episode',()=>{
+  const completed=new Set(demoScenarios[demoSession.scenario].completed);
+  assert.deepEqual(getBadgeProgress(firstBadge,completed),{watchedCount:4,total:10,remaining:6,unlocked:false,nextEpisode:3});
+});
+
+test('catching up one missed date adds only its two episodes and does not falsely unlock the badge',()=>{
+  const before=new Set(demoScenarios.skipped.completed);
+  const after=new Set([...before,3,4]);
+  assert.deepEqual(getBadgeProgress(firstBadge,after),{watchedCount:6,total:10,remaining:4,unlocked:false,nextEpisode:5});
+  assert.deepEqual(newlyUnlockedBadges(drama.badges,before,after),[]);
+  const jumpedToBadge=new Set([...before,9,10]);
+  assert.deepEqual(getBadgeProgress(firstBadge,jumpedToBadge),{watchedCount:6,total:10,remaining:4,unlocked:false,nextEpisode:3});
+  assert.deepEqual(newlyUnlockedBadges(drama.badges,before,jumpedToBadge),[]);
 });

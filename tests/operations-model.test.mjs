@@ -10,12 +10,12 @@ const configured={...drama,calendarHighlights:[highlight],screeningEvents:[scree
 const context={tier:'vip',date:screening.date,now:demoSession.now};
 
 test('episode highlights map to each resolved entitlement schedule',()=>{
-  const expected={vip:'2026-10-14',svip:'2026-10-13',free:'2026-10-20',unknown:'2026-10-20'};
+  const expected={vip:'2026-10-13',svip:'2026-10-12',free:'2026-10-17',unknown:'2026-10-17'};
   for(const [tier,date] of Object.entries(expected)){
     assert.deepEqual(getDateOperations(configured,{...context,tier,date}).highlights,[highlight]);
   }
-  assert.deepEqual(getDateOperations(configured,{...context,tier:'unknown',date:'2026-10-14'}).highlights,[]);
-  assert.deepEqual(getDateOperations(configured,{...context,tier:null,date:'2026-10-20'}).highlights,[highlight]);
+  assert.deepEqual(getDateOperations(configured,{...context,tier:'unknown',date:'2026-10-13'}).highlights,[]);
+  assert.deepEqual(getDateOperations(configured,{...context,tier:null,date:'2026-10-17'}).highlights,[highlight]);
 });
 
 test('screening state uses exact +08:00 boundaries with an exclusive ending',()=>{
@@ -50,13 +50,13 @@ test('explicit event dates remain visible on a day with no regular episode relea
 });
 
 test('multiple highlights and screenings coexist without replacing the regular release',()=>{
-  const date='2026-10-15';
+  const date='2026-10-14';
   const calendarHighlights=[{...highlight,id:'one',episode:9},{...highlight,id:'two',episode:10}];
   const screeningEvents=[{...screening,id:'one',date},{...screening,id:'two',date,time:'21:00',endTime:'22:00'}];
   const result=getDateOperations({...configured,calendarHighlights,screeningEvents},{...context,date});
   assert.deepEqual(result.highlights,calendarHighlights);
   assert.deepEqual(result.events.map(event=>event.id),['one','two']);
-  assert.equal(getSummary(configured,'vip',demoSession.now).todayRelease.to,10);
+  assert.equal(getSummary(configured,'vip',demoSession.now).todayRelease.to,12);
 });
 
 test('operations never mutate normal releases, availability or personal finale dates',()=>{
@@ -67,13 +67,13 @@ test('operations never mutate normal releases, availability or personal finale d
     assert.deepEqual(getSummary(configured,tier,demoSession.now),normal);
   }
   assert.deepEqual(configured,before);
-  assert.equal(getSummary(configured,'vip',demoSession.now).available,10);
+  assert.equal(getSummary(configured,'vip',demoSession.now).available,12);
   assert.equal(getSummary(configured,'vip',demoSession.now).finale.date,'2026-10-27');
 });
 
 test('invalid or unmatched highlights are ignored',()=>{
   const calendarHighlights=[null,{},...[0,-1,8.5,'8',31,NaN].map(episode=>({...highlight,episode})),{...highlight,id:''},{...highlight,title:''},{...highlight,icon:''}];
-  assert.deepEqual(getDateOperations({...configured,calendarHighlights},{...context,date:'2026-10-14'}).highlights,[]);
+  assert.deepEqual(getDateOperations({...configured,calendarHighlights},{...context,date:'2026-10-13'}).highlights,[]);
 });
 
 test('invalid event times, ranges, visibility and metadata fail closed',()=>{
@@ -102,9 +102,9 @@ test('invalid dates and collection configuration return no operations',()=>{
 });
 
 test('invalid now suppresses events but retains valid episode highlights',()=>{
-  const date='2026-10-14';
+  const date='2026-10-13';
   const config={...configured,screeningEvents:[{...screening,date}]};
-  for(const now of ['invalid','2026-02-30T19:00:00+08:00','2026-10-14T19:00:00','2026-10-14',undefined,null,NaN,Infinity,new Date(NaN)]){
+  for(const now of ['invalid','2026-02-30T19:00:00+08:00','2026-10-13T19:00:00','2026-10-13',undefined,null,NaN,Infinity,new Date(NaN)]){
     assert.deepEqual(getDateOperations(config,{...context,date,now}),{highlights:[highlight],events:[]});
   }
 });

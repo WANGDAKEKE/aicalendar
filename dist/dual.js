@@ -1,5 +1,5 @@
-import {drama, demoSession, demoScenarios} from './drama-config.mjs?v=2.4.0';
-import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, getSummary, getReleaseViewingState} from './calendar-model.mjs?v=2.4.0';
+import {drama, demoSession, demoScenarios} from './drama-config.mjs?v=2.5.0';
+import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, getSummary, getReleaseViewingState} from './calendar-model.mjs?v=2.5.0';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
 
@@ -9,21 +9,22 @@ const now = Date.parse(demoSession.now);
 const tierName = drama.tiers[summary.tier];
 const requestedScenario=new URLSearchParams(location.search).get('scenario');
 let scenarioId=Object.hasOwn(demoScenarios,requestedScenario)?requestedScenario:demoSession.scenario;
-const storageBase = `drama-month-calendar-v2:${drama.id}:${summary.tier}`;
-const storageKey = ()=>scenarioId==='caught-up'?storageBase:`${storageBase}:${scenarioId}`;
-const initialWatched=()=>Math.min(demoScenarios[scenarioId].watched,summary.available);
-let state = {watched:initialWatched(), reminded:false};
-let completed = new Set(Array.from({length:state.watched},(_,i)=>i+1));
+// This schedule revision uses separate storage; previous demo records stay intact.
+const storageBase = `drama-month-calendar-v3:${drama.id}:${summary.tier}`;
+const storageKey = ()=>`${storageBase}:${scenarioId}`;
+const validEpisode=n=>Number.isInteger(n)&&n>0&&n<=summary.available;
+const initialCompleted=()=>new Set(demoScenarios[scenarioId].completed.filter(validEpisode));
+let state = {reminded:false};
+let completed = initialCompleted();
 try {
   const saved = JSON.parse(localStorage.getItem(storageKey()));
   if(saved && Array.isArray(saved.completed)) {
-    completed = new Set(saved.completed.filter(n=>Number.isInteger(n)&&n>0&&n<=summary.available));
-    state.watched=0;
-    while(completed.has(state.watched+1)) state.watched++;
+    completed = new Set(saved.completed.filter(validEpisode));
     state.reminded=saved.reminded===true;
   }
 } catch {}
-let currentEpisode = summary.available?Math.min(state.watched+1, summary.available):1;
+const nextUnwatched=()=>Array.from({length:summary.available},(_,i)=>i+1).find(n=>!completed.has(n));
+let currentEpisode = nextUnwatched()||summary.available||1;
 let playbackActive=false, activeScreen='calendar', calendarReturn='episodes';
 let selectedDate=demoScenarios[scenarioId].focusDate||summary.today, visibleMonth=selectedDate.slice(0,7), dateExpanded=selectedDate!==summary.today;
 let rewardReturn=null, rewardResumeVideo=null, toastTimer;
@@ -60,6 +61,8 @@ const badgeProgress=badge=>getBadgeProgress(badge,completed);
 const badgesForRelease=release=>release?drama.badges.filter(b=>b.episode>=release.from&&b.episode<=release.to):[];
 const operationsForDate=date=>getDateOperations(drama,{tier:summary.tier,date,now});
 const pendingEpisodeLabel=episodes=>episodes.at(-1)-episodes[0]+1===episodes.length?episodeLabel({from:episodes[0],to:episodes.at(-1)}):`${episodes.join('、')}集`;
+const isCatchUp=episode=>Number.isInteger(episode)&&!completed.has(episode)&&[...completed].some(n=>n>episode);
+const viewingActionLabel=episode=>`${isCatchUp(episode)?'补看':'继续看'}第${episode}集`;
 function renderJourney() {
   const next=drama.badges.find(b=>!badgeProgress(b).unlocked),featured=next||drama.badges.at(-1);
   $('openCollection').hidden=!featured;
@@ -115,8 +118,10 @@ function renderSelectedRelease() {
   const watched=viewing.status==='watched',nextEpisode=viewing.nextEpisode;
   const title=viewing.pendingEpisodes.length?`待看 ${pendingEpisodeLabel(viewing.pendingEpisodes)}`:watched?`已看完 ${episodeLabel(release)}`:release?`${release.time} ${operations.events.length?'常规':''}更新 ${episodeLabel(release)}`:operations.events.length?'这一天无常规更新':'这一天没有更新';
   const future=summary.releases.find(r=>r.date>selectedDate);
-  const description=released?`${release.time} 已更新`:release?'':future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'全剧排期已结束，无新增剧集':'更新安排待公布';
-  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="release-detail"><strong>${esc(title)}</strong>${description?`<p>${esc(description)}</p>`:''}</div>${released?`<button class="release-action" data-episode="${nextEpisode}">${watched?'再看一遍':viewing.status==='partial'?`继续看第${nextEpisode}集`:'去观看'} ›</button>`:release?'<span class="release-state">待更新</span>':''}</div>`;
+  const total=release?release.to-release.from+1:0;
+  const description=released?`${release.time} 已更新${viewing.status==='partial'?` · 已看 ${total-viewing.pendingEpisodes.length}/${total} 集`:''}`:release?'':future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'全剧排期已结束，无新增剧集':'更新安排待公布';
+  const actionLabel=watched?'再看一遍':viewing.status==='partial'||isCatchUp(nextEpisode)?viewingActionLabel(nextEpisode):'去观看';
+  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="release-detail"><strong>${esc(title)}</strong>${description?`<p>${esc(description)}</p>`:''}</div>${released?`<button class="release-action" data-episode="${nextEpisode}">${actionLabel} ›</button>`:release?'<span class="release-state">待更新</span>':''}</div>`;
   // Only show operational details after the user opens the date.
   if(dateExpanded)$('selectedRelease').insertAdjacentHTML('beforeend',operationsMarkup(operations));
 }
@@ -178,12 +183,11 @@ function completeViewing() {
   if(activeScreen!=='detail'||!playbackActive||!$('rewardOverlay').hidden||currentEpisode<1||currentEpisode>summary.available)return;
   const beforeCompleted=new Set(completed),finished=currentEpisode;
   player.pause();playbackActive=false;completed.add(finished);
-  while(completed.has(state.watched+1))state.watched++;
   saveProgress();renderCalendar();renderEpisodes();
   const earned=newlyUnlockedBadges(drama.badges,beforeCompleted,completed);
   if(earned.length)showReward(earned.at(-1).episode,true,earned.length);
   else if(finished<summary.available)playEpisode(finished+1);
-  else showToast('已追平当前更新，观看记录已同步');
+  else showToast(nextUnwatched()?'本集已看完，观看记录已同步':'已追平当前更新，观看记录已同步');
 }
 function medallion(badge,preview=false) {
   const art={
@@ -200,7 +204,7 @@ function progressMarkup(badge) {
 function badgeAction(badge) {
   const p=badgeProgress(badge),release=getBadgeRelease(badge,summary.releases);
   if(p.unlocked)return `<button class="reward-primary" data-badge-date="${badge.episode}">回日历查看勋章</button>`;
-  if(p.nextEpisode<=summary.available)return `<button class="reward-primary" data-episode="${p.nextEpisode}">继续看第${p.nextEpisode}集 <span aria-hidden="true">→</span></button>`;
+  if(p.nextEpisode<=summary.available)return `<button class="reward-primary" data-episode="${p.nextEpisode}">${viewingActionLabel(p.nextEpisode)} <span aria-hidden="true">→</span></button>`;
   return `<p class="badge-wait">${release?`${shortDate(release.date)} ${release.time}，解锁所需剧集全部上线`:'解锁所需剧集尚未全部上线'}</p><button class="reward-primary" data-badge-date="${badge.episode}">查看更新安排</button>`;
 }
 function showReward(episode=null,celebrate=false,earnedCount=1) {
@@ -265,9 +269,9 @@ player.addEventListener('ended',completeViewing);
 player.addEventListener('play',()=>{if(summary.available===0){player.pause();showToast('本剧尚未开播');return;}if(activeScreen==='detail'){playbackActive=true;updatePlaybackControls();}});
 function resetDemo() {
   if(!$('rewardOverlay').hidden)closeReward();
-  state={watched:initialWatched(),reminded:false};
-  completed=new Set(Array.from({length:state.watched},(_,i)=>i+1));
-  currentEpisode=summary.available?Math.min(state.watched+1,summary.available):1;playbackActive=false;player.pause();player.currentTime=0;
+  state={reminded:false};
+  completed=initialCompleted();
+  currentEpisode=nextUnwatched()||summary.available||1;playbackActive=false;player.pause();player.currentTime=0;
   selectedDate=demoScenarios[scenarioId].focusDate||summary.today;visibleMonth=selectedDate.slice(0,7);dateExpanded=selectedDate!==summary.today;
   saveProgress();$('toast').hidden=true;showScreen('calendar');
 }
