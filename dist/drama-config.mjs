@@ -27,6 +27,20 @@ export const drama = {
     message: '去长安的路很长，故事可以慢慢看。\n今天也为这一路的奔赴，留一点回味。',
     credit: '原创演示寄语 · 非剧中台词',
   }],
+  // Small editorial hints follow the episode, not a fixed VIP calendar date.
+  // These are atmosphere examples, not claims about the actual plot.
+  calendarHighlights: [
+    {id:'companions', episode:14, icon:'🤝', title:'同路相伴'},
+    {id:'letter', episode:22, icon:'💌', title:'一纸心意'},
+    {id:'homeward', episode:24, icon:'🏡', title:'心有所归'},
+  ],
+  // Special-event access is independent of regular membership releases.
+  // The demo displays event information only; it never grants playback access.
+  screeningEvents: [{
+    id:'changan-screening', title:'点映礼',
+    date:'2026-10-24', time:'18:00', endTime:'20:00', from:27, to:30,
+    accessNote:'需另行获取点映礼资格，普通会员不自动包含。',
+  }],
   scheduleByTier: {
     vip: releases([
       ['2026-10-13', 1, 6, 'premiere'], ['2026-10-14', 7, 8],
