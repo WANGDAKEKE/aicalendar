@@ -23,6 +23,17 @@ export function getSchedule(drama, tier) {
 }
 export function episodeLabel(release) {return release.from===release.to?`${release.from}集`:`${release.from}–${release.to}集`;}
 export function releaseTime(release) {return Date.parse(`${release.date}T${release.time}:00+08:00`);}
+export function getReleaseViewingState(release, completed, now) {
+  if(!release||!Number.isSafeInteger(release.from)||!Number.isSafeInteger(release.to)||release.from<1||release.to<release.from)return {status:'none',pendingEpisodes:[],nextEpisode:null};
+  const time=typeof now==='number'||typeof now==='string'?new Date(now).getTime():NaN;
+  const availableAt=releaseTime(release);
+  if(!Number.isFinite(time)||!Number.isFinite(availableAt)||availableAt>time)return {status:'upcoming',pendingEpisodes:[],nextEpisode:null};
+  const watched=completed instanceof Set?completed:new Set();
+  const episodes=Array.from({length:release.to-release.from+1},(_,index)=>release.from+index);
+  const pendingEpisodes=episodes.filter(episode=>!watched.has(episode));
+  if(pendingEpisodes.length===0)return {status:'watched',pendingEpisodes,nextEpisode:release.from};
+  return {status:pendingEpisodes.length===episodes.length?'unwatched':'partial',pendingEpisodes,nextEpisode:pendingEpisodes[0]};
+}
 export function getSummary(drama, tier, now) {
   const resolved=getSchedule(drama,tier), time=new Date(now).getTime();
   const today=new Intl.DateTimeFormat('en-CA',{timeZone:drama.timeZone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now));

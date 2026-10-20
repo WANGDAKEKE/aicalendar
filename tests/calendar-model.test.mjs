@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {drama,demoSession} from '../dist/drama-config.mjs';
-import {monthCells,weekday,shiftMonth,getSchedule,getSummary,releaseTime} from '../dist/calendar-model.mjs';
+import {monthCells,weekday,shiftMonth,getSchedule,getSummary,releaseTime,getReleaseViewingState} from '../dist/calendar-model.mjs';
 
 test('October layout uses real weekdays and only has 31 clickable dates',()=>{
   const cells=monthCells('2026-10');
@@ -51,4 +51,45 @@ test('every tier covers all episodes once and finale really releases episode 30'
     assert.equal(releases.at(-1).milestone,'finale');
     assert.ok(releases.every(r=>Number.isFinite(releaseTime(r))));
   }
+});
+
+const october14=getSchedule(drama,'vip').releases.find(release=>release.date==='2026-10-14');
+test('an unwatched October 14 release starts with episode 7, not the latest available episode',()=>{
+  const completed=new Set([1,2,3,4,5,6]);
+  assert.deepEqual(getReleaseViewingState(october14,completed,demoSession.now),{status:'unwatched',pendingEpisodes:[7,8],nextEpisode:7});
+});
+test('watching only episode 7 continues from the missing episode 8',()=>{
+  assert.deepEqual(getReleaseViewingState(october14,new Set([7]),demoSession.now),{status:'partial',pendingEpisodes:[8],nextEpisode:8});
+});
+test('skipping to episode 8 keeps episode 7 pending and resumes there',()=>{
+  assert.deepEqual(getReleaseViewingState(october14,new Set([8]),demoSession.now),{status:'partial',pendingEpisodes:[7],nextEpisode:7});
+});
+test('a fully watched release offers replay even when earlier batches contain gaps',()=>{
+  assert.deepEqual(getReleaseViewingState(october14,new Set([7,8,10]),demoSession.now),{status:'watched',pendingEpisodes:[],nextEpisode:7});
+});
+test('future releases never offer playback despite contaminated completed history',()=>{
+  const completed=new Set([7,8,'7',NaN]);
+  assert.deepEqual(getReleaseViewingState(october14,completed,'2026-10-14T17:59:59+08:00'),{status:'upcoming',pendingEpisodes:[],nextEpisode:null});
+  assert.deepEqual(getReleaseViewingState(october14,completed,releaseTime(october14)),{status:'watched',pendingEpisodes:[],nextEpisode:7});
+});
+test('rest days have no viewing action',()=>{
+  for(const release of [undefined,null]){
+    assert.deepEqual(getReleaseViewingState(release,new Set([7,8]),demoSession.now),{status:'none',pendingEpisodes:[],nextEpisode:null});
+  }
+});
+test('viewing state ignores invalid history records and handles single-episode releases',()=>{
+  const invalid=new Set(['7','8',7.5,0,-1,null,undefined,NaN,Infinity,9]);
+  assert.deepEqual(getReleaseViewingState(october14,invalid,demoSession.now),{status:'unwatched',pendingEpisodes:[7,8],nextEpisode:7});
+  const single={...october14,from:7,to:7};
+  assert.deepEqual(getReleaseViewingState(single,new Set(),demoSession.now),{status:'unwatched',pendingEpisodes:[7],nextEpisode:7});
+  assert.deepEqual(getReleaseViewingState(single,new Set([7]),demoSession.now),{status:'watched',pendingEpisodes:[],nextEpisode:7});
+});
+test('invalid release metadata or clock cannot provide a playback action',()=>{
+  for(const release of [{...october14,from:0},{...october14,from:'7'},{...october14,to:6}]){
+    assert.deepEqual(getReleaseViewingState(release,new Set([7,8]),demoSession.now),{status:'none',pendingEpisodes:[],nextEpisode:null});
+  }
+  for(const now of [undefined,null,'invalid',NaN,Infinity]){
+    assert.deepEqual(getReleaseViewingState(october14,new Set([7,8]),now),{status:'upcoming',pendingEpisodes:[],nextEpisode:null});
+  }
+  assert.deepEqual(getReleaseViewingState({...october14,time:'invalid'},new Set([7,8]),demoSession.now),{status:'upcoming',pendingEpisodes:[],nextEpisode:null});
 });

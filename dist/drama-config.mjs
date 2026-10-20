@@ -76,4 +76,9 @@ export const drama = {
 
 // Fixed demo clock keeps presentation stable. Production supplies server time
 // and authenticated entitlement; the UI must not infer access from local storage.
-export const demoSession = {tier: 'vip', now: '2026-10-15T19:00:00+08:00', watched: 8};
+export const demoScenarios = {
+  missed: {label:'14日未看 · 起始已看6集',watched:6,focusDate:'2026-10-14'},
+  partial: {label:'14日看了一集 · 起始已看7集',watched:7,focusDate:'2026-10-14'},
+  'caught-up': {label:'14日已看完 · 起始已看8集',watched:8,focusDate:'2026-10-14'},
+};
+export const demoSession = {tier: 'vip', now: '2026-10-15T19:00:00+08:00', scenario:'missed'};

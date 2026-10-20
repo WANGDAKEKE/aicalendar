@@ -1,5 +1,5 @@
-import {drama, demoSession} from './drama-config.mjs?v=2.3.3';
-import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, releaseTime, getSummary} from './calendar-model.mjs';
+import {drama, demoSession, demoScenarios} from './drama-config.mjs?v=2.4.0';
+import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, getSummary, getReleaseViewingState} from './calendar-model.mjs?v=2.4.0';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
 
@@ -7,11 +7,15 @@ const $ = id => document.getElementById(id);
 const summary = getSummary(drama, demoSession.tier, demoSession.now);
 const now = Date.parse(demoSession.now);
 const tierName = drama.tiers[summary.tier];
-const storageKey = `drama-month-calendar-v2:${drama.id}:${summary.tier}`;
-let state = {watched:Math.min(demoSession.watched,summary.available), reminded:false};
+const requestedScenario=new URLSearchParams(location.search).get('scenario');
+let scenarioId=Object.hasOwn(demoScenarios,requestedScenario)?requestedScenario:demoSession.scenario;
+const storageBase = `drama-month-calendar-v2:${drama.id}:${summary.tier}`;
+const storageKey = ()=>scenarioId==='caught-up'?storageBase:`${storageBase}:${scenarioId}`;
+const initialWatched=()=>Math.min(demoScenarios[scenarioId].watched,summary.available);
+let state = {watched:initialWatched(), reminded:false};
 let completed = new Set(Array.from({length:state.watched},(_,i)=>i+1));
 try {
-  const saved = JSON.parse(localStorage.getItem(storageKey));
+  const saved = JSON.parse(localStorage.getItem(storageKey()));
   if(saved && Array.isArray(saved.completed)) {
     completed = new Set(saved.completed.filter(n=>Number.isInteger(n)&&n>0&&n<=summary.available));
     state.watched=0;
@@ -21,7 +25,7 @@ try {
 } catch {}
 let currentEpisode = summary.available?Math.min(state.watched+1, summary.available):1;
 let playbackActive=false, activeScreen='calendar', calendarReturn='episodes';
-let selectedDate=summary.today, visibleMonth=summary.today.slice(0,7), dateExpanded=false;
+let selectedDate=demoScenarios[scenarioId].focusDate||summary.today, visibleMonth=selectedDate.slice(0,7), dateExpanded=selectedDate!==summary.today;
 let rewardReturn=null, rewardResumeVideo=null, toastTimer;
 const player=document.querySelector('.video-poster video');
 const screens=[...document.querySelectorAll('.screen')];
@@ -38,13 +42,15 @@ document.querySelectorAll('[data-total]').forEach(node=>node.textContent=`全${d
 $('calendarTitle').textContent=`《${drama.title}》追剧日历`;
 $('demoContext').textContent=`演示账户 ${tierName} · 模拟时间 ${summary.today.replaceAll('-','.')} 19:00`;
 $('accountTier').textContent=`${tierName} 排期`;
+$('demoScenario').innerHTML=Object.entries(demoScenarios).map(([id,scenario])=>`<option value="${esc(id)}">${esc(scenario.label)}</option>`).join('');
+$('demoScenario').value=scenarioId;
 const editorialTheme=drama.editorialTheme||{};
 document.querySelector('.journey-art').innerHTML=editorialTheme.image?`<img src="${esc(editorialTheme.image)}" alt="" />`:'';
 document.querySelectorAll('.editorial-entry').forEach(entry=>{
   entry.innerHTML=`<span class="editorial-entry-art" aria-hidden="true">${editorialTheme.image?`<img src="${esc(editorialTheme.image)}" alt="" />`:''}</span><span class="editorial-entry-copy"><small>追剧日历</small><strong>${esc(editorialTheme.entryTitle||drama.title)}</strong><span>${esc(editorialTheme.entryCaption||'查看你的更新安排')}</span></span><span class="editorial-entry-arrow" aria-hidden="true">›</span>`;
 });
 
-function saveProgress() {try{localStorage.setItem(storageKey,JSON.stringify({completed:[...completed],reminded:state.reminded}));}catch{}}
+function saveProgress() {try{localStorage.setItem(storageKey(),JSON.stringify({completed:[...completed],reminded:state.reminded}));}catch{}}
 function showToast(message) {
   $('toast').textContent=message;$('toast').hidden=false;
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,2600);
@@ -53,6 +59,7 @@ const medalMark='<svg viewBox="0 0 16 20" fill="none" aria-hidden="true"><path d
 const badgeProgress=badge=>getBadgeProgress(badge,completed);
 const badgesForRelease=release=>release?drama.badges.filter(b=>b.episode>=release.from&&b.episode<=release.to):[];
 const operationsForDate=date=>getDateOperations(drama,{tier:summary.tier,date,now});
+const pendingEpisodeLabel=episodes=>episodes.at(-1)-episodes[0]+1===episodes.length?episodeLabel({from:episodes[0],to:episodes.at(-1)}):`${episodes.join('、')}集`;
 function renderJourney() {
   const next=drama.badges.find(b=>!badgeProgress(b).unlocked),featured=next||drama.badges.at(-1);
   $('openCollection').hidden=!featured;
@@ -76,13 +83,15 @@ function renderCalendar() {
   $('releaseGrid').innerHTML=monthCells(visibleMonth).map(date=>{
     if(!date)return '<span class="day-blank" aria-hidden="true"></span>';
     const release=summary.releases.find(r=>r.date===date),isToday=date===summary.today,selected=date===selectedDate;
-    const released=release && releaseTime(release)<=now;
+    const viewing=getReleaseViewingState(release,completed,now);
+    const released=viewing.nextEpisode!==null;
     const milestone=release?.milestone==='premiere'?'开播':release?.milestone==='finale'?'完结':'';
     const label=milestone || (release?episodeLabel(release):'');
     const operations=operationsForDate(date),hasEvent=operations.events.length>0;
-    const classes=['day-cell',release?'has-release':'',released?'released':'',isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':''].filter(Boolean).join(' ');
+    const classes=['day-cell',release?'has-release':'',`is-${viewing.status}`,isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':''].filter(Boolean).join(' ');
     const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked);
-    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${operations.highlights.length?`，本集看点：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
+    const watchLabel=viewing.status==='watched'?'，已看完':viewing.pendingEpisodes.length?`，待看${pendingEpisodeLabel(viewing.pendingEpisodes)}`:'';
+    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}${watchLabel}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${operations.highlights.length?`，本集看点：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
     const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${medalMark}</span>`:'';
     // Rewards own the corner. Content and events share the row below episodes;
     // an event takes priority there, while every note remains in date details.
@@ -101,13 +110,13 @@ function renderSelectedRelease() {
   $('selectedRelease').setAttribute('aria-label',`${shortDate(selectedDate)} ${weekday(selectedDate)}的更新安排`);
   const release=summary.releases.find(r=>r.date===selectedDate);
   const operations=operationsForDate(selectedDate);
-  const released=release && releaseTime(release)<=now;
-  const watched=release && release.to<=state.watched;
-  const nextEpisode=release?Math.min(release.to,Math.max(release.from,state.watched+1)):0;
-  const title=release?`${release.time} ${operations.events.length?'常规':''}${released?'已更新':'更新'} ${episodeLabel(release)}`:operations.events.length?'这一天无常规更新':'这一天没有更新';
+  const viewing=getReleaseViewingState(release,completed,now);
+  const released=viewing.nextEpisode!==null;
+  const watched=viewing.status==='watched',nextEpisode=viewing.nextEpisode;
+  const title=viewing.pendingEpisodes.length?`待看 ${pendingEpisodeLabel(viewing.pendingEpisodes)}`:watched?`已看完 ${episodeLabel(release)}`:release?`${release.time} ${operations.events.length?'常规':''}更新 ${episodeLabel(release)}`:operations.events.length?'这一天无常规更新':'这一天没有更新';
   const future=summary.releases.find(r=>r.date>selectedDate);
-  const description=release?'':future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'全剧排期已结束，无新增剧集':'更新安排待公布';
-  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="release-detail"><strong>${esc(title)}</strong>${description?`<p>${esc(description)}</p>`:''}</div>${released?`<button class="release-action" data-episode="${watched?release.from:nextEpisode}">${watched?'再看一遍':'去观看'} ›</button>`:release?'<span class="release-state">待更新</span>':''}</div>`;
+  const description=released?`${release.time} 已更新`:release?'':future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'全剧排期已结束，无新增剧集':'更新安排待公布';
+  $('selectedRelease').innerHTML=`<div class="release-summary"><div class="release-detail"><strong>${esc(title)}</strong>${description?`<p>${esc(description)}</p>`:''}</div>${released?`<button class="release-action" data-episode="${nextEpisode}">${watched?'再看一遍':viewing.status==='partial'?`继续看第${nextEpisode}集`:'去观看'} ›</button>`:release?'<span class="release-state">待更新</span>':''}</div>`;
   // Only show operational details after the user opens the date.
   if(dateExpanded)$('selectedRelease').insertAdjacentHTML('beforeend',operationsMarkup(operations));
 }
@@ -256,14 +265,19 @@ player.addEventListener('ended',completeViewing);
 player.addEventListener('play',()=>{if(summary.available===0){player.pause();showToast('本剧尚未开播');return;}if(activeScreen==='detail'){playbackActive=true;updatePlaybackControls();}});
 function resetDemo() {
   if(!$('rewardOverlay').hidden)closeReward();
-  state={watched:Math.min(demoSession.watched,summary.available),reminded:false};
+  state={watched:initialWatched(),reminded:false};
   completed=new Set(Array.from({length:state.watched},(_,i)=>i+1));
   currentEpisode=summary.available?Math.min(state.watched+1,summary.available):1;playbackActive=false;player.pause();player.currentTime=0;
-  selectedDate=summary.today;visibleMonth=summary.today.slice(0,7);dateExpanded=false;
+  selectedDate=demoScenarios[scenarioId].focusDate||summary.today;visibleMonth=selectedDate.slice(0,7);dateExpanded=selectedDate!==summary.today;
   saveProgress();$('toast').hidden=true;showScreen('calendar');
 }
 $('resetDemo').onclick=resetDemo;
 $('resetDemoMobile').onclick=resetDemo;
+$('demoScenario').onchange=()=>{
+  saveProgress();scenarioId=$('demoScenario').value;
+  const url=new URL(location.href);url.searchParams.set('scenario',scenarioId);history.replaceState(null,'',url);
+  resetDemo();
+};
 document.addEventListener('keydown',event=>{
   if($('rewardOverlay').hidden)return;
   if(event.key==='Escape')closeReward();
