@@ -14,19 +14,8 @@ export const drama = {
     image: './assets/calendar-art.png',
     tint: '#f7f0e3',
     entryTitle: '一颗荔枝，一路相伴',
-    entryCaption: '看更新安排，发现追剧小彩蛋',
+    entryCaption: '看更新安排，不错过精彩时刻',
   },
-  // Original demo copy, not a quotation from the drama or an official campaign.
-  // An episode anchor follows each account tier's own release date.
-  editorials: [{
-    id: 'first-journey',
-    episode: 8,
-    image: './assets/calendar-art.png',
-    imageAlt: '长安的荔枝主题海报，人物坐在荔枝树上',
-    title: '一程风景，一程相伴',
-    message: '去长安的路很长，故事可以慢慢看。\n今天也为这一路的奔赴，留一点回味。',
-    credit: '原创演示寄语 · 非剧中台词',
-  }],
   // Small editorial hints follow the episode, not a fixed VIP calendar date.
   // These are atmosphere examples, not claims about the actual plot.
   calendarHighlights: [

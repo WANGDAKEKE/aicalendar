@@ -1,7 +1,6 @@
-import {drama, demoSession} from './drama-config.mjs?v=2.3.0';
+import {drama, demoSession} from './drama-config.mjs?v=2.3.1';
 import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, releaseTime, getSummary} from './calendar-model.mjs';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
-import {getEditorialState} from './editorial-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
 
 const $ = id => document.getElementById(id);
@@ -51,10 +50,8 @@ function showToast(message) {
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,2600);
 }
 const medalMark='<svg viewBox="0 0 16 20" fill="none" aria-hidden="true"><path d="m4 12-1 6 5-2 5 2-1-6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="5.5" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m8 4 1 2 2 .3-1.5 1.5.4 2.2L8 9l-1.9 1 .4-2.2L5 6.3 7 6Z" fill="currentColor"/></svg>';
-const surpriseMark='<svg viewBox="0 0 16 18" fill="none" aria-hidden="true"><path d="M8 2c.8 4.6 2.1 5.9 6 7-3.9 1.1-5.2 2.4-6 7-.8-4.6-2.1-5.9-6-7 3.9-1.1 5.2-2.4 6-7Z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.2"/></svg>';
 const badgeProgress=badge=>getBadgeProgress(badge,completed);
 const badgesForRelease=release=>release?drama.badges.filter(b=>b.episode>=release.from&&b.episode<=release.to):[];
-const editorialsForDate=date=>(drama.editorials||[]).map(item=>({item,eligibility:getEditorialState(item,{releases:summary.releases,now,completed})})).filter(({eligibility})=>eligibility.release?.date===date);
 const operationsForDate=date=>getDateOperations(drama,{tier:summary.tier,date,now});
 function renderJourney() {
   const next=drama.badges.find(b=>!badgeProgress(b).unlocked),featured=next||drama.badges.at(-1);
@@ -66,11 +63,6 @@ function renderJourney() {
   $('journeyProgressFill').style.width=`${progress.watchedCount/progress.total*100}%`;
   $('journeyCaption').textContent=next?'观看自动点亮 · 我的勋章':'一路相伴 · 查看我的勋章';
   $('openCollection').setAttribute('aria-label',`查看我的勋章，${next?`${featured.name}，已看${progress.watchedCount}集，共${progress.total}集`:'全部勋章已点亮'}`);
-}
-function editorialMarkup({item,eligibility}) {
-  if(eligibility.status==='ready')return `<article class="editorial-surprise"><div class="surprise-heading">${surpriseMark}<span>日历彩蛋 · 追剧寄语</span><span class="surprise-revealed">已为你展开</span></div><div class="surprise-content"><div class="surprise-image"><img src="${esc(item.image)}" alt="${esc(item.imageAlt||'剧集主题图')}" /></div><div class="surprise-message"><h4>${esc(item.title)}</h4><p>${esc(item.message)}</p></div></div><small class="surprise-credit">${esc(item.credit||'运营配置内容 · 演示')}</small></article>`;
-  const waiting=eligibility.status==='upcoming',message=waiting?'彩蛋随对应剧集上线，敬请期待':item.requiresEpisodes?'看完相关剧集后可查看':`看完前${item.episode}集后可查看`;
-  return `<div class="surprise-locked">${surpriseMark}<span><strong>这里藏着一份小彩蛋</strong><small>${message}</small></span>${eligibility.nextEpisode?`<button class="release-action" data-episode="${eligibility.nextEpisode}">去看第${eligibility.nextEpisode}集 ›</button>`:''}</div>`;
 }
 function operationsMarkup({highlights,events}) {
   const notes=highlights.map(item=>`<div class="operations-note"><span class="operations-icon" aria-hidden="true">${esc(item.icon)}</span><span>${esc(item.title)}</span><small>运营看点 · 示例</small></div>`).join('');
@@ -87,12 +79,15 @@ function renderCalendar() {
     const released=release && releaseTime(release)<=now;
     const milestone=release?.milestone==='premiere'?'开播':release?.milestone==='finale'?'完结':'';
     const label=milestone || (release?episodeLabel(release):'');
-    const operations=operationsForDate(date),hasEvent=operations.events.length>0;
-    const classes=['day-cell',release?'has-release':'',released?'released':'',isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':''].filter(Boolean).join(' ');
-    const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked),editorials=editorialsForDate(date);
-    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${editorials.length?'，有日期彩蛋':''}${operations.highlights.length?`，运营看点示例：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
-    const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${medalMark}</span>`:editorials.length?`<span class="day-reward day-surprise">${surpriseMark}</span>`:operations.highlights.length?`<span class="day-operation" aria-hidden="true">${esc(operations.highlights[0].icon)}</span>`:'';
-    return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" aria-expanded="${selected&&dateExpanded}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption">${label||'&nbsp;'}</span>${hasEvent?'<span class="day-event-label">点映礼</span>':''}${marker}</button>`;
+    const operations=operationsForDate(date),hasEvent=operations.events.length>0,hasContent=hasEvent||operations.highlights.length>0;
+    const classes=['day-cell',release?'has-release':'',released?'released':'',isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':'',hasContent?'has-day-content':''].filter(Boolean).join(' ');
+    const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked);
+    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${operations.highlights.length?`，运营看点示例：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
+    const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${medalMark}</span>`:'';
+    // Rewards own the corner. Content and events share the row below episodes;
+    // an event takes priority there, while every note remains in date details.
+    const content=hasContent?`<span class="day-content-slot" aria-hidden="true">${hasEvent?'<span class="day-event-label">点映礼</span>':operations.highlights.slice(0,2).map(item=>`<span class="day-operation">${esc(item.icon)}</span>`).join('')}</span>`:'';
+    return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" aria-expanded="${selected&&dateExpanded}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption">${label||'&nbsp;'}</span>${content}${marker}</button>`;
   }).join('');
   renderSelectedRelease();
   $('nextDate').textContent=summary.next?`${shortDate(summary.next.date)} ${summary.next.time}`:'已全部更新';
@@ -119,8 +114,8 @@ function renderSelectedRelease() {
   const future=summary.releases.find(r=>r.date>selectedDate);
   const description=release?'':future?`下一更新日：${shortDate(future.date)}`:summary.finale&&selectedDate>summary.finale.date?'全剧排期已结束，无新增剧集':'更新安排待公布';
   $('selectedRelease').innerHTML=`<div class="release-summary"><div class="release-detail"><strong>${esc(title)}</strong>${description?`<p>${esc(description)}</p>`:''}</div>${released?`<button class="release-action" data-episode="${watched?release.from:nextEpisode}">${watched?'再看一遍':'去观看'} ›</button>`:release?'<span class="release-state">待更新</span>':''}</div>`;
-  // Do not render any editorial content until the user opens its date.
-  if(dateExpanded)$('selectedRelease').insertAdjacentHTML('beforeend',operationsMarkup(operations)+editorialsForDate(selectedDate).map(editorialMarkup).join(''));
+  // Only show operational details after the user opens the date.
+  if(dateExpanded)$('selectedRelease').insertAdjacentHTML('beforeend',operationsMarkup(operations));
 }
 function selectDate(date,focus=false,toggle=false) {
   dateExpanded=!(toggle&&date===selectedDate&&dateExpanded);
