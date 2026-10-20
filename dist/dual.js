@@ -1,4 +1,4 @@
-import {drama, demoSession} from './drama-config.mjs?v=2.3.1';
+import {drama, demoSession} from './drama-config.mjs?v=2.3.2';
 import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, releaseTime, getSummary} from './calendar-model.mjs';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
@@ -90,12 +90,6 @@ function renderCalendar() {
     return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" aria-expanded="${selected&&dateExpanded}" ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption">${label||'&nbsp;'}</span>${content}${marker}</button>`;
   }).join('');
   renderSelectedRelease();
-  $('nextDate').textContent=summary.next?`${shortDate(summary.next.date)} ${summary.next.time}`:'已全部更新';
-  $('nextEpisodes').textContent=summary.next?`${weekday(summary.next.date)} · 更新${episodeLabel(summary.next)}`:`全${drama.totalEpisodes}集可观看`;
-  $('jumpNext').disabled=!summary.next;
-  $('finaleDate').textContent=summary.finale?`${shortDate(summary.finale.date)} 完结`:'待公布';
-  $('finaleEpisodes').textContent=summary.finale?`${summary.finale.time} · ${releaseTime(summary.finale)>now?'届时':''}全${drama.totalEpisodes}集可看`:'完结时间尚未公布';
-  $('jumpFinale').disabled=!summary.finale;
   $('toggleReminder').setAttribute('aria-pressed',String(state.reminded));
   $('reminderLabel').textContent=state.reminded?'已开启更新提醒':'更新时提醒我';
   $('toggleReminder').disabled=!summary.next;
@@ -251,8 +245,6 @@ for(const [id,amount] of [['prevMonth',-1],['nextMonth',1]])$(id).onclick=()=>{
   renderCalendar();
 };
 $('backToToday').onclick=()=>{dateExpanded=false;selectedDate=summary.today;visibleMonth=summary.today.slice(0,7);renderCalendar();};
-$('jumpNext').onclick=()=>{if(summary.next)selectDate(summary.next.date);};
-$('jumpFinale').onclick=()=>{if(summary.finale)selectDate(summary.finale.date);};
 $('toggleReminder').onclick=()=>{
   state.reminded=!state.reminded;saveProgress();renderCalendar();
   showToast(state.reminded?'已开启更新提醒（演示）':'已关闭更新提醒');
