@@ -1,0 +1,133 @@
+/* Local design proposal. Switch to classic for an immediate visual rollback.
+   Full removal must also undo the stylesheet/script/hero/control HTML hooks.
+   All product styling is opt-in; the classic calendar retains v2.6.1 styles. */
+.skin-hero-copy{display:none}
+.skin-preview-bar{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 12px;padding:0 12px;color:#7e8780;font-size:10px}
+.skin-preview-bar>div{display:flex;gap:3px;padding:3px;border:1px solid #dedfd5;border-radius:24px;background:#ffffffab}
+.skin-preview-bar button{border:0;border-radius:20px;padding:7px 13px;background:transparent;font-size:11px;color:#7c847c}
+.skin-preview-bar button[aria-pressed=true]{background:#304d40;color:#fff;box-shadow:0 2px 6px #304d4014}
+.skin-preview-bar small{font-size:9px;color:#949c93}
+
+html[data-calendar-skin=lychee]{background:#edeadf;--skin-title-font:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif}
+html[data-calendar-skin=lychee] body{background:radial-gradient(ellipse at 40% 10%,#faf6ec,#e8ebe1 75%)}
+html[data-calendar-skin=lychee] .phone{border-color:#34483f;box-shadow:0 24px 64px #43524429,0 0 0 1px #77827744}
+html[data-calendar-skin=lychee] .calendar-topbar{background:#faf7ed;border-color:#e6e3d5;color:#344d40}
+html[data-calendar-skin=lychee] .calendar-topbar strong{font-weight:600;letter-spacing:.2px}
+html[data-calendar-skin=lychee] .calendar-scroll{
+  --accent:#39755d;
+  background-color:#faf8ef;
+  background-image:radial-gradient(ellipse at 95% 0%,#e8eddb60,transparent 55%),radial-gradient(#9b8e6b0c .6px,transparent .6px);
+  background-size:auto,4px 4px;
+  padding-top:10px;
+}
+
+/* One illustrated button still owns the existing medal progress and opens it.
+   No extra hero/feature bar; all dynamic progress continues to come from dual.js. */
+html[data-calendar-skin=lychee] .journey-entry{
+  position:relative;display:block;height:90px;border:1px solid #dddcc7;border-radius:11px;
+  background:#f5edda url('./assets/lychee-journey-skin.jpg') center 46%/cover no-repeat;
+  box-shadow:0 2px 4px #6e684b06;color:#38513f;
+}
+html[data-calendar-skin=lychee] .journey-art{display:none}
+html[data-calendar-skin=lychee] .skin-hero-copy{position:absolute;display:grid;grid-template-columns:max-content max-content;gap:3px 8px;left:12px;top:9px;text-align:left;font-family:var(--skin-title-font)}
+html[data-calendar-skin=lychee] .skin-hero-copy>span:first-child{grid-column:1/-1;grid-row:1;display:block;font-size:9px;line-height:12px;letter-spacing:.2px;color:#7d8265}
+html[data-calendar-skin=lychee] .skin-hero-copy>strong{grid-column:1;grid-row:2;display:block;margin:0;font:600 21px/1.2 var(--skin-title-font);letter-spacing:.2px;color:#3b503b}
+html[data-calendar-skin=lychee] .skin-seal{grid-column:2;grid-row:2;align-self:center;border:1px solid #ad5746;border-radius:3px;padding:2px;color:#a94e3f;font:500 9px/1 var(--skin-title-font);opacity:.9}
+html[data-calendar-skin=lychee] .journey-copy{position:absolute;left:0;right:0;bottom:0;padding:6px 30px 6px 12px;background:linear-gradient(90deg,#f7f2e5f5,#f7f2e5dd);border-top:1px solid #dad9c36e}
+html[data-calendar-skin=lychee] .journey-heading strong{font-size:10px;color:#536b50;font-weight:600}
+html[data-calendar-skin=lychee] .journey-heading strong::after{content:' · 我的勋章';font-size:8px;font-weight:400;color:#74846c}
+html[data-calendar-skin=lychee] .journey-heading>span{font-size:9px;color:#6e8065}
+html[data-calendar-skin=lychee] .journey-track{height:2px;margin-top:4px;background:#dedfc9;overflow:visible}
+html[data-calendar-skin=lychee] .journey-track>span{position:relative;background:#80936a}
+html[data-calendar-skin=lychee] .journey-track>span::after{content:'';position:absolute;right:-2px;top:-1.5px;width:5px;height:5px;border-radius:50%;background:#ad5746;box-shadow:0 0 0 1px #f7f2e5}
+html[data-calendar-skin=lychee] .journey-caption{display:none}
+html[data-calendar-skin=lychee] .journey-arrow{position:absolute;right:1px;bottom:6px;font-size:17px;color:#7c8969}
+
+/* Paper, ink and small event stamps. Preserve the established fill semantics. */
+html[data-calendar-skin=lychee] .month-toolbar{height:40px}
+html[data-calendar-skin=lychee] .month-toolbar h3{color:#354c3e}
+html[data-calendar-skin=lychee] .tier-switch select{background:#efeee2;border-color:#dfdfcf;color:#6e7559}
+html[data-calendar-skin=lychee] .tier-switch select.is-preview{background:#fdf1d9;border-color:#e4c991;color:#8a652f}
+html[data-calendar-skin=lychee] .month-toolbar button{color:#63785e}
+html[data-calendar-skin=lychee] .month-toolbar #backToToday{border-color:#d9dfcd;color:#687e5e;background:#f4f5e9}
+html[data-calendar-skin=lychee] .weekdays{color:#90957e}
+html[data-calendar-skin=lychee] .weekdays span:nth-last-child(-n+2){color:#a2957c}
+html[data-calendar-skin=lychee] .day-cell{background:transparent;border-radius:7px;color:#a0a593}
+html[data-calendar-skin=lychee] .day-cell.is-upcoming{background:#fffdf6;border-color:#e9e9db;color:#879680}
+html[data-calendar-skin=lychee] .day-cell.is-unwatched,
+html[data-calendar-skin=lychee] .day-cell.is-partial{background:#e5eee0;border-color:#dbe7d4;color:#335e49}
+html[data-calendar-skin=lychee] .day-cell.is-watched{background:#edf0e8;border-color:#e8eae0;color:#899583}
+html[data-calendar-skin=lychee] .day-cell.selected{border-color:#839d75;box-shadow:inset 0 0 0 1px #839d75}
+html[data-calendar-skin=lychee] .day-cell.is-today{border-color:#39755d}
+html[data-calendar-skin=lychee] .day-cell.is-today.selected{box-shadow:inset 0 0 0 1px #39755d}
+html[data-calendar-skin=lychee] .day-cell.finale .day-caption{color:#9c5b40;background:#f4e5cb}
+html[data-calendar-skin=lychee] .day-event-label{color:#946028;background:#efdab2;border-radius:2px}
+html[data-calendar-skin=lychee] .day-reward{background:#faf8ef;color:#84977b}
+html[data-calendar-skin=lychee] .day-reward.earned{color:#ad7b36}
+/* A paper-slip treatment, only on update days. Decorations stay in the unused
+   bottom slot: never behind date/episode text, events, or medal corners. */
+html[data-calendar-skin=lychee] .day-cell.has-release{
+  border-radius:5px 8px 5px 8px;
+  background-image:linear-gradient(120deg,#ffffff40,transparent 65%),repeating-linear-gradient(0deg,transparent 0 3px,#6a744d06 3px 4px);
+  box-shadow:0 1px 1px #4962440b;
+}
+html[data-calendar-skin=lychee] .day-cell.has-release::before{
+  content:'';position:absolute;left:2px;bottom:1px;width:17px;height:10px;
+  background:url('./assets/lychee-paper-mark.svg') center/contain no-repeat;
+  opacity:.34;pointer-events:none;
+}
+html[data-calendar-skin=lychee] .day-cell.has-release::after{
+  content:'';position:absolute;left:21px;right:5px;bottom:5px;
+  border-top:1px dotted #7b8d695c;pointer-events:none;
+}
+html[data-calendar-skin=lychee] .day-cell.has-screening::before,
+html[data-calendar-skin=lychee] .day-cell.has-screening::after,
+html[data-calendar-skin=lychee] .day-cell:has(.day-operation)::before,
+html[data-calendar-skin=lychee] .day-cell:has(.day-operation)::after{display:none}
+html[data-calendar-skin=lychee] .day-cell.is-upcoming{color:#61735c;border-color:#e0e3d3}
+html[data-calendar-skin=lychee] .day-cell.is-watched{color:#697763}
+html[data-calendar-skin=lychee] .day-cell.selected{box-shadow:inset 0 0 0 1px #839d75,0 1px 1px #4962440b}
+html[data-calendar-skin=lychee] .day-cell.is-today.selected{box-shadow:inset 0 0 0 1px #39755d,0 1px 1px #4962440b}
+/* Milestone ink stamps decorate existing labels rather than adding symbols. */
+html[data-calendar-skin=lychee] .day-cell[data-milestone] .day-caption{
+  border:1px solid #ba927365;border-radius:2px;padding:0 3px;height:11px;line-height:9px;
+  font-size:8px;letter-spacing:.5px;background:#fbf0de;color:#965d40;
+}
+html[data-calendar-skin=lychee] .day-cell[data-milestone=premiere] .day-caption{border-color:#8a9b7b70;background:#eef0e4;color:#647650}
+html[data-calendar-skin=lychee] .day-event-label{border:1px solid #bf945a80;height:11px;line-height:9px;background:#f3e4c5;color:#8a592b;letter-spacing:.2px}
+html[data-calendar-skin=lychee] .operations-note{border-color:#e1e2d2;color:#65775d}
+html[data-calendar-skin=lychee] .operations-note small{color:#929b83}
+html[data-calendar-skin=lychee] .screening-card{background:#fbf2e0;border-color:#e8d6af}
+html[data-calendar-skin=lychee] .remind-button:not(.is-upgrade){background:#3b6753;box-shadow:inset 0 1px 0 #ffffff13}
+html[data-calendar-skin=lychee] .remind-button[aria-pressed=true]{background:#e5eddc;color:#416c4f;box-shadow:none}
+html[data-calendar-skin=lychee] .calendar-footnote{color:#939b85;margin-top:6px}
+html[data-calendar-skin=lychee] .reward-sheet{background:linear-gradient(160deg,#f5f0df,#fbfaf2 65%)}
+html[data-calendar-skin=lychee] .is-celebrating .reward-sheet{background:radial-gradient(ellipse at 50% 25%,#f7eccb,#f5f3e4 55%,#fbfaf2)}
+/* Typography comes from live system fonts, not the background illustration. */
+html[data-calendar-skin=lychee] .badge-detail h3{font-family:var(--skin-title-font);font-size:24px;letter-spacing:.2px;font-weight:600}
+html[data-calendar-skin=lychee] .editorial-entry-copy strong{font-family:var(--skin-title-font);font-weight:600;letter-spacing:0}
+html[data-calendar-skin=lychee] .editorial-entry-copy small{letter-spacing:.3px}
+@media(hover:hover){html[data-calendar-skin=lychee] .journey-entry:hover{border-color:#bdc2a3}}
+@media(prefers-reduced-motion:no-preference){
+  html[data-calendar-skin=lychee] .day-cell:active{transform:scale(.95)}
+  html[data-calendar-skin=lychee] .journey-track>span{transition:width .35s ease}
+}
+@media(max-width:480px){
+  .skin-preview-bar{height:42px;margin:0;gap:8px;background:#f7f7f1;border-bottom:1px solid #e8e9df}
+  .skin-preview-bar small{display:none}
+  .skin-preview-bar>div{padding:2px}
+  .skin-preview-bar button{padding:5px 13px}
+  .phone{height:calc(100dvh - 42px);min-height:0}
+  html[data-calendar-skin=lychee] .phone{box-shadow:none}
+}
+/* On shorter phones prioritize date legibility; the content can scroll beneath
+   the fixed video/title instead of overflowing the entire phone off-screen. */
+@media(max-width:480px) and (max-height:740px){
+  html[data-calendar-skin=lychee] .journey-entry{height:80px}
+  html[data-calendar-skin=lychee] .skin-hero-copy{top:5px}
+  html[data-calendar-skin=lychee] .skin-hero-copy>strong{font-size:18px}
+}
+@media(max-width:350px){
+  html[data-calendar-skin=lychee] .skin-hero-copy>strong{font-size:18px}
+  html[data-calendar-skin=lychee] .journey-heading strong::after{content:' · 勋章'}
+}

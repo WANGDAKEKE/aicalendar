@@ -1,0 +1,83 @@
+/* An opt-in electronic ticket; the existing medal view keeps its styling. */
+html[data-reward-mode=ticket] .reward-sheet{
+  padding:17px 20px 18px;background:#faf8ef;color:#355044;
+  font-family:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html[data-reward-mode=ticket] .reward-sheet>header{gap:8px}
+html[data-reward-mode=ticket] .reward-sheet>header small{font-size:9px;color:#8c9481}
+html[data-reward-mode=ticket] .reward-sheet h2{font-family:inherit;font-size:18px;line-height:1.35;margin:5px 0 12px;letter-spacing:0;font-weight:600}
+html[data-reward-mode=ticket] .reward-sheet header button{width:28px;height:28px;background:#eceee3;color:#6b7c64}
+html[data-reward-mode=ticket] .is-celebrating .reward-sheet{background:radial-gradient(ellipse at 50% 40%,#f4eedb,#faf8ef 70%)}
+.ticket-panel{--ticket-green:#3b705a;--ticket-muted:#8b9383;text-align:center;font-family:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif}
+.ticket-levels{display:flex;gap:5px;margin:0 0 8px;padding:2px;border-radius:9px;background:#efeee4;border:1px solid #e5e3d5}
+.ticket-level{flex:1;min-width:0;border:1px solid transparent;border-radius:6px;padding:4px 2px;background:transparent;color:#70816b;font-family:inherit;cursor:pointer}
+.ticket-level strong,.ticket-level small{display:block}
+.ticket-level strong{font-size:11px;font-weight:600;line-height:1.3}
+.ticket-level small{margin-top:2px;font-size:8px;line-height:1.3;white-space:nowrap;color:#7d8577}
+.ticket-level.is-locked strong{color:#939889}
+.ticket-level[aria-pressed=true]{background:#fffdf6;border-color:#d9ddcc;box-shadow:0 1px 3px #43553a0c}
+.ticket-level[aria-pressed=true] strong{color:#45674e}
+.ticket-level[aria-pressed=true] small{color:#7b826b}
+.ticket-level:focus-visible,.ticket-primary:focus-visible,.ticket-secondary:focus-visible{outline:2px solid #39755d;outline-offset:2px}
+.ticket-preview-caption{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;color:#738268;line-height:1.4;margin:0 0 7px}
+.ticket-preview-caption>span{font-size:10px;font-weight:600}
+.ticket-preview-caption>small{font-size:9px;color:#929681}
+.ticket-earned{margin:0 0 6px;color:#8e6d3b;font-size:10px;line-height:1.4}
+.ticket-stage{display:flex;justify-content:center;margin:0 0 9px;filter:drop-shadow(0 6px 8px #6e61351c)}
+.ticket-card{
+  --ticket-ink:#3b5741;--ticket-paper:#f4ecd8;--ticket-line:#b5aa8980;
+  position:relative;isolation:isolate;box-sizing:border-box;width:184px;min-height:308px;overflow:hidden;
+  text-align:left;background-color:var(--ticket-paper);color:var(--ticket-ink);
+  background-image:radial-gradient(#8f79551c .5px,transparent .7px),linear-gradient(120deg,#fffdf270,transparent 60%);background-size:3px 3px,auto;
+  border-top:1px solid #c7b990;border-bottom:1px solid #c7b990;
+  -webkit-mask:radial-gradient(circle at 0 50%,transparent 2.8px,#000 3.2px) left top/51% 11px repeat-y,radial-gradient(circle at 100% 50%,transparent 2.8px,#000 3.2px) right top/51% 11px repeat-y;
+  mask:radial-gradient(circle at 0 50%,transparent 2.8px,#000 3.2px) left top/51% 11px repeat-y,radial-gradient(circle at 100% 50%,transparent 2.8px,#000 3.2px) right top/51% 11px repeat-y;
+}
+.ticket-card::before{content:'';position:absolute;z-index:2;inset:5px 6px;border:1px solid var(--ticket-line);pointer-events:none}
+.ticket-head{height:23px;box-sizing:border-box;padding:6px 12px 4px;display:flex;justify-content:space-between;align-items:center;font-size:6px;font-weight:600;letter-spacing:.4px;color:#7f785d}
+.ticket-poster{position:relative;height:162px;margin:0 9px;overflow:hidden;background:#bda081 url('./assets/calendar-art.png') 70% top/auto 140% no-repeat;border:1px solid #ac967d40}
+.ticket-poster::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#6e49230a,transparent 65%,#79614015);pointer-events:none}
+.ticket-poster-edge{position:absolute;inset:4px;border:1px solid #fff9e529;pointer-events:none}
+.ticket-preview-label{position:absolute;z-index:1;left:5px;top:5px;padding:2px 4px;background:#faf6e6e8;border:1px solid #e8dfc9;color:#776d55;font-size:7px;letter-spacing:.3px;border-radius:2px}
+.ticket-main{padding:8px 13px 7px;min-height:65px;box-sizing:border-box}
+.ticket-name-row{display:flex;justify-content:space-between;align-items:center;gap:4px;line-height:1.2}
+.ticket-name-row>span{font-size:8px;font-weight:600;color:#916d46}
+.ticket-name-row small{font-size:6px;letter-spacing:.5px;color:#9a8e70}
+.ticket-main h3{font-family:inherit;font-size:17px;font-weight:600;letter-spacing:.6px;margin:5px 0 4px;line-height:1.25;color:var(--ticket-ink)}
+.ticket-edition{display:flex;justify-content:space-between;align-items:center;font-size:6px;letter-spacing:1px;color:#8c826a}
+.ticket-edition>span:last-child{font-size:10px;color:#9a7a4c;line-height:1}
+.ticket-stub{position:relative;border-top:1px dashed #a8997370;padding:7px 13px 8px;min-height:57px;box-sizing:border-box}
+.ticket-stub::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(#faf8eecf,#faf8eecf),url('./assets/lychee-journey-skin.jpg') center 60%/cover no-repeat}
+.ticket-stub-top{display:flex;justify-content:space-between;align-items:center;font-size:6px;letter-spacing:.2px;color:#81775e}
+.ticket-stub-top b{font-size:7px;letter-spacing:.7px;font-weight:600;color:#576448}
+.ticket-barcode{height:14px;width:100%;margin:5px 0 3px;opacity:.62;background:repeating-linear-gradient(90deg,#46523c 0 1px,transparent 1px 3px,#46523c 3px 4px,transparent 4px 5px,#46523c 5px 7px,transparent 7px 10px,#46523c 10px 11px,transparent 11px 12px,#46523c 12px 15px,transparent 15px 17px,#46523c 17px 18px,transparent 18px 21px)}
+.ticket-stub p{margin:0;text-align:center;color:#958b73;font-size:6px;letter-spacing:.4px;line-height:1.3}
+.ticket-finish-foil{--ticket-paper:#f2e2b9;--ticket-line:#a98b478c;--ticket-ink:#5a633f;background-image:linear-gradient(115deg,#fff5cfb3 0%,transparent 24%,#ba8c3730 48%,#fffbdfb3 60%,transparent 80%),radial-gradient(#9c7a3b1c .5px,transparent .7px);background-size:auto,3px 3px;border-color:#b59b5b}
+.ticket-finish-foil::before{border-color:#b29349;box-shadow:inset 0 0 0 2px #fffae33b}
+.ticket-finish-foil .ticket-name-row>span,.ticket-finish-foil .ticket-main h3{color:#846321}
+.ticket-finish-foil .ticket-poster{border-color:#ba985f80}
+.ticket-finish-holo{--ticket-paper:#e8eddd;--ticket-line:#92a493a6;--ticket-ink:#365e52;background-image:linear-gradient(125deg,#f0e6c5a8 0%,#d6e9dfd9 22%,#e7d9ecc2 43%,#f6e8b9d6 62%,#d3e8e3b3 81%,#ece2efb3 100%),radial-gradient(#687e7219 .5px,transparent .7px);background-size:auto,3px 3px;border-color:#a1b5a1}
+.ticket-finish-holo::before{border-color:#89a997;box-shadow:inset 0 0 0 2px #ffffff30}
+.ticket-finish-holo .ticket-poster::after{background:linear-gradient(125deg,#efdcba21,#d3eee928 33%,#e0c9ed2b 65%,#f6e9bc30);mix-blend-mode:screen}
+.ticket-finish-holo .ticket-name-row>span{color:#5e7d70}
+.ticket-finish-holo .ticket-edition>span:last-child{color:#7b8e72}
+.ticket-progress{padding:0 1px;text-align:left}
+.ticket-progress-heading{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:10px;line-height:1.4}
+.ticket-progress-heading strong{font-weight:500;color:#536c50}
+.ticket-progress-heading>span{flex:none;color:#4e755b;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+.ticket-progress-heading em{font-size:9px;font-weight:400;font-style:normal;color:#8b9582}
+.ticket-progress-track{margin:6px 0;height:3px;border-radius:4px;overflow:hidden;background:#e3e6d9}
+.ticket-progress-track>span{display:block;height:100%;border-radius:inherit;background:#6e9374;transition:width .25s ease}
+.ticket-progress p{margin:0;font-size:9px;line-height:1.4;color:#8b947e}
+.ticket-primary{display:block;width:100%;min-height:37px;box-sizing:border-box;border:0;border-radius:20px;padding:10px 14px;margin:11px 0 0;background:#39755d;color:#fff;font-family:inherit;font-size:11px;font-weight:500;cursor:pointer}
+.ticket-primary span{margin-left:5px}
+.ticket-secondary{border:0;background:transparent;color:#6b8167;font-family:inherit;font-size:10px;line-height:1.4;padding:5px 8px;margin:3px 0 0;cursor:pointer}
+.ticket-auto-note{margin:7px 0 0;font-size:8px;line-height:1.4;color:#9ba18f}
+.ticket-celebrating .ticket-stage{animation:ticket-arrive .45s ease-out both}
+@keyframes ticket-arrive{from{opacity:0;transform:translateY(12px) rotate(-2deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+@media(prefers-reduced-motion:no-preference){
+  .ticket-celebrating .ticket-finish-holo::after{content:'';position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 25%,#ffffff00 40%,#ffffff80 50%,#ffffff00 60%,transparent 75%);transform:translateX(-120%);animation:ticket-light 1.4s .2s ease-out both}
+}
+@keyframes ticket-light{to{transform:translateX(120%)}}
+@media(prefers-reduced-motion:reduce){.ticket-celebrating .ticket-stage{animation:none}.ticket-progress-track>span{transition:none}}
+@media(max-width:350px){html[data-reward-mode=ticket] .reward-sheet{padding:15px 16px}.ticket-level small{font-size:7px}.ticket-preview-caption{gap:4px}.ticket-progress-heading{font-size:9px}}

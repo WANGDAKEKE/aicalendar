@@ -1,0 +1,61 @@
+:root{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  color:#304d40;background:#f4f3eb;font-synthesis:none;
+  --phone-width:400px;--accent:#3c6a55;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(ellipse at 50% 0,#fffdf5,#f0f2e9 78%)}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,.comparison-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.compare-header{max-width:880px;margin:0 auto;padding:30px 24px 22px;text-align:center}
+.eyebrow{margin:0 0 10px;color:#8b9586;font-size:10px;letter-spacing:1px}
+.compare-header h1{margin:0;font-size:25px;line-height:1.4;font-weight:600;letter-spacing:-.5px}
+.intro{margin:9px 0 0;color:#869080;font-size:12px;line-height:1.7}
+.demo-controls{max-width:840px;margin:0 auto 24px;padding:15px 20px 13px;border:1px solid #e0e4d6;border-radius:14px;background:#ffffff9c}
+.control-heading{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:11px}
+.control-heading h2{margin:0;font-size:11px;font-weight:600;color:#60735e}
+.control-heading span{color:#a0a78f;font-size:10px}
+.scenario-buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+.scenario-buttons button{min-height:34px;border:1px solid #dee5d7;border-radius:18px;padding:7px 15px;background:#f9faf4;color:#76856d;font-size:11px;line-height:1.5}
+.scenario-buttons button[aria-pressed=true]{background:#3c6a55;border-color:#3c6a55;color:#fff}
+.scenario-buttons button:hover{border-color:#8da282}
+.scenario-status{margin:12px 0 0;text-align:center;color:#63745b;font-size:11px;line-height:1.7}
+.demo-notice{margin:5px 0 0;text-align:center;color:#919b85;font-size:10px;line-height:1.8}
+.view-controls{display:none}
+.comparison-viewport{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#bcc8b4 transparent;scroll-padding-inline:24px;padding:0 0 18px}
+.comparison-track{display:grid;grid-auto-flow:column;grid-auto-columns:var(--phone-width);gap:40px;width:max-content;margin:0 auto;padding:0 24px 12px}
+.variant{width:var(--phone-width);min-width:0;scroll-snap-align:center}
+.variant-heading{min-height:57px;text-align:center}
+.variant-heading h2{margin:0;color:#48604a;font-size:15px;font-weight:600;line-height:1.6}
+.variant-heading p{margin:4px 0 13px;color:#8d9785;font-size:10px;line-height:1.6}
+.device-frame{width:100%;height:810px;border:6px solid #34483f;border-radius:32px;background:#fff;overflow:hidden;box-shadow:0 12px 32px #43524413,0 0 0 1px #77827735}
+.device-frame iframe{display:block;width:100%;height:100%;border:0;background:#faf8ef}
+.compare-footer{max-width:840px;margin:0 auto;padding:0 24px 27px;text-align:center;color:#94a08a;font-size:10px;line-height:1.8}
+.compare-footer p{margin:4px 0}
+@media(max-width:900px){
+  .compare-header{padding:24px 20px 20px}
+  .demo-controls{margin:0 20px 18px}
+  .view-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:7px;margin:0 16px 18px}
+  .view-controls button{border:1px solid #d9e0d1;border-radius:16px;background:#f7f8f0;color:#819176;padding:7px 12px;font-size:11px}
+  .view-controls button[aria-pressed=true]{border-color:#9caf90;background:#e5ecde;color:#446543}
+  .view-controls>span{color:#9da691;font-size:9px;margin-left:3px}
+  .comparison-track{gap:24px}
+}
+@media(max-width:480px){
+  :root{--phone-width:max(320px,min(400px,calc(100vw - 32px)))}
+  .compare-header{padding-top:21px}
+  .compare-header h1{font-size:20px;letter-spacing:-.3px}
+  .intro{font-size:11px}
+  .demo-controls{margin:0 16px 16px;padding:13px 12px 11px}
+  .scenario-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .scenario-buttons button{padding:7px 9px}
+  .scenario-status{font-size:10px}
+  .demo-notice{font-size:9px}
+  .view-controls{gap:6px}
+  .view-controls>span{flex-basis:100%;text-align:center;margin:1px 0 0}
+  .comparison-viewport{scroll-padding-inline:16px}
+  .comparison-track{padding-left:16px;padding-right:16px;gap:20px}
+  .device-frame{border-width:5px;border-radius:28px}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}

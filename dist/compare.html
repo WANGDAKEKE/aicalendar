@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f4f3eb" />
+  <title>追剧日历 · 激励方案对比</title>
+  <meta name="description" content="勋章收藏与成长电子票的独立交互演示对比" />
+  <link rel="stylesheet" href="./compare.css?v=2.7.0" />
+</head>
+<body>
+  <header class="compare-header">
+    <p class="eyebrow">追剧日历 / 交互方案对比</p>
+    <h1>两种纪念，同一段追剧旅程。</h1>
+    <p class="intro">左侧收藏勋章，右侧让一张电子票随观看进度成长。</p>
+  </header>
+
+  <main>
+    <section class="demo-controls" aria-labelledby="demoControlTitle">
+      <div class="control-heading"><h2 id="demoControlTitle">演示场景</h2><span>同时切换两侧</span></div>
+      <div class="scenario-buttons" role="group" aria-label="切换模拟观看进度">
+        <button type="button" data-scenario="near" aria-pressed="true">还差 1 集</button>
+        <button type="button" data-scenario="first" aria-pressed="false">获得电子票</button>
+        <button type="button" data-scenario="second" aria-pressed="false">升级同行票</button>
+        <button type="button" data-scenario="final" aria-pressed="false">升级典藏票</button>
+      </div>
+      <p class="scenario-status" id="scenarioStatus" role="status">模拟 10 月 15 日 · 距首个奖励还差 1 集</p>
+      <p class="demo-notice">以上控制模拟观看进度与日期，不代表真实观看记录或会员权益。切换场景会重新加载两侧演示。</p>
+    </section>
+
+    <nav class="view-controls" aria-label="定位对比方案">
+      <button type="button" data-view="badge" aria-controls="badgeVariant" aria-pressed="true">A · 勋章收藏</button>
+      <button type="button" data-view="ticket" aria-controls="ticketVariant" aria-pressed="false">B · 成长电子票</button>
+      <span>也可左右滑动</span>
+    </nav>
+
+    <section class="comparison-viewport" id="comparisonViewport" aria-label="两种激励方案" tabindex="0">
+      <div class="comparison-track">
+        <article class="variant" id="badgeVariant" data-variant="badge" aria-labelledby="badgeTitle">
+          <header class="variant-heading"><h2 id="badgeTitle">A · 勋章收藏</h2><p>到达里程碑，点亮一枚勋章</p></header>
+          <div class="device-frame">
+            <iframe id="badgeFrame" title="方案 A：勋章收藏交互演示" src="./index.html?skin=lychee&amp;embed=1&amp;reward=badge&amp;rewardDemo=near#calendar" allow="autoplay; fullscreen" loading="eager"></iframe>
+          </div>
+        </article>
+        <article class="variant" id="ticketVariant" data-variant="ticket" aria-labelledby="ticketTitle">
+          <header class="variant-heading"><h2 id="ticketTitle">B · 成长电子票</h2><p>一路相伴，让同一张票逐步升级</p></header>
+          <div class="device-frame">
+            <iframe id="ticketFrame" title="方案 B：成长电子票交互演示" src="./index.html?skin=lychee&amp;embed=1&amp;reward=ticket&amp;rewardDemo=near#calendar" allow="autoplay; fullscreen" loading="eager"></iframe>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="compare-footer">
+    <p>两侧均可独立操作，也可进入播放页体验正常观看流程。</p>
+    <p>观看操作互不联动；上方场景按钮仅同步演示起点。示例排期及奖励均为方案演示。</p>
+  </footer>
+  <script type="module" src="./compare.js?v=2.7.0"></script>
+</body>
+</html>

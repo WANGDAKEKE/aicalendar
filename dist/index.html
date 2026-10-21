@@ -7,9 +7,13 @@
   <title>追剧日历 · 月历版 Demo</title>
   <meta name="description" content="按用户权益呈现的通用追剧月历交互原型" />
   <link rel="stylesheet" href="./styles.css?v=2.6.1" />
+  <link rel="stylesheet" href="./calendar-skin.css?v=2.7.0" />
+  <link rel="stylesheet" href="./ticket.css?v=2.7.0" />
+  <link rel="stylesheet" href="./reward-variant.css?v=2.7.0" />
 </head>
 <body>
   <header class="presentation-header"><div><span class="eyebrow">腾讯视频 · 追剧日历 / 03</span><h1>更新安排，一眼看清。</h1></div><button id="resetDemo" type="button">↻ 重置演示</button></header>
+  <aside class="skin-preview-bar" aria-label="皮肤方案对比"><span>皮肤预览</span><div role="group" aria-label="切换日历外观"><button type="button" data-skin-choice="classic" aria-pressed="true">简洁原版</button><button type="button" data-skin-choice="lychee" aria-pressed="false">荔枝手记</button></div><small>仅换外观 · 不改记录</small></aside>
   <main class="demo-stage">
     <section class="phone" aria-label="腾讯视频手机演示">
       <div class="screen" id="detail" aria-label="剧集详情页">
@@ -38,7 +42,7 @@
         <div class="calendar-player"><video class="calendar-preview" controls muted loop playsinline preload="metadata" aria-label="剧集录屏预览"></video><button class="video-back" data-calendar-back data-target="episodes" aria-label="返回选集页">‹</button></div>
         <header class="calendar-topbar"><strong id="calendarTitle">《长安的荔枝》追剧日历</strong><button class="collapse" data-calendar-back data-target="episodes" aria-label="收起追剧日历">⌄</button></header>
         <div class="calendar-scroll" id="calendarScroll" role="region" aria-label="追剧日历内容" tabindex="0">
-          <button id="openCollection" class="journey-entry" aria-label="查看我的勋章"><span class="journey-art" aria-hidden="true"></span><span class="journey-copy"><span class="journey-heading"><strong id="journeyBadgeName"></strong><span id="journeyProgressText"></span></span><span class="journey-track" aria-hidden="true"><span id="journeyProgressFill"></span></span><span class="journey-caption" id="journeyCaption">观看自动点亮 · 我的勋章</span></span><span class="journey-arrow" aria-hidden="true">›</span></button>
+          <button id="openCollection" class="journey-entry" aria-label="查看我的勋章"><span class="skin-hero-copy" aria-hidden="true"><span>长安的荔枝 · 追剧手记</span><strong>荔枝赴长安</strong><span class="skin-seal">荔</span></span><span class="journey-art" aria-hidden="true"></span><span class="journey-copy"><span class="journey-heading"><strong id="journeyBadgeName"></strong><span id="journeyProgressText"></span></span><span class="journey-track" aria-hidden="true"><span id="journeyProgressFill"></span></span><span class="journey-caption" id="journeyCaption">观看自动点亮 · 我的勋章</span></span><span class="journey-arrow" aria-hidden="true">›</span></button>
           <section class="release-calendar" aria-labelledby="monthHeading">
             <header class="month-toolbar"><div class="month-heading"><h3 id="monthHeading"></h3><label class="tier-switch"><select id="calendarTier" aria-label="切换会员排期"><option value="vip">VIP 排期</option><option value="svip">SVIP 排期</option><option value="free">非VIP 排期</option></select><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></label></div><div class="month-controls"><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
             <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
@@ -56,6 +60,7 @@
     <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode">快进到本集结束 →</button></div>
   </main>
   <footer class="presentation-footer"><span id="demoContext">演示账户 VIP · 模拟时间 2026.10.15 19:00</span><label class="demo-scenario">演示场景<select id="demoScenario" aria-label="切换观看演示场景"></select></label><small>示例排期，非真实播出信息；提醒与观看记录为本机模拟，会员升级不发起真实支付。</small><button id="resetDemoMobile">↻ 重置演示</button></footer>
-  <script type="module" src="./dual.js?v=2.6.1"></script>
+  <script type="module" src="./dual.js?v=2.7.0"></script>
+  <script type="module" src="./skin-preview.js?v=2.7.0"></script>
 </body>
 </html>

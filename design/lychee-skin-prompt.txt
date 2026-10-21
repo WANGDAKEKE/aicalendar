@@ -1,0 +1,6 @@
+Local design proposal: 荔枝手记. Generated using the built-in imagegen tool.
+Production asset: dist/assets/lychee-journey-skin.jpg
+Original: design/lychee-journey-skin-source.png
+
+Final prompt:
+Use case: illustration-story. Asset type: a very wide, shallow illustration banner for a Chinese drama viewing-calendar skin about lychees travelling to Chang'an. Primary request: premium contemporary Chinese illustrated travel-journal atmosphere, warm ivory paper, soft moss-green landscape and restrained lychee-red accents; playful but refined, not a game. Composition: panoramic 3:1 landscape; left 45 percent mostly empty warm ivory negative space for live UI text; a small elegant lychee branch with textured red fruit and ink-green leaves frames the far right edge; in the middle-right distance a very tiny Tang-dynasty courier riding a horse toward a subtle walled Chang'an city silhouette, thin winding path, sparse soft green mountain washes. Illustrated gouache and fine ink, tactile gently grainy paper, modern editorial art direction. Everything restrained and low contrast except a few small red lychees. Keep important illustration in the top two-thirds because a live progress strip overlays the lower edge. No typography, no numbers, no logo, no border, no watermark. Not a screenshot, not a full UI. Opaque ivory background. Output a wide landscape image.

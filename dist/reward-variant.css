@@ -1,0 +1,14 @@
+/* Comparison framing only; default badge page remains exactly the same. */
+html[data-embedded=true] .presentation-header,
+html[data-embedded=true] .presentation-footer,
+html[data-embedded=true] .skin-preview-bar{display:none}
+html[data-embedded=true] body{background:#faf8ef}
+html[data-embedded=true] .demo-stage{width:100%;margin:0;zoom:1}
+html[data-embedded=true] .phone{width:100%;height:100dvh;min-height:0;border:0;border-radius:0;box-shadow:none}
+html[data-embedded=true] .phone::after{display:none}
+html[data-embedded=true] body:has(#playbackDemo:not([hidden])) .phone{height:calc(100dvh - 65px)}
+html[data-embedded=true] .playback-demo{height:65px;margin:0;padding:6px;border:0;border-top:1px solid #d9e1cf;border-radius:0;background:#f2f4e9}
+html[data-embedded=true] .playback-demo button{margin-top:4px;padding:6px 16px}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-heading strong::after{content:' · 电子票'}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-entry{border-style:dashed;border-color:#b6bda1}
+html[data-reward-mode=ticket] .day-reward{width:12px;height:14px}

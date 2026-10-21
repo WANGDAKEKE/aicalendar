@@ -24,8 +24,11 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
       - name: Validate JavaScript
-        run: node --check dist/dual.js
-      - name: Test calendar and badge models
+        run: |
+          for script in dist/*.js dist/*.mjs; do
+            node --check "$script"
+          done
+      - name: Test calendar and reward models
         run: node --test tests/*.test.mjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
