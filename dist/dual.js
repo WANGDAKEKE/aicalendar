@@ -1,6 +1,6 @@
-import {drama, demoSession, demoScenarios} from './drama-config.mjs?v=2.6.0';
-import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, getReleaseViewingState} from './calendar-model.mjs?v=2.6.0';
-import {getTierContext} from './tier-model.mjs?v=2.6.0';
+import {drama, demoSession, demoScenarios} from './drama-config.mjs?v=2.6.1';
+import {parseDate, shortDate, weekday, shiftMonth, monthCells, episodeLabel, getReleaseViewingState} from './calendar-model.mjs?v=2.6.1';
+import {getTierContext} from './tier-model.mjs?v=2.6.1';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
 
@@ -32,7 +32,7 @@ let currentEpisode = nextUnwatched()||summary.available||1;
 let playbackActive=false, activeScreen='calendar', calendarReturn='episodes';
 let selectedDate=demoScenarios[scenarioId].focusDate||summary.today, visibleMonth=selectedDate.slice(0,7), dateExpanded=false;
 let rewardReturn=null, rewardResumeVideo=null, toastTimer;
-let upgradeResumeVideo=null;
+let upgradeResumeVideo=null, upgradeReturn=null;
 const player=document.querySelector('.video-poster video');
 const screens=[...document.querySelectorAll('.screen')];
 const esc=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -112,10 +112,20 @@ function renderCalendar() {
     return `<button class="${classes}" data-date="${date}" aria-label="${esc(accessible)}" aria-pressed="${selected}" ${expandable?`aria-expanded="${selected&&dateExpanded}" aria-controls="dateOperations"`:''} ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption"${label?'':' aria-hidden="true"'}>${label}</span>${content}${marker}</button>`;
   }).join('');
   renderDateOperations();
-  $('toggleReminder').setAttribute('aria-pressed',String(state.reminded));
-  $('reminderLabel').textContent=previewing?`按我的 ${tierName} 排期提醒`:state.reminded?'已开启更新提醒':'更新时提醒我';
-  $('toggleReminder').disabled=!summary.next;
-  if(!summary.next)$('reminderLabel').textContent='已完结，无后续更新';
+  const action=$('toggleReminder'),upgrade=tierContext.requiresUpgrade;
+  action.classList.toggle('is-upgrade',upgrade);
+  if(upgrade){
+    action.removeAttribute('aria-pressed');
+    action.setAttribute('aria-haspopup','dialog');
+    action.setAttribute('aria-controls','upgradeOverlay');
+    action.disabled=false;
+    $('reminderLabel').textContent=`升级 ${drama.tiers[calendar.tier]}，抢先看`;
+  }else{
+    action.removeAttribute('aria-haspopup');action.removeAttribute('aria-controls');
+    action.setAttribute('aria-pressed',String(state.reminded));
+    action.disabled=!summary.next;
+    $('reminderLabel').textContent=!summary.next?'已完结，无后续更新':previewing?`按我的 ${tierName} 排期提醒`:state.reminded?'已开启更新提醒':'更新时提醒我';
+  }
   renderJourney();
 }
 function renderDateOperations() {
@@ -245,6 +255,7 @@ function closeReward() {
 }
 function showUpgrade() {
   if(!tierContext.requiresUpgrade||activeScreen!=='calendar')return;
+  upgradeReturn=document.activeElement;
   const targetName=drama.tiers[tierContext.preview.tier];
   $('upgradeTier').textContent=targetName;
   $('upgradeTitle').textContent=`升级 ${targetName}，抢先看`;
@@ -263,7 +274,9 @@ function closeUpgrade() {
   $('upgradeOverlay').hidden=true;$('calendar').inert=false;
   if(upgradeResumeVideo&&activeScreen==='calendar')upgradeResumeVideo.play().catch(()=>{});
   upgradeResumeVideo=null;
-  if(activeScreen==='calendar')$('calendarTier').focus({preventScroll:true});
+  const trigger=upgradeReturn?.isConnected&&upgradeReturn.matches('button:not(:disabled),select:not(:disabled)')&&!upgradeReturn.closest('[inert]')?upgradeReturn:$('calendarTier');
+  if(activeScreen==='calendar')trigger.focus({preventScroll:true});
+  upgradeReturn=null;
 }
 $('calendarTier').onchange=()=>{
   tierContext=getTierContext(drama,summary.tier,$('calendarTier').value,demoSession.now);
@@ -297,6 +310,7 @@ for(const [id,amount] of [['prevMonth',-1],['nextMonth',1]])$(id).onclick=()=>{
 };
 $('backToToday').onclick=()=>{dateExpanded=false;selectedDate=summary.today;visibleMonth=summary.today.slice(0,7);renderCalendar();};
 $('toggleReminder').onclick=()=>{
+  if(tierContext.requiresUpgrade){showUpgrade();return;}
   const previewing=tierContext.preview.tier!==summary.tier;
   state.reminded=previewing?true:!state.reminded;
   if(previewing){tierContext=getTierContext(drama,summary.tier,summary.tier,demoSession.now);dateExpanded=false;}
