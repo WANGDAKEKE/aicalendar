@@ -9,7 +9,7 @@ export const drama = {
   video: './assets/drama-recording.mp4',
   accent: '#009c91',
   timeZone: 'Asia/Shanghai',
-  tiers: {svip: 'SVIP', vip: 'VIP', free: '非会员'},
+  tiers: {svip: 'SVIP', vip: 'VIP', free: '非VIP'},
   editorialTheme: {
     image: './assets/calendar-art.png',
     tint: '#f7f0e3',

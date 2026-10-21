@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f5f7f7" />
   <title>追剧日历 · 月历版 Demo</title>
   <meta name="description" content="按用户权益呈现的通用追剧月历交互原型" />
-  <link rel="stylesheet" href="./styles.css?v=2.5.0" />
+  <link rel="stylesheet" href="./styles.css?v=2.6.0" />
 </head>
 <body>
   <header class="presentation-header"><div><span class="eyebrow">腾讯视频 · 追剧日历 / 03</span><h1>更新安排，一眼看清。</h1></div><button id="resetDemo" type="button">↻ 重置演示</button></header>
@@ -40,22 +40,22 @@
         <div class="calendar-scroll" id="calendarScroll" role="region" aria-label="追剧日历内容" tabindex="0">
           <button id="openCollection" class="journey-entry" aria-label="查看我的勋章"><span class="journey-art" aria-hidden="true"></span><span class="journey-copy"><span class="journey-heading"><strong id="journeyBadgeName"></strong><span id="journeyProgressText"></span></span><span class="journey-track" aria-hidden="true"><span id="journeyProgressFill"></span></span><span class="journey-caption" id="journeyCaption">观看自动点亮 · 我的勋章</span></span><span class="journey-arrow" aria-hidden="true">›</span></button>
           <section class="release-calendar" aria-labelledby="monthHeading">
-            <header class="month-toolbar"><div class="month-heading"><h3 id="monthHeading"></h3><span id="accountTier" class="identity-chip"></span></div><div class="month-controls"><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
+            <header class="month-toolbar"><div class="month-heading"><h3 id="monthHeading"></h3><label class="tier-switch"><select id="calendarTier" aria-label="切换会员排期"><option value="vip">VIP 排期</option><option value="svip">SVIP 排期</option><option value="free">非VIP 排期</option></select><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></label></div><div class="month-controls"><button id="prevMonth" aria-label="上个月">‹</button><button id="backToToday">今天</button><button id="nextMonth" aria-label="下个月">›</button></div></header>
             <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
             <div id="releaseGrid" class="release-grid" role="group" aria-label="月份更新日历"></div>
-            <div class="calendar-legend" aria-label="按当日更新剧集的观看记录标记，不代表实际观看日期"><small>剧集状态</small><span><i class="legend-watched" aria-hidden="true"></i>已看完</span><span><i class="legend-unwatched" aria-hidden="true"></i>未看完</span><span><i class="legend-upcoming" aria-hidden="true"></i>待更新</span></div>
-            <div id="selectedRelease" class="selected-release" aria-live="polite" hidden></div>
+            <div id="dateOperations" class="date-operations" aria-live="polite" hidden></div>
           </section>
           <button id="toggleReminder" class="remind-button" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4M12 1v1"/></svg><span id="reminderLabel">更新时提醒我</span></button>
           <div class="calendar-footnote"><span>排期如有调整，以实际播出为准</span></div>
         </div>
       </div>
       <div class="reward-backdrop" id="rewardOverlay" hidden><section class="reward-sheet" role="dialog" aria-modal="true" aria-labelledby="rewardTitle"><header><div><small>追剧的每一程，都值得纪念</small><h2 id="rewardTitle">我的追剧勋章</h2></div><button id="closeReward" aria-label="关闭勋章面板">×</button></header><div id="rewardContent"></div></section></div>
+      <div id="upgradeOverlay" class="upgrade-backdrop" hidden><section class="upgrade-sheet" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle" aria-describedby="upgradeDescription"><button id="closeUpgrade" class="upgrade-close" aria-label="关闭升级提示">×</button><span id="upgradeTier" class="upgrade-tier">SVIP</span><h2 id="upgradeTitle">升级 SVIP，抢先看</h2><p id="upgradeDescription"></p><div class="upgrade-benefit"><strong id="upgradeAvailable"></strong><span id="upgradeBenefit"></span></div><p class="upgrade-preview-note">可先查看排期，观看权益以当前账号为准</p><button id="confirmUpgrade" class="upgrade-primary">升级 SVIP</button><button id="previewSchedule" class="upgrade-secondary">先看看排期</button></section></div>
       <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
     </section>
     <div class="playback-demo" id="playbackDemo" hidden><small>演示控制 · 每段录屏代表一集</small><button id="finishEpisode">快进到本集结束 →</button></div>
   </main>
-  <footer class="presentation-footer"><span id="demoContext">演示账户 VIP · 模拟时间 2026.10.15 19:00</span><label class="demo-scenario">演示场景<select id="demoScenario" aria-label="切换观看演示场景"></select></label><small>示例排期，非真实播出信息；提醒与观看记录为本机模拟。</small><button id="resetDemoMobile">↻ 重置演示</button></footer>
-  <script type="module" src="./dual.js?v=2.5.0"></script>
+  <footer class="presentation-footer"><span id="demoContext">演示账户 VIP · 模拟时间 2026.10.15 19:00</span><label class="demo-scenario">演示场景<select id="demoScenario" aria-label="切换观看演示场景"></select></label><small>示例排期，非真实播出信息；提醒与观看记录为本机模拟，会员升级不发起真实支付。</small><button id="resetDemoMobile">↻ 重置演示</button></footer>
+  <script type="module" src="./dual.js?v=2.6.0"></script>
 </body>
 </html>
