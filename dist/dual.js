@@ -107,10 +107,9 @@ function renderJourney() {
   $('journeyCaption').textContent=next?'观看自动点亮 · 我的勋章':'一路相伴 · 查看我的勋章';
   $('openCollection').setAttribute('aria-label',`查看我的勋章，${next?`${featured.name}，已看${progress.watchedCount}集，共${progress.total}集`:'全部勋章已点亮'}`);
 }
-function operationsMarkup({highlights,events}) {
-  const notes=highlights.map(item=>`<div class="operations-note"><span class="operations-icon" aria-hidden="true">${esc(item.icon)}</span><span>${esc(item.title)}</span><small>本集看点</small></div>`).join('');
+function operationsMarkup({events}) {
   const activities=events.map(event=>`<article class="screening-card" aria-label="${esc(event.title)}活动说明"><header><strong>${esc(event.title)}</strong><span>${{upcoming:'未开始',live:'进行中',ended:'已结束'}[event.status]}</span></header><div class="screening-content"><span class="screening-ticket" aria-hidden="true">🎟️</span><div><strong>${event.status==='ended'?'活动场次：':'提前看 '}${episodeLabel(event)}</strong><p>${shortDate(event.date)} ${esc(event.time)}–${esc(event.endTime)}</p></div></div><p class="screening-access">${esc(event.accessNote||'需单独活动资格，不包含在常规会员排期中。')}</p></article>`).join('');
-  return notes+activities;
+  return activities;
 }
 function renderCalendar() {
   const calendar=tierContext.preview,previewing=calendar.tier!==summary.tier;
@@ -130,12 +129,12 @@ function renderCalendar() {
     const classes=['day-cell',release?'has-release':'',`is-${viewing.status}`,isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':''].filter(Boolean).join(' ');
     const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked);
     const watchLabel=viewing.status==='watched'?'，已看完':viewing.pendingEpisodes.length?`，待看${pendingEpisodeLabel(viewing.pendingEpisodes)}`:'';
-    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}${watchLabel}`:'无常规更新'}${badges.length?`，${ticketMode?'电子票':'勋章'}：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${operations.highlights.length?`，本集看点：${operations.highlights.map(item=>item.title).join('、')}`:''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
+    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}${watchLabel}`:'无常规更新'}${badges.length?`，${ticketMode?'电子票':'勋章'}：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${!hasEvent&&operations.highlights.length?'，含趣味图标':''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
     const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${ticketMode?ticketMark:medalMark}</span>`:'';
     // Rewards own the corner. Content and events share the row below episodes;
-    // an event takes priority there, while every note remains in date details.
+    // an event takes priority there. Emoji never expand into plot explanations.
     const content=`<span class="day-content-slot" aria-hidden="true">${hasEvent?'<span class="day-event-label">点映礼</span>':operations.highlights.slice(0,2).map(item=>`<span class="day-operation">${esc(item.icon)}</span>`).join('')}</span>`;
-    const expandable=hasEvent||operations.highlights.length>0;
+    const expandable=hasEvent;
     return `<button class="${classes}" data-date="${date}"${release?.milestone?` data-milestone="${esc(release.milestone)}"`:''} aria-label="${esc(accessible)}" aria-pressed="${selected}" ${expandable?`aria-expanded="${selected&&dateExpanded}" aria-controls="dateOperations"`:''} ${isToday?'aria-current="date"':''}><span class="day-number">${parseDate(date).getUTCDate()}</span><span class="day-caption"${label?'':' aria-hidden="true"'}>${label}</span>${content}${marker}</button>`;
   }).join('');
   renderDateOperations();
@@ -159,11 +158,11 @@ function renderDateOperations() {
   const operations=operationsForDate(selectedDate);
   const content=dateExpanded?operationsMarkup(operations):'';
   $('dateOperations').hidden=!content;
-  $('dateOperations').setAttribute('aria-label',`${shortDate(selectedDate)} ${weekday(selectedDate)}的看点与活动`);
+  $('dateOperations').setAttribute('aria-label',`${shortDate(selectedDate)} ${weekday(selectedDate)}的点映礼活动`);
   $('dateOperations').innerHTML=content;
 }
 function selectDate(date,focus=false,toggle=false) {
-  const operations=operationsForDate(date),expandable=operations.events.length||operations.highlights.length;
+  const operations=operationsForDate(date),expandable=operations.events.length>0;
   dateExpanded=Boolean(expandable)&&!(toggle&&date===selectedDate&&dateExpanded);
   selectedDate=date;visibleMonth=date.slice(0,7);renderCalendar();
   if(focus)document.querySelector(`[data-date="${date}"]`)?.focus({preventScroll:true});
