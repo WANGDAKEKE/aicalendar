@@ -18,7 +18,7 @@ html[data-reward-mode=ticket] .is-celebrating .reward-sheet{background:radial-gr
 .ticket-level[aria-pressed=true]{background:#fffdf6;border-color:#d9ddcc;box-shadow:0 1px 3px #43553a0c}
 .ticket-level[aria-pressed=true] strong{color:#45674e}
 .ticket-level[aria-pressed=true] small{color:#7b826b}
-.ticket-level:focus-visible,.ticket-primary:focus-visible,.ticket-secondary:focus-visible{outline:2px solid #39755d;outline-offset:2px}
+.ticket-level:focus-visible,.ticket-primary:focus-visible,.ticket-secondary:focus-visible,.ticket-save:focus-visible{outline:2px solid #39755d;outline-offset:2px}
 .ticket-preview-caption{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;color:#738268;line-height:1.4;margin:0 0 7px}
 .ticket-preview-caption>span{font-size:10px;font-weight:600}
 .ticket-preview-caption>small{font-size:9px;color:#929681}
@@ -38,7 +38,11 @@ html[data-reward-mode=ticket] .is-celebrating .reward-sheet{background:radial-gr
 .ticket-poster{position:relative;height:162px;margin:0 9px;overflow:hidden;background:#bda081 url('./assets/calendar-art.png') 70% top/auto 140% no-repeat;border:1px solid #ac967d40}
 .ticket-poster::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#6e49230a,transparent 65%,#79614015);pointer-events:none}
 .ticket-poster-edge{position:absolute;inset:4px;border:1px solid #fff9e529;pointer-events:none}
-.ticket-preview-label{position:absolute;z-index:1;left:5px;top:5px;padding:2px 4px;background:#faf6e6e8;border:1px solid #e8dfc9;color:#776d55;font-size:7px;letter-spacing:.3px;border-radius:2px}
+.ticket-card.is-preview{filter:grayscale(1) brightness(.9)}
+.ticket-lock-overlay{position:absolute;z-index:4;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;background:#25332c17;pointer-events:none}
+.ticket-lock-message{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;padding:15px 8px;border:1px solid #ffffff65;border-radius:8px;background:#29352cec;color:#fff;box-shadow:0 3px 10px #00000015;text-align:center}
+.ticket-lock-icon{display:block;width:27px;height:27px}
+.ticket-lock-message strong{font-family:inherit;font-size:11px;font-weight:500;line-height:1.5;white-space:nowrap}
 .ticket-main{padding:8px 13px 7px;min-height:65px;box-sizing:border-box}
 .ticket-name-row{display:flex;justify-content:space-between;align-items:center;gap:4px;line-height:1.2}
 .ticket-name-row>span{font-size:8px;font-weight:600;color:#916d46}
@@ -71,6 +75,10 @@ html[data-reward-mode=ticket] .is-celebrating .reward-sheet{background:radial-gr
 .ticket-progress p{margin:0;font-size:9px;line-height:1.4;color:#8b947e}
 .ticket-primary{display:block;width:100%;min-height:37px;box-sizing:border-box;border:0;border-radius:20px;padding:10px 14px;margin:11px 0 0;background:#39755d;color:#fff;font-family:inherit;font-size:11px;font-weight:500;cursor:pointer}
 .ticket-primary span{margin-left:5px}
+.ticket-actions{display:flex;align-items:stretch;gap:8px;margin-top:11px}
+.ticket-actions .ticket-primary{flex:1;min-width:0;margin:0;padding:10px 9px}
+.ticket-save{flex:0 0 108px;min-height:37px;box-sizing:border-box;border:1px solid #afc0a7;border-radius:20px;padding:9px 10px;background:#fafbf2;color:#496e52;font-family:inherit;font-size:11px;font-weight:500;cursor:pointer}
+.ticket-save:disabled{opacity:.65;cursor:wait}
 .ticket-secondary{border:0;background:transparent;color:#6b8167;font-family:inherit;font-size:10px;line-height:1.4;padding:5px 8px;margin:3px 0 0;cursor:pointer}
 .ticket-auto-note{margin:7px 0 0;font-size:8px;line-height:1.4;color:#9ba18f}
 .ticket-celebrating .ticket-stage{animation:ticket-arrive .45s ease-out both}

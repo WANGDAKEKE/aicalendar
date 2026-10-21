@@ -17,7 +17,7 @@ test('before obtaining a ticket every finish remains a preview with no issued nu
     const html = render(9, {selectedLevel});
     assert.match(html, /票面预览 · 未获得/);
     assert.match(ticket(html), /待生成/);
-    assert.doesNotMatch(html, /LY-0001|当前票面 · 已获得|已自动收好|ticket-earned|ticket-celebrating/);
+    assert.doesNotMatch(html, /LY-0001|当前票面 · 已获得|已自动收好|ticket-earned|ticket-celebrating|data-save-ticket/);
     const tabs = buttons(html).filter(button => button.includes('data-ticket-level'));
     assert.equal(tabs.length, 3);
     assert.ok(tabs.every(button => /is-locked/.test(button) && /未解锁/.test(button)));
@@ -32,7 +32,7 @@ test('previewing a higher level never changes ownership or presents it as the cu
   const html = render(10, {progress, selectedLevel: 3});
   assert.match(html, /票面预览 · 尚未升级/);
   assert.match(ticket(html), /ticket-finish-holo is-preview/);
-  assert.doesNotMatch(html, /当前票面 · 已获得/);
+  assert.doesNotMatch(html, /当前票面 · 已获得|data-save-ticket/);
   assert.match(buttons(html).find(button => /data-ticket-level="1"/.test(button)), /已解锁/);
   assert.match(buttons(html).find(button => /data-ticket-level="3"/.test(button)), /未解锁/);
   assert.deepEqual(progress, original);
@@ -45,6 +45,27 @@ test('all obtained finishes and previews retain the same ticket number after upg
       assert.equal((html.match(/LY-0001/g) || []).length, 1);
       assert.doesNotMatch(ticket(html), /待生成/);
     }
+  }
+});
+
+test('locked finishes contain a central lock overlay with their own unlock requirement and no save action', () => {
+  for (const [count, selectedLevel, episode] of [[0, 1, 10], [9, 2, 18], [10, 3, 30]]) {
+    const html = render(count, {selectedLevel});
+    assert.match(ticket(html), /class="ticket-lock-overlay"/);
+    assert.match(ticket(html), /class="ticket-lock-icon"[^>]+aria-hidden="true"/);
+    assert.match(ticket(html), new RegExp(`看完前 ${episode} 集解锁`));
+    assert.doesNotMatch(html, /data-save-ticket/);
+  }
+});
+
+test('current and previously unlocked finishes can be saved in full color without a lock overlay', () => {
+  for (const [count, selectedLevel] of [[10, 1], [18, 1], [18, 2], [30, 1], [30, 2], [30, 3]]) {
+    const html = render(count, {selectedLevel});
+    assert.doesNotMatch(ticket(html), /is-preview|ticket-lock-overlay/);
+    const saveButtons = buttons(html).filter(button => button.includes('data-save-ticket'));
+    assert.equal(saveButtons.length, 1);
+    assert.match(saveButtons[0], new RegExp(`data-save-ticket="${selectedLevel}"`));
+    assert.match(saveButtons[0], />保存电子票<\/button>/);
   }
 });
 
@@ -130,8 +151,9 @@ test('full completion returns to the calendar without further play or upgrade ac
   assert.match(html, /aria-valuemax="30" aria-valuenow="30"/);
   assert.doesNotMatch(html, /data-episode=|下一次升级|继续追剧后自动升级/);
   const actions = buttons(html).filter(button => !button.includes('data-ticket-level'));
-  assert.equal(actions.length, 1);
-  assert.match(actions[0], /data-close-reward>回日历/);
+  assert.equal(actions.length, 2);
+  assert.match(actions.find(button => button.includes('data-close-reward')), /data-close-reward>回日历/);
+  assert.match(actions.find(button => button.includes('data-save-ticket')), /data-save-ticket="3">保存电子票/);
 });
 
 test('the barcode remains decorative and the ticket states that it is not an admission credential', () => {

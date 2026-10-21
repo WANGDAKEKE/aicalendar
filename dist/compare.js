@@ -1,5 +1,6 @@
 // The comparison shell only changes iframe URLs. All playback and reward state
-// belongs to each demo; no cross-frame DOM access, messaging or storage is used.
+// belongs to each demo; the shell never reads their DOM, messages or storage.
+// A child may create a temporary download link here for embedded browser support.
 const scenarios=Object.freeze({
   near:{date:'10 月 15 日',description:'距首个奖励还差 1 集',celebrate:false},
   first:{date:'10 月 15 日',description:'获得首个奖励 · 电子票初次点亮',celebrate:true},
@@ -15,7 +16,7 @@ const validScenario=value=>Object.hasOwn(scenarios,value)?value:'near';
 
 function frameUrl(reward,scenario){
   const url=new URL('./index.html',location.href);
-  url.searchParams.set('v','2.7.1');
+  url.searchParams.set('v','2.7.2');
   url.searchParams.set('skin','lychee');
   url.searchParams.set('embed','1');
   url.searchParams.set('reward',reward);

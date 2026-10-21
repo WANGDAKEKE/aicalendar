@@ -4,7 +4,8 @@ import {getTierContext} from './tier-model.mjs?v=2.6.1';
 import {getBadgeProgress, getBadgeRelease, newlyUnlockedBadges} from './badge-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
 import {ticketLevels, getTicketProgress, getTicketUpgrade, getRewardDemoScenario} from './ticket-model.mjs';
-import {renderTicketPanel} from './ticket-view.mjs';
+import {renderTicketPanel} from './ticket-view.mjs?v=2.7.2';
+import {createTicketDownload} from './ticket-download.mjs?v=2.7.2';
 
 const $ = id => document.getElementById(id);
 const query = new URLSearchParams(location.search);
@@ -40,7 +41,7 @@ const nextUnwatched=()=>Array.from({length:summary.available},(_,i)=>i+1).find(n
 let currentEpisode = nextUnwatched()||summary.available||1;
 let playbackActive=false, activeScreen='calendar', calendarReturn='episodes';
 let selectedDate=initialDate(), visibleMonth=selectedDate.slice(0,7), dateExpanded=false;
-let rewardReturn=null, rewardResumeVideo=null, toastTimer;
+let rewardReturn=null, rewardResumeVideo=null, toastTimer, savingTicket=false;
 let upgradeResumeVideo=null, upgradeReturn=null;
 const player=document.querySelector('.video-poster video');
 const screens=[...document.querySelectorAll('.screen')];
@@ -290,6 +291,41 @@ function closeReward() {
   const canReturn=rewardReturn?.isConnected&&rewardReturn.matches('button:not(:disabled),[tabindex="0"]')&&!rewardReturn.closest('[inert]');
   (canReturn?rewardReturn:fallback)?.focus({preventScroll:true});
 }
+async function saveTicket(button) {
+  if(!ticketMode||$('rewardOverlay').hidden)return;
+  if(savingTicket){showToast('电子票正在生成，请稍候');return;}
+  const level=Number(button.dataset.saveTicket);
+  const progress=getTicketProgress(completed);
+  if(!ticketLevels.some(item=>item.level===level)||level>progress.currentLevel){
+    showToast('这张票面尚未解锁');return;
+  }
+  const original=button.innerHTML;
+  savingTicket=true;button.disabled=true;
+  button.setAttribute('aria-busy','true');button.textContent='正在生成图片…';
+  let objectUrl;
+  try{
+    const file=await createTicketDownload({drama,completed:new Set(completed),level,today:summary.today});
+    objectUrl=URL.createObjectURL(file.blob);
+    // Some embedded webviews only handle downloads from the top document.
+    // Use a same-origin host solely for the link; all reward state stays here.
+    let downloadDocument=document;
+    if(document.documentElement.dataset.embedded==='true'&&window.parent!==window){
+      try{downloadDocument=window.parent.document;}catch{/* Cross-origin embeds use their own document. */}
+    }
+    const link=downloadDocument.createElement('a');
+    link.href=objectUrl;link.download=file.filename;link.hidden=true;
+    downloadDocument.body.append(link);
+    try{link.click();}finally{link.remove();}
+    showToast('已发起下载，请在浏览器下载中查看');
+  }catch{
+    showToast('图片生成失败，请重试');
+  }finally{
+    // Keep the Blob alive long enough for browsers to consume the download.
+    if(objectUrl)setTimeout(()=>URL.revokeObjectURL(objectUrl),60_000);
+    savingTicket=false;
+    if(button.isConnected){button.disabled=false;button.removeAttribute('aria-busy');button.innerHTML=original;}
+  }
+}
 function showUpgrade() {
   if(!tierContext.requiresUpgrade||activeScreen!=='calendar')return;
   upgradeReturn=document.activeElement;
@@ -328,6 +364,8 @@ $('confirmUpgrade').onclick=()=>{
   showToast(`演示版未接入会员支付，当前账号仍为 ${tierName}`);
 };
 document.addEventListener('click',event=>{
+  const save=event.target.closest('[data-save-ticket]');
+  if(save){void saveTicket(save);return;}
   const date=event.target.closest('[data-date]');if(date)selectDate(date.dataset.date,true,true);
   const route=event.target.closest('[data-target]');if(route)showScreen(route.dataset.target);
   const episode=event.target.closest('[data-episode]');if(episode)playEpisode(Number(episode.dataset.episode));
