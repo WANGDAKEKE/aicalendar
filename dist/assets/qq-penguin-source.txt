@@ -1,0 +1,23 @@
+Tencent QQ penguin — local prototype asset
+
+Public source page: https://im.qq.com/index
+Original asset URL (linked as favicon by the official website):
+https://static-res.qq.com/static-res/imqq/qq-logo.png
+Retrieved: 2026-10-23
+The downloaded 64 x 64 PNG is used without alteration. Copyright and trademark
+rights remain with Tencent. This is not a claim of endorsement or a license.
+
+Official visual identity reference:
+https://isux.tencent.com/wp-content/uploads/2016/05/20160512101222609.pdf
+QQ Brand Book, Tencent ISUX, 2016; symbol and image-specification sections.
+
+Historical prototype treatment (retained for reference/rollback, not the current
+3D companion): the original artwork perches above a ticket and moves by
+translation only on greeting or reward unlock. It is not an official sitting-pose
+asset. Surrounding sparkles and UI animations are original prototype interactions,
+not Tencent-provided animation material. For production, obtain the approved IP
+character/animation pack and usage clearance rather than enlarging this favicon.
+
+Current concept artwork is recorded separately in
+design/qq-companion-3d-prompts.txt. It is AI-generated proposal material, not an
+official Tencent 3D character or animation pack.

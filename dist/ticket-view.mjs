@@ -5,7 +5,7 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 const finishNames = {paper: '原色纸票', foil: '鎏金票面', holo: '流光票面'};
 
 // The account's earned level is authoritative; choosing a tab only previews it.
-export function renderTicketPanel({drama, progress, levels, selectedLevel, celebrate = false, firstTicket, available = 0, today = ''}) {
+export function renderTicketPanel({drama, progress, levels, selectedLevel, celebrate = false, firstTicket, available = 0, today = '', serial = 'LY-0001'}) {
   const currentLevel = progress.currentLevel;
   const requestedLevel = Number(selectedLevel) || currentLevel || 1;
   const selected = levels.find(level => level.level === requestedLevel)
@@ -56,7 +56,7 @@ export function renderTicketPanel({drama, progress, levels, selectedLevel, celeb
         <div class="ticket-head"><span>追 剧 纪 念</span><span>${String(selected.level).padStart(2, '0')} / 03</span></div>
         <div class="ticket-poster" role="img" aria-label="${escapeHTML(drama.title)}剧集海报"><span class="ticket-poster-edge" aria-hidden="true"></span></div>
         <div class="ticket-main"><div class="ticket-name-row"><span>${selectedName}</span><small>${finishNames[finish]}</small></div><h3>${escapeHTML(drama.title)}</h3><div class="ticket-edition"><span>一颗荔枝 · 一路相伴</span><span aria-hidden="true">${finish === 'holo' ? '✦' : finish === 'foil' ? '✧' : '◇'}</span></div></div>
-        <div class="ticket-stub"><div class="ticket-stub-top"><span>NO. <b>${hasTicket ? 'LY-0001' : '待生成'}</b></span><span>${date ? `进度 ${date}` : ''}</span></div><div class="ticket-barcode" aria-hidden="true"></div><p>追剧纪念票 · 非观影凭证</p></div>
+        <div class="ticket-stub"><div class="ticket-stub-top"><span>NO. <b>${hasTicket ? escapeHTML(serial) : '待生成'}</b></span><span>${date ? `进度 ${date}` : ''}</span></div><div class="ticket-barcode" aria-hidden="true"></div><p>追剧纪念票 · 非观影凭证</p></div>
         ${lockOverlay}
       </article>
     </div>

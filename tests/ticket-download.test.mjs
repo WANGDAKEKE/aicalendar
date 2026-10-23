@@ -6,6 +6,12 @@ import {createTicketDownload,getTicketDownloadDescriptor} from '../dist/ticket-d
 const through=count=>Array.from({length:count},(_,index)=>index+1);
 const args={drama,completed:through(10),level:1,today:'2026-10-15'};
 
+test('lab users retain their own stable serial in exported tickets',()=>{
+  assert.equal(getTicketDownloadDescriptor({...args,serial:'LY-0002'}).serial,'LY-0002');
+  assert.match(getTicketDownloadDescriptor({...args,serial:'LY-0003'}).filename,/LY-0003/);
+  for(const serial of ['../bad','<script>',null,'LY-123','LY-1234\n'])assert.throws(()=>getTicketDownloadDescriptor({...args,serial}),/编号无效/);
+});
+
 test('an earned ticket descriptor contains its real title, stable serial, finish and PNG dimensions',()=>{
   const ticket=getTicketDownloadDescriptor(args);
   assert.equal(ticket.title,'长安的荔枝');

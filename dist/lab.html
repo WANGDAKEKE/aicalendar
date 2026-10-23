@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN" data-reward-mode="ticket">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f4f4eb" />
+  <title>追剧搭子 · 本地交互实验室</title>
+  <link rel="stylesheet" href="./lab.css?v=3d-companion" />
+  <link rel="stylesheet" href="./lab-journey.css?v=3d-companion" />
+  <link rel="stylesheet" href="./lab-admin.css" />
+  <link rel="stylesheet" href="./ticket.css?v=2.7.2" />
+</head>
+<body data-view="phone">
+  <header class="lab-header">
+    <div><div class="lab-eyebrow"><span class="lab-brand-mark">▶</span> TENCENT VIDEO <span>PRODUCT LAB / 03</span></div><h1>追剧，有个小搭子。</h1><p>观看自动记录，每一程都有新惊喜。</p></div>
+    <div class="lab-local"><i></i> 本地实验版 <span>未发布线上</span></div>
+  </header>
+  <nav class="lab-view-switch" aria-label="切换演示区域"><button data-view-switch="phone" aria-pressed="true">用户端</button><button data-view-switch="admin" aria-pressed="false">虚拟后台</button></nav>
+  <main class="lab-layout">
+    <section class="lab-phone-column" aria-label="手机预览">
+      <div class="lab-device-label"><span><i></i> 用户端 · 实时联动</span><span id="labUserLabel"></span></div>
+      <div class="lab-phone" id="labPhone">
+        <div class="lab-video"><video id="labVideo" src="./assets/drama-recording.mp4" muted playsinline controls preload="metadata" aria-label="长安的荔枝录屏预览"></video><span class="lab-video-badge" id="labVideoBadge">剧集预览</span></div>
+        <header class="lab-calendar-title"><strong>《长安的荔枝》追剧日历</strong><button id="labOpenPlayer" aria-label="打开选集播放">⌄</button></header>
+        <div class="lab-phone-scroll" id="labPhoneScroll">
+          <div id="labJourney"></div>
+          <section class="lab-calendar" aria-labelledby="labMonth">
+            <header class="lab-month-bar"><div><h2 id="labMonth"></h2><select id="labTier" aria-label="预览会员排期"><option value="vip">VIP 排期</option><option value="svip">SVIP 排期</option><option value="free">非VIP 排期</option></select></div><div class="lab-month-controls"><button id="labPrev" aria-label="上个月">‹</button><button id="labToday">今天</button><button id="labNext" aria-label="下个月">›</button></div></header>
+            <div class="lab-weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+            <div id="labDays" class="lab-days" role="group" aria-label="剧集更新日历"></div>
+          </section>
+          <div id="labMarketing" class="lab-marketing" aria-label="会员与活动推荐"></div>
+          <button id="labReminder" class="lab-reminder" aria-pressed="false"></button>
+          <p class="lab-schedule-note">排期如有调整，以实际播出为准</p>
+        </div>
+        <div class="lab-dialog-backdrop" id="labDialog" hidden><section class="lab-dialog" role="dialog" aria-modal="true" aria-labelledby="labDialogTitle"><header><div><small id="labDialogKicker"></small><h2 id="labDialogTitle"></h2></div><button id="labDialogClose" aria-label="关闭面板">×</button></header><div id="labDialogBody"></div></section></div>
+        <div class="lab-toast" id="labToast" role="status" hidden></div>
+        <div class="lab-home-indicator" aria-hidden="true"></div>
+      </div>
+      <div class="lab-playback-control" id="labPlaybackControl" hidden><span id="labPlaybackLabel"></span><button id="labFinish">模拟看完本集 →</button></div>
+      <p class="lab-device-note">排期、会员及观看记录均为演示数据</p>
+    </section>
+    <aside id="labAdmin" class="lab-admin-column" aria-label="虚拟后台"></aside>
+  </main>
+  <footer class="lab-footer">一份数据，两个视角。仅在当前浏览器保存，不连接真实媒资、账号、支付或通知服务。<a href="./?v=2.8.0&scenario=partial#calendar">查看原版 ↗</a></footer>
+  <script type="module" src="./lab.mjs"></script>
+</body>
+</html>

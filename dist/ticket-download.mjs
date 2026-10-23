@@ -24,14 +24,15 @@ function within(promise,milliseconds,message) {
 }
 
 // Never trust a selected tab, DOM class or caller-supplied earned flag.
-export function getTicketDownloadDescriptor({drama,completed,level,today} = {}) {
+export function getTicketDownloadDescriptor({drama,completed,level,today,serial='LY-0001'} = {}) {
   if(!Number.isInteger(level)||level<1||level>3)throw new Error('电子票等级无效，请选择已获得的票面。');
   const selected=ticketLevels.find(ticket=>ticket.level===level);
   const progress=getTicketProgress(completed);
   if(!selected||level>progress.currentLevel)throw new Error('该票面尚未解锁，完成对应观看进度后才能下载。');
   if(typeof drama?.title!=='string'||!cleanText(drama.title))throw new Error('缺少剧集标题，无法导出电子票。');
   if(!validDate(today))throw new Error('进度日期无效，请刷新后重试。');
-  const title=cleanText(drama.title),serial='LY-0001';
+  if(typeof serial!=='string'||!/^LY-[0-9]{4,12}$/.test(serial))throw new Error('电子票编号无效。');
+  const title=cleanText(drama.title);
   return {
     title,level:selected.level,episode:selected.episode,name:selected.name,
     finish:selected.finish,finishName:finishNames[selected.finish],serial,today,
