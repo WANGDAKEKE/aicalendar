@@ -6,7 +6,7 @@ import {getTicketProgress} from './ticket-model.mjs';
 const STORAGE_KEY = 'drama-calendar-lab-v1';
 const TIERS = new Set(['free', 'vip', 'svip']);
 const CAMPAIGN_MODES = new Set(['auto', 'membership', 'screening']);
-const LOG_KINDS = new Set(['penguin_tap', 'widget_preview', 'marketing_click', 'ticket_download_requested']);
+const LOG_KINDS = new Set(['penguin_tap', 'widget_preview', 'widget_added', 'widget_open', 'marketing_click', 'ticket_download_requested']);
 const INITIAL_NOW = '2026-10-15T19:00:00+08:00';
 const clone = value => structuredClone(value);
 const fail = message => { throw new Error(message); };

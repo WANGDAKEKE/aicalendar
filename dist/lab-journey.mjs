@@ -1,7 +1,3 @@
-const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-})[character]);
-
 const levels = [
   {level: 1, episode: 10, name: '初程票'},
   {level: 2, episode: 18, name: '同行票'},
@@ -33,29 +29,20 @@ export function penguinArt(state = 'sleep', reaction = 'idle') {
 
 const lockSVG = '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M5.5 7V5a3.5 3.5 0 0 1 7 0v2" stroke="currentColor" stroke-width="1.5"/><rect x="3.5" y="7" width="11" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 10v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
 const ticketSVG = '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m5 9 2.7 2.5L13 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const widgetSVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6M9 17h4M18 2v8M14 6h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 // Only presentation lives here: earned levels and missing episodes come from
 // the shared progress model. Clicking a node must never grant that level.
-export function renderJourney({progress, user, today, summary} = {}) {
+export function renderJourney({progress} = {}) {
   const currentLevel = validLevel(progress);
   const state = getPenguinState(progress);
   const character = penguinDescriptions[state];
   const next = progress?.next || (currentLevel < 3 ? levels[currentLevel] : null);
   const targetLevel = next?.level || currentLevel || 1;
   const target = levels.find(level => level.level === targetLevel) || levels[0];
-  const total = progress?.nextProgress?.total || target.episode;
-  const watchedCount = Math.max(0, Math.min(total, Number(progress?.nextProgress?.watchedCount ?? progress?.watchedCount) || 0));
-  const remaining = Math.max(0, Number(progress?.nextProgress?.remaining) || total - watchedCount);
-  const nextName = escapeHTML(next?.name || target.name);
-  const isComplete = currentLevel === 3 && !next;
-  const availability = summary?.available;
-  const waiting = !isComplete && Number.isFinite(availability) && progress?.nextProgress?.nextEpisode > availability;
-  const detail = isComplete
-    ? '<strong>30 / 30 集</strong><span>典藏票已收好 · 查看票面</span>'
-    : `<strong>已看 ${watchedCount} / ${total} 集</strong><span>还差 ${remaining} 集${waiting ? ' · 等更新再一起看' : ` · ${currentLevel ? '升级' : '获得'}${nextName}`}</span>`;
 
   return `<section class="lab-journey" data-companion-state="${state}" aria-label="追剧搭子和电子票成长进度">
-    <div class="lab-journey__header"><strong><span aria-hidden="true">✦</span> 追剧搭子</strong><button type="button" data-lab-widget><span aria-hidden="true">＋</span> 添加到桌面</button></div>
+    <button type="button" class="lab-journey__widget" data-lab-widget aria-label="添加到桌面，查看小组件预览" title="添加到桌面">${widgetSVG}</button>
     <div class="lab-journey__scene">
       <button type="button" class="lab-journey__penguin" data-lab-penguin aria-label="和企鹅搭子打个招呼" title="戳戳企鹅，打个招呼">${penguinArt(state)}</button>
       <div class="lab-journey__dialogue"><strong>${character.title}</strong><p class="lab-journey__speech" aria-live="polite">${character.speech}</p><span class="lab-journey__poke-hint" aria-hidden="true">戳戳我，有回应</span></div>
@@ -67,6 +54,5 @@ export function renderJourney({progress, user, today, summary} = {}) {
         return `<button type="button" class="lab-journey__node${earned ? ' is-earned' : ' is-locked'}${level.level === target.level ? ' is-target' : ''}" data-lab-ticket="${level.level}" aria-label="${level.name}，${earned ? '已获得，查看票面' : `看完前 ${level.episode} 集解锁，查看票面预览`}"><span class="lab-journey__paper" aria-hidden="true">${earned ? ticketSVG : lockSVG}<i></i></span><span class="lab-journey__node-label">${level.name}<small>${level.episode} 集</small></span></button>`;
       }).join('')}
     </div>
-    <p class="lab-journey__progress">${detail}</p>
   </section>`;
 }

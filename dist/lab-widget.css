@@ -1,0 +1,48 @@
+/* The first sheet previews one widget. Confirmation switches to a simulated
+   home screen inside the demo; no browser or native installation is performed. */
+[data-scene^="widget-"] .lab-dialog>header{align-items:center;margin-bottom:16px}
+[data-scene^="widget-"] .lab-dialog h2{margin:0;font-size:20px}
+[data-scene^="widget-"] .lab-dialog header button{width:40px;height:40px;font-size:26px}
+[data-scene^="widget-"] .lab-widget-scene{position:relative;padding:24px 16px 20px;min-height:0;border-radius:20px;background:radial-gradient(ellipse at 80% 10%,#d9e3ce 0,transparent 65%),linear-gradient(150deg,#7f988d,#bbc9b2);overflow:hidden}
+[data-scene^="widget-"] .lab-widget-clock{margin:0 0 5px;color:#fffef7;font-size:32px;line-height:1.15;font-weight:600;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+[data-scene^="widget-"] .lab-widget-date{display:block;margin:0 0 20px;color:#f6f8f0;font-size:11px;line-height:1.5}
+[data-scene^="widget-"] .lab-widget-card{position:relative;display:block;width:100%;min-height:146px;padding:18px 14px;border:1px solid #edf0d9;border-radius:22px;background:linear-gradient(135deg,#f8f9e9,#edf2d7);box-shadow:0 8px 22px #304b3a12;text-align:left;font:inherit;overflow:hidden}
+[data-scene^="widget-"] .lab-widget-card strong{display:block;max-width:calc(100% - 82px);font-size:18px;line-height:1.45;font-weight:600;color:#3e5d46;letter-spacing:-.3px}
+[data-scene^="widget-"] .lab-widget-caption{display:block;max-width:calc(100% - 80px);margin:10px 0 0;font-size:11px;line-height:1.6;color:#788868}
+[data-scene^="widget-"] .lab-widget-open{position:absolute;inset:0;display:flex;align-items:center;width:100%;border:0;border-radius:inherit;padding:18px 14px;background:transparent;text-align:left;font:inherit;color:inherit;cursor:pointer}
+[data-scene^="widget-"] .lab-widget-copy{display:block;width:100%}
+[data-scene^="widget-"] .lab-widget-penguin{position:absolute;z-index:2;width:104px;height:104px;right:1px;bottom:6px;padding:0;border:0;border-radius:16px;background:none;transform:none;pointer-events:auto;cursor:pointer;touch-action:manipulation}
+[data-scene^="widget-"] .lab-widget-penguin:focus-visible{outline:2px solid #6d9068;outline-offset:1px}
+[data-scene^="widget-"] .lab-widget-reaction{position:absolute;right:2px;bottom:93px;padding:5px 8px;border:1px solid #dce5cf;border-radius:10px 10px 2px 10px;background:#fffef5;box-shadow:0 3px 10px #49613a10;color:#4b6a4c;font-size:10px;line-height:15px;white-space:nowrap;pointer-events:none}
+[data-scene^="widget-"] .lab-widget-reaction:empty{display:none}
+[data-scene^="widget-"] .lab-widget-provider{display:block;margin:10px 0 0;text-align:center;color:#f8faf3;font-size:10px;letter-spacing:.3px}
+[data-scene="widget-preview"] .lab-primary{min-height:44px;margin-top:18px;font-size:13px}
+.lab-dialog-backdrop[data-scene="widget-desktop"]{inset:0;background:#91a597}
+[data-scene="widget-desktop"] .lab-dialog{height:100%;max-height:100%;padding:20px 22px max(24px,env(safe-area-inset-bottom,0px));border-radius:0;background:radial-gradient(ellipse at 90% 5%,#d7e3cb 0,transparent 55%),radial-gradient(ellipse at 10% 100%,#6d897b 0,transparent 65%),#9db19b;box-shadow:none;display:flex;flex-direction:column}
+[data-scene="widget-desktop"] .lab-dialog>header{flex:none;margin:0 0 8px}
+[data-scene="widget-desktop"] .lab-dialog h2{font-size:11px;font-weight:500;letter-spacing:1px;color:#f5f7ed}
+[data-scene="widget-desktop"] .lab-dialog header button{background:#ffffff30;color:#fffef5}
+[data-scene="widget-desktop"] #labDialogBody{flex:1;min-height:0}
+[data-scene="widget-desktop"] .lab-widget-desktop{position:relative;min-height:100%;padding:34px 0 70px;background:none;border-radius:0;overflow:visible}
+[data-scene="widget-desktop"] .lab-widget-clock{font-size:58px;text-align:center;letter-spacing:-2px;font-weight:500}
+[data-scene="widget-desktop"] .lab-widget-date{text-align:center;margin:8px 0 36px;font-size:13px}
+[data-scene="widget-desktop"] .lab-widget-card{min-height:154px}
+[data-scene="widget-desktop"] .lab-widget-open:active{background:#52713c0a}
+[data-scene="widget-desktop"] .lab-widget-open:focus-visible{outline:2px solid #6d9068;outline-offset:-3px}
+[data-scene="widget-desktop"] .lab-widget-provider{font-size:11px}
+[data-scene="widget-desktop"] .lab-widget-added{display:table;margin:24px auto 0;padding:6px 12px;border:1px solid #ffffff30;border-radius:20px;color:#f7faef;background:#ffffff15;font-size:11px}
+@media(max-width:350px){
+  [data-scene^="widget-"] .lab-widget-scene{padding:20px 12px 16px}
+  [data-scene^="widget-"] .lab-widget-card{padding:16px 12px;min-height:150px}
+  [data-scene^="widget-"] .lab-widget-card strong{font-size:16px}
+  [data-scene^="widget-"] .lab-widget-open{padding:16px 12px}
+  [data-scene^="widget-"] .lab-widget-penguin{width:92px;height:92px;right:-2px}
+  [data-scene^="widget-"] .lab-widget-reaction{bottom:82px;font-size:9px;padding:4px 6px}
+  [data-scene="widget-preview"] .lab-dialog>header{margin-bottom:12px}
+  [data-scene="widget-preview"] .lab-widget-scene{padding:18px 12px 14px}
+  [data-scene="widget-preview"] .lab-widget-date{margin-bottom:14px}
+  [data-scene="widget-desktop"] .lab-dialog{padding:14px 16px 24px}
+  [data-scene="widget-desktop"] .lab-widget-desktop{padding:18px 0 40px}
+  [data-scene="widget-desktop"] .lab-widget-date{margin-bottom:26px}
+}
+@media(prefers-reduced-motion:reduce){[data-scene="widget-desktop"] .lab-widget-card{transition:none;transform:none}}

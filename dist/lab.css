@@ -10,7 +10,93 @@
 /* Fit the complete phone on laptop screens; its content layout stays stable. */
 @media(min-width:851px){.lab-layout{grid-template-columns:calc(390px * var(--lab-scale,1)) minmax(370px,470px)}.lab-phone-column{zoom:var(--lab-scale,1)}.lab-phone{height:840px;min-height:840px}.lab-video{height:128px}.lab-dialog-backdrop{top:128px}.lab-phone-scroll{padding-top:12px}.lab-days{grid-auto-rows:43px}.lab-day{grid-template-rows:17px 11px 9px}.lab-admin{display:flex;flex-direction:column;max-height:calc(100dvh - 175px);min-height:540px}.lab-admin-body{flex:1;min-height:200px;max-height:none}.lab-admin-header,.lab-admin-tabs,.lab-admin-footer,.lab-admin-metrics{flex-shrink:0}}
 @media(max-width:850px){.lab-phone{height:820px}}
-/* Make room for the character scene without squeezing calendar labels. */
-@media(min-width:851px){.lab-phone{height:880px;min-height:880px}}
-@media(max-width:850px){.lab-phone{height:860px}}
+/* Calm surfaces: the calendar carries the darkest type; promotions stay secondary. */
+.lab-mobile-caption{display:none}
+.lab-phone-scroll{background-color:#fcfbf6;background-image:none}
+.lab-calendar-title{background:#fcfbf6}
+.lab-calendar-title strong,.lab-month-bar h2{color:#303e37}
+.lab-day.has-release{background:#fffefb;border-color:#e3e5dc;box-shadow:none}
+.lab-day.has-release strong{color:#58685c}
+.lab-day.is-watched{background:#f0f1eb;border-color:#e6e8df}
+.lab-day.is-watched strong,.lab-day.is-watched small{color:#858e81}
+.lab-day.is-partial,.lab-day.is-unwatched{background:#e8f0e5;border-color:#d3dfcf}
+.lab-day.is-partial strong,.lab-day.is-unwatched strong{color:#355e4a}
+.lab-weekdays{color:#7c8476}
+.lab-offer{background:#fcf7ed;border-color:#e9dfcc;padding:9px 11px}
+.lab-offer::after{display:none}
+.lab-offer.olive{background:#f3f5ed;border-color:#dfe4d5}
+.lab-offer-kicker{color:#8a7652;overflow-wrap:anywhere}
+.lab-offer-main{margin-top:4px}
+.lab-offer-main strong{color:#705b37}
+.lab-offer-main p{color:#8c7c61}
+.lab-offer-main button{background:#f1e5cd;border:1px solid #dac49a;color:#71572d;box-shadow:none}
+.lab-offer.olive .lab-offer-main button{background:#e4ebda;border-color:#cad7bc;color:#4b6546}
+.lab-offer-secondary{margin-top:6px;padding-top:6px;border-color:#e8dfcf}
+.lab-reminder{background:#f5f6f0;border-color:#dfe4d8;color:#5d715b}
+.lab-schedule-note{color:#858e80}
+
+/* Real phones use the viewport, not a fixed-height phone inside a demo page.
+   Keep a single inner scroll area for small screens and six-week months. */
+@media(max-width:600px){
+  html{height:100%;overflow:hidden;background:#fcfbf6}
+  body{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;background:#fcfbf6;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);--lab-video-height:clamp(96px,12.6dvh,108px)}
+  .lab-header,.lab-footer,.lab-device-label,.lab-device-note,.lab-home-indicator{display:none}
+  .lab-view-switch{display:flex;flex:none;align-items:center;gap:0;width:100%;height:40px;margin:0;padding:0 12px;border-radius:0;background:#fcfbf6;border-bottom:1px solid #e9eae1}
+  .lab-mobile-caption{display:block;margin-right:auto;font-size:10px;letter-spacing:.5px;color:#8b9186}
+  .lab-view-switch button{min-height:40px;padding:0 12px;font-size:11px;border-radius:0;color:#92998d;background:none;box-shadow:none}
+  .lab-view-switch button[aria-pressed=true]{background:none;box-shadow:inset 0 -2px #496e58;color:#365843}
+  .lab-layout{display:flex;flex:1;min-height:0;max-width:none;width:100%;padding:0;gap:0;margin:0;align-items:stretch}
+  .lab-phone-column{display:flex;flex:1;flex-direction:column;min-height:0;width:100%;max-width:none;margin:0;zoom:1}
+  .lab-phone{flex:1;min-height:0;height:auto;width:100%;max-width:none;border:0;border-radius:0;box-shadow:none}
+  .lab-video{height:var(--lab-video-height)}
+  .lab-dialog-backdrop{top:var(--lab-video-height)}
+  .lab-calendar-title{height:44px;padding:0 16px}
+  .lab-calendar-title strong{font-size:14px}
+  .lab-calendar-title button{width:44px;height:44px;margin-right:-8px}
+  .lab-phone-scroll{padding:8px 14px max(12px,env(safe-area-inset-bottom,0px));scrollbar-width:none}
+  .lab-phone-scroll::-webkit-scrollbar{display:none}
+  .lab-phone .lab-journey{max-width:none}
+  .lab-calendar{margin-top:8px}
+  .lab-month-bar{margin-bottom:6px;gap:6px;min-height:32px}
+  .lab-month-bar h2{font-size:17px;letter-spacing:-.5px}
+  .lab-month-bar>div{gap:6px}
+  .lab-month-bar select{font-size:10px;max-width:88px;min-height:32px;padding:4px}
+  .lab-month-controls{gap:1px!important}
+  .lab-month-controls button{min-width:28px;min-height:32px;padding:0 3px}
+  .lab-month-controls #labToday{font-size:11px;padding:3px 5px}
+  .lab-weekdays{font-size:11px;margin-bottom:5px;line-height:16px}
+  .lab-days{grid-auto-rows:45px;gap:4px}
+  .lab-day{padding:3px 0;grid-template-rows:18px 12px 9px;border-radius:7px}
+  .lab-day strong{font-size:17px;line-height:18px}
+  .lab-day small{font-size:9px;line-height:12px}
+  .lab-day .today-dot{font-size:7px}
+  .lab-day .event-tag,.lab-day .finale-tag{font-size:8px}
+  .lab-marketing{margin-top:8px}
+  .lab-offer-kicker,.lab-offer-kicker b{font-size:9px}
+  .lab-offer-main strong{font-size:13px}
+  .lab-offer-main p{font-size:10px;line-height:14px}
+  .lab-offer-main button{min-height:36px;font-size:11px;padding:6px 10px}
+  .lab-offer-secondary{font-size:10px;min-height:27px}
+  .lab-offer-secondary button{min-height:26px;font-size:10px;flex:none}
+  .lab-reminder{min-height:34px;font-size:11px;margin-top:8px}
+  .lab-schedule-note{font-size:9px;line-height:13px;margin-top:6px}
+  .lab-playback-control{flex:none;margin:0;padding:6px 12px max(6px,env(safe-area-inset-bottom,0px));border-width:1px 0 0;border-radius:0;min-height:44px}
+  .lab-playback-control button{min-height:32px}
+  .lab-admin-column{flex:1;min-height:0;overflow:auto;width:100%}
+  #labAdmin.lab-admin{display:flex;flex-direction:column;width:100%;height:100%;max-height:none;min-height:0;border:0;border-radius:0;box-shadow:none;padding-bottom:env(safe-area-inset-bottom,0px)}
+  body[data-view=phone] #labAdmin{display:none}
+  .lab-admin-header,.lab-admin-intro,.lab-admin-metrics,.lab-admin-tabs,.lab-admin-footer{flex-shrink:0}
+  #labAdmin .lab-admin-body{flex:1;min-height:0;max-height:none}
+  .lab-dialog{padding-bottom:max(22px,env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:350px){
+  .lab-phone-scroll{padding-left:10px;padding-right:10px}
+  .lab-month-bar h2{font-size:15px}
+  .lab-month-bar>div{gap:4px}
+  .lab-month-bar select{font-size:9px;max-width:78px}
+  .lab-month-controls button{min-width:25px}
+  .lab-day small{font-size:8px}
+  .lab-offer-main strong{font-size:12px}
+  .lab-offer-secondary{gap:4px;font-size:9px}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}

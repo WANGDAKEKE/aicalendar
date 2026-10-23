@@ -8,6 +8,7 @@ import {getDateOperations} from './operations-model.mjs';
 import {ticketLevels,getTicketProgress} from './ticket-model.mjs';
 import {renderTicketPanel} from './ticket-view.mjs';
 import {createTicketDownload} from './ticket-download.mjs';
+import {renderWidgetPreview,renderWidgetDesktop} from './lab-widget.mjs?v=2.9.0';
 
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -42,7 +43,7 @@ function renderMarketing(){
   const offer=selectMarketing(view);
   $('labMarketing').hidden=!offer;
   if(!offer){$('labMarketing').innerHTML='';return;}
-  $('labMarketing').innerHTML=`<article class="lab-offer ${offer.kind==='screening'?'olive':''}"><div class="lab-offer-kicker"><b>${offer.kind==='screening'?'特别企划':view.drama.tiers[offer.target]}</b>${esc(view.campaign.headline)}</div><div class="lab-offer-main"><div><strong>${esc(offer.title)}</strong><p>${esc(offer.caption)}</p></div><button data-lab-offer="${offer.kind}">${esc(offer.button)} ›</button></div>${offer.kind==='membership'&&offer.event?`<div class="lab-offer-secondary"><span>${shortDate(offer.event.date)} · 大结局点映礼即将开启</span><button data-lab-offer="screening">活动详情 ›</button></div>`:''}</article>`;
+  $('labMarketing').innerHTML=`<article class="lab-offer ${offer.kind==='screening'?'olive':''}"><div class="lab-offer-kicker"><b>${offer.kind==='screening'?'特别企划':view.drama.tiers[offer.target]}</b>${esc(view.campaign.headline)}</div><div class="lab-offer-main"><div><strong>${esc(offer.title)}</strong><p>${esc(offer.caption)}</p></div><button data-lab-offer="${offer.kind}">${esc(offer.button)} ›</button></div></article>`;
 }
 function render(){
   $('labUserLabel').textContent=`${view.user.name} · ${view.drama.tiers[view.user.tier]}`;
@@ -78,13 +79,14 @@ store.subscribe(()=>{
 function openDialog(kind,title,kicker,payload={}){
   if($('labDialog').hidden){modalReturn=document.activeElement;resumeVideo=!video.paused;video.pause();}
   modal=kind;modalPayload=payload;
-  $('labDialogTitle').textContent=title;$('labDialogKicker').textContent=kicker;
+  $('labDialogTitle').textContent=title;$('labDialogKicker').textContent=kicker;$('labDialogKicker').hidden=!kicker;
+  $('labDialog').dataset.scene=kind;$('labDialogClose').setAttribute('aria-label','关闭面板');
   $('labDialog').hidden=false;
   $('labPhoneScroll').inert=true;document.querySelector('.lab-calendar-title').inert=true;document.querySelector('.lab-video').inert=true;
   $('labDialogClose').focus({preventScroll:true});
 }
 function closeDialog(){
-  modal=null;modalPayload=null;$('labDialog').hidden=true;
+  modal=null;modalPayload=null;$('labDialog').hidden=true;delete $('labDialog').dataset.scene;
   $('labPhoneScroll').inert=false;document.querySelector('.lab-calendar-title').inert=false;document.querySelector('.lab-video').inert=false;
   if(resumeVideo)video.play().catch(()=>{});resumeVideo=false;
   if(modalReturn?.isConnected&&!modalReturn.closest('[inert]'))modalReturn.focus({preventScroll:true});
@@ -138,10 +140,11 @@ function renderScreening(){
 }
 function showScreening(){openDialog('screening','一起赴长安之约','特别企划 · 点映礼');renderScreening();}
 function renderWidget(){
-  const pending=view.availableEpisodes.filter(n=>!view.user.completed.includes(n));
-  const title=view.progress.currentLevel===3?'这一程，圆满啦':pending.length?`还有 ${pending.length} 集，等你一起看`:'已追平，歇一歇';
-  const caption=pending.length?`从第 ${pending[0]} 集继续，企鹅陪你` :view.summary.next?`${shortDate(view.summary.next.date)} ${view.summary.next.time} 再相见`:'典藏电子票已为你收好';
-  $('labDialogBody').innerHTML=`<div class="lab-widget-scene"><div class="lab-widget-clock">${view.now.slice(11,16)}</div><div class="lab-widget-card"><strong>${title}</strong><p>${caption}</p><span class="lab-widget-penguin">${penguinArt(getPenguinState(view.progress))}</span></div><div class="lab-widget-apps" aria-hidden="true"><span>▶</span><span>♪</span><span>◉</span><span>▦</span></div></div><p class="lab-widget-note">桌面小组件效果预览。当前网页不能直接添加系统小组件；正式上线需由腾讯视频客户端接入。</p><button class="lab-primary" ${pending.length?`data-lab-play="${pending[0]}"`:'data-lab-close'}>${pending.length?'体验点击组件继续看':'回到追剧日历'}</button>`;
+  const desktop=modalPayload?.stage==='desktop';
+  $('labDialog').dataset.scene=desktop?'widget-desktop':'widget-preview';
+  $('labDialogTitle').textContent=desktop?'演示桌面':'添加到桌面';
+  $('labDialogClose').setAttribute('aria-label',desktop?'返回追剧日历':'关闭面板');
+  $('labDialogBody').innerHTML=desktop?renderWidgetDesktop(view):renderWidgetPreview(view);
 }
 async function saveTicket(button){
   if(downloadBusy)return;
@@ -171,10 +174,32 @@ $('labDialogClose').onclick=closeDialog;
 $('labDialog').onclick=event=>{if(event.target===$('labDialog'))closeDialog();};
 document.addEventListener('click',event=>{
   const target=event.target.closest('button');if(!target)return;
-  if(target.matches('[data-view-switch]')){document.body.dataset.view=target.dataset.viewSwitch;document.querySelectorAll('[data-view-switch]').forEach(b=>b.setAttribute('aria-pressed',String(b===target)));}
+  if(target.matches('[data-view-switch]')){if(modal)closeDialog();document.body.dataset.view=target.dataset.viewSwitch;document.querySelectorAll('[data-view-switch]').forEach(b=>b.setAttribute('aria-pressed',String(b===target)));target.focus({preventScroll:true});}
   if(target.matches('[data-lab-ticket]'))showTicket(Number(target.dataset.labTicket));
   if(target.matches('[data-ticket-level]'))showTicket(Number(target.dataset.ticketLevel));
-  if(target.matches('[data-lab-widget]')){log('widget_preview','查看桌面小组件预览');openDialog('widget','把追剧搭子放到桌面','桌面小组件 · 效果预览');renderWidget();}
+  if(target.matches('[data-lab-widget]')){log('widget_preview','查看桌面小组件预览');document.querySelector('[data-lab-widget]').focus({preventScroll:true});openDialog('widget','添加到桌面','',{stage:'preview'});renderWidget();}
+  if(target.matches('[data-lab-widget-add]')&&modal==='widget'&&modalPayload?.stage==='preview'){
+    const result=log('widget_added','将追剧组件放入演示桌面（非系统安装）');
+    if(result.ok){modalPayload.stage='desktop';renderWidget();$('labDialogBody').querySelector('[data-lab-widget-open]').focus({preventScroll:true});}
+  }
+  if(target.matches('[data-lab-widget-penguin]')&&modal==='widget'){
+    // Separate sibling controls: petting the penguin must never launch playback.
+    const result=log('penguin_tap','戳戳桌面组件里的企鹅');
+    if(result.ok){
+      const penguin=$('labDialogBody').querySelector('[data-lab-widget-penguin]');
+      const state=getPenguinState(view.progress);
+      const reply={sleep:'唔…再眯一会儿',awake:'抱紧我的票！',proud:'嘿嘿，看我的！',celebrate:'一起撒花！'}[state];
+      penguin.innerHTML=penguinArt(state,'poke')+`<span class="lab-widget-reaction" role="status" aria-live="polite">${reply}</span>`;
+      penguin.focus({preventScroll:true});
+      setTimeout(()=>{if(penguin.isConnected)penguin.innerHTML=penguinArt(state)+'<span class="lab-widget-reaction" role="status" aria-live="polite"></span>';},1800);
+    }
+  }
+  if(target.matches('[data-lab-widget-open]')&&modal==='widget'&&modalPayload?.stage==='desktop'){
+    // Recompute from the current account; the displayed desktop is never an entitlement.
+    const episode=view.availableEpisodes.find(n=>!view.user.completed.includes(n));
+    const result=log('widget_open','从演示桌面返回追剧页面');
+    if(result.ok){if(episode)playEpisode(episode);else closeDialog();}
+  }
   if(target.matches('[data-lab-penguin]')){
     log('penguin_tap','和企鹅搭子打招呼');
     const penguin=document.querySelector('[data-lab-penguin]'),speech=document.querySelector('.lab-journey__speech'),originalSpeech=speech.textContent,state=getPenguinState(view.progress);

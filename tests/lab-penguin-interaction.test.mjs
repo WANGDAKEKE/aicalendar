@@ -31,6 +31,19 @@ test('desktop penguin preview neither installs a widget nor grants watching or r
   assert.deepEqual(Object.keys(state).sort(), Object.keys(initial).sort());
 });
 
+test('confirming and opening the demo desktop only records intent, never installs or rewards', () => {
+  const initial = createInitialState();
+  let state = frontLog(initial, 'widget_preview');
+  for (const kind of ['widget_added', 'widget_open']) state = apply(state, 'LOG_EVENT', {
+    kind, label: '演示桌面交互', source: 'front', expectedUserId: state.activeUserId,
+  });
+  assert.deepEqual(state.users, initial.users);
+  assert.deepEqual(state.drama, initial.drama);
+  assert.deepEqual(selectLab(state).availableEpisodes, selectLab(initial).availableEpisodes);
+  assert.deepEqual(Object.keys(state).sort(), Object.keys(initial).sort());
+  assert.deepEqual(state.events.map(event => event.kind), ['widget_preview', 'widget_added', 'widget_open']);
+});
+
 test('greeting before and after a genuine unlock preserves one earned ticket and one issuance', () => {
   let state = frontLog(createInitialState(), 'penguin_tap');
   assert.equal(selectLab(state).progress.currentLevel, 0);

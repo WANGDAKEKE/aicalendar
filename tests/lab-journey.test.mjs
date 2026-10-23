@@ -34,8 +34,7 @@ for (const scenario of [
     const html = render(scenario.count);
     const nodes = nodeButtons(html);
     assert.match(html, new RegExp(`--journey-target:${scenario.target}`));
-    assert.match(html, new RegExp(`已看 ${scenario.count} / ${scenario.total} 集`));
-    assert.match(html, new RegExp(`还差 ${scenario.remaining} 集`));
+    assert.doesNotMatch(html, /已看 \d+ \/ \d+ 集|还差 \d+ 集/);
     assert.match(html, new RegExp(scenario.name));
     assert.equal(nodes.filter(node => /is-target/.test(node.html)).length, 1);
     assert.equal(nodes.filter(node => /is-earned/.test(node.html)).length, scenario.earned);
@@ -47,40 +46,50 @@ test('full completion keeps the earned highest node and a celebratory companion 
   const html = render(30);
   const nodes = nodeButtons(html);
   assert.match(html, /--journey-target:3/);
-  assert.match(html, /30 \/ 30 集/);
-  assert.match(html, /典藏票已收好 · 查看票面/);
+  assert.doesNotMatch(html, /30 \/ 30 集|lab-journey__progress/);
   assert.match(html, /一起追到了大结局/);
   assert.ok(nodes.every(node => /is-earned/.test(node.html)));
   assert.match(nodes[2].html, /is-earned is-target/);
   assert.doesNotMatch(html, /is-locked|还差|一起升级|再陪我看/);
 });
 
-test('out-of-order viewing shows prerequisite progress rather than all later watched episodes', () => {
+test('out-of-order viewing keeps locked prerequisite nodes without repeating numeric progress', () => {
   const progress = getTicketProgress([1, 2, 7, 8, 9, 10, 18, 30]);
   const original = structuredClone(progress);
   const html = render(0, {progress});
-  assert.match(html, /已看 6 \/ 10 集/);
-  assert.match(html, /还差 4 集/);
+  assert.doesNotMatch(html, /已看|还差|lab-journey__progress/);
   assert.match(html, /--journey-target:1/);
   assert.ok(nodeButtons(html).every(node => /is-locked/.test(node.html)));
   assert.deepEqual(progress, original);
 });
 
-test('an unavailable missing episode gets a gentle wait message without creating a play or claim action', () => {
+test('release availability never replaces the character dialogue or creates a play or claim action', () => {
   const html = render(18, {summary: {available: 18}});
-  assert.match(html, /还差 12 集 · 等更新再一起看/);
+  assert.match(html, /第二程，鹅很得意/);
+  assert.match(html, /同行票已升级，离典藏更近啦。/);
   assert.doesNotMatch(html, /data-episode=|data-claim|data-checkin/);
-  assert.match(render(18, {summary: {available: 19}}), /还差 12 集 · 升级典藏票/);
+  assert.equal(render(18, {summary: {available: 19}}), html);
 });
 
-test('dynamic ticket copy is escaped and cannot introduce HTML or event attributes', () => {
+test('external progress copy cannot replace character dialogue or introduce HTML', () => {
   const malicious = '<img src=x onerror="alert(1)"> & \'票\'';
   const progress = getTicketProgress(through(9));
   progress.next = {...progress.next, name: malicious};
   const html = render(9, {progress});
-  assert.match(html, /&lt;img src=x onerror=&quot;alert\(1\)&quot;&gt; &amp; &#39;票&#39;/);
+  assert.match(html, /先躺一下，等你开场/);
   assert.doesNotMatch(html, /<img src=x|<script|onerror="/);
   assert.equal(nodeButtons(html).length, 3);
+});
+
+test('compact header removes the redundant title and counter, with an accessible icon-only widget action', () => {
+  const html = render(10);
+  assert.doesNotMatch(html, /lab-journey__header|lab-journey__progress|>[^<]*追剧搭子[^<]*</);
+  assert.match(html, /class="lab-journey__widget" data-lab-widget aria-label="添加到桌面，查看小组件预览" title="添加到桌面"><svg/);
+  assert.match(html, /醒了！这张票是咱的/);
+  assert.match(html, /初程票已收好，下一程一起。/);
+  assert.match(html, /戳戳我，有回应/);
+  const css = readFileSync(new URL('../dist/lab-journey.css', import.meta.url), 'utf8');
+  assert.match(css, /lab-journey__widget\{[^}]*width:44px;height:44px/);
 });
 
 test('four 3D states follow earned ticket levels, including skipped history and invalid input', () => {

@@ -36,7 +36,7 @@ function kindName(kind) {
     time_changed:'调整时间',history_updated:'更新记录',release_updated:'修改排播',
     campaign_updated:'调整运营',episode_completed:'看完剧集',reminder_changed:'更新提醒',
     ticket_issued:'首次获得',ticket_upgraded:'电子票升级',ticket_adjusted:'调整电子票',
-    penguin_tap:'企鹅互动',widget_preview:'桌面组件',marketing_click:'营销入口',
+    penguin_tap:'企鹅互动',widget_preview:'桌面组件',widget_added:'演示桌面添加',widget_open:'桌面回流',marketing_click:'营销入口',
     ticket_download_requested:'保存电子票'})[kind] || '状态更新';
 }
 
