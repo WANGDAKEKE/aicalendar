@@ -16,3 +16,13 @@ export function selectMarketing({drama,user,now,campaign}) {
   if(target&&campaign.mode!=='screening')return {kind:'membership',target,available:upgrade.available,extra,title:extra>0?`${drama.tiers[target]} 今日可看至第 ${upgrade.available} 集`:`${drama.tiers[target]}，先一步追好剧`,caption:extra>0?`比当前权益多看 ${extra} 集 · 解锁更多精彩`:'查看会员专属排期与权益',button:user.tier==='free'?'开通 VIP':'升级 SVIP',event};
   return null;
 }
+
+const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+
+// Keep the tier and actual benefit, without repeating an editorial slogan.
+export function renderMarketingCard(view) {
+  const offer=selectMarketing(view);
+  if(!offer)return '';
+  const badge=offer.kind==='screening'?'特别企划':view.drama.tiers[offer.target];
+  return `<article class="lab-offer ${offer.kind==='screening'?'olive':''}"><div class="lab-offer-kicker"><b>${escapeHTML(badge)}</b></div><div class="lab-offer-main"><div><strong>${escapeHTML(offer.title)}</strong><p>${escapeHTML(offer.caption)}</p></div><button data-lab-offer="${offer.kind}">${escapeHTML(offer.button)} ›</button></div></article>`;
+}

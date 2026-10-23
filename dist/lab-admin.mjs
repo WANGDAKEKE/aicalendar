@@ -1,4 +1,4 @@
-import {selectLab} from './lab-store.mjs';
+import {selectLab} from './lab-store.mjs?v=2.9.1';
 
 const tierNames = {free:'非VIP', vip:'VIP', svip:'SVIP'};
 const tabNames = {users:'用户', schedule:'排播', campaign:'运营', logs:'日志'};
@@ -34,7 +34,7 @@ function kindName(kind) {
     SET_REMINDER:'更新提醒',TOGGLE_REMINDER:'更新提醒',TICKET_UPGRADE:'电子票升级',
     PENGUIN_INTERACTION:'企鹅互动',user_changed:'切换用户',tier_changed:'调整会员',
     time_changed:'调整时间',history_updated:'更新记录',release_updated:'修改排播',
-    campaign_updated:'调整运营',episode_completed:'看完剧集',reminder_changed:'更新提醒',
+    campaign_updated:'调整运营',highlight_updated:'日历表情',highlight_removed:'移除表情',screening_updated:'点映礼排播',episode_completed:'看完剧集',reminder_changed:'更新提醒',
     ticket_issued:'首次获得',ticket_upgraded:'电子票升级',ticket_adjusted:'调整电子票',
     penguin_tap:'企鹅互动',widget_preview:'桌面组件',widget_added:'演示桌面添加',widget_open:'桌面回流',marketing_click:'营销入口',
     ticket_download_requested:'保存电子票'})[kind] || '状态更新';
@@ -48,10 +48,12 @@ export function mountAdmin(root, store) {
   }
   const prefix = `lab-admin-${++instanceCount}`;
   const abort = new AbortController();
-  const edits = Object.fromEntries(['user','tier','history','clock','campaign'].map(key => [key,{dirty:false,userId:null}]));
+  const edits = Object.fromEntries(['user','tier','history','clock','campaign','highlight','screening'].map(key => [key,{dirty:false,userId:null}]));
   const releaseDrafts = new Map();
-  let releaseKey = '', activeTab = 'users', destroyed = false, lastEventSignature = '';
+  let releaseKey = '', activeTab = 'users', destroyed = false, lastEventSignature = '', highlightId = null, lastHighlightSignature = '';
   const tiers = selected => ['vip','svip','free'].map(tier => `<option value="${tier}"${selected===tier?' selected':''}>${tierNames[tier]}</option>`).join('');
+  const episodeOptions = () => Array.from({length:30},(_,index)=>`<option value="${index+1}">第 ${index+1} 集</option>`).join('');
+  const emojiOptions = [['🤝','握手'],['💌','情书'],['🏡','小屋'],['🍒','樱桃'],['✨','闪光'],['🎉','庆祝'],['🥹','感动'],['🔥','火热']];
   const fieldId = name => `${prefix}-${name}`;
   root.classList.add('lab-admin');
   root.innerHTML = `
@@ -97,14 +99,34 @@ export function mountAdmin(root, store) {
           <p class="lab-admin-help">保留该批次原有集数与开播 / 完结标识。不同身份排期独立。</p><p class="lab-admin-draft" data-admin-release-draft hidden></p>
           <div class="lab-admin-form-bottom"><button type="button" class="lab-admin-text-button" data-admin-reload="release">载入当前批次</button><button class="lab-admin-primary" type="submit">保存排播</button></div>
         </form>
+        <form class="lab-admin-card" data-admin-form="screening">
+          <div class="lab-admin-card-title"><h3>点映礼排期</h3><button type="button" class="lab-admin-text-button" data-admin-reload="screening">载入当前</button></div>
+          <label class="lab-admin-toggle"><span><strong>开放点映礼活动展示</strong><small>日历与活动营销入口同步展示</small></span><input type="checkbox" name="enabled"><i aria-hidden="true"></i></label>
+          <label class="lab-admin-label" for="${fieldId('screening-date')}">活动日期</label><input id="${fieldId('screening-date')}" name="date" type="date" required>
+          <div class="lab-admin-two-columns"><div><label class="lab-admin-label" for="${fieldId('screening-time')}">开始时间</label><input id="${fieldId('screening-time')}" name="time" type="time" step="60" required></div><div><label class="lab-admin-label" for="${fieldId('screening-end')}">结束时间</label><input id="${fieldId('screening-end')}" name="endTime" type="time" step="60" required></div></div>
+          <div class="lab-admin-two-columns"><div><label class="lab-admin-label" for="${fieldId('screening-from')}">提前看 · 起始集</label><select id="${fieldId('screening-from')}" name="from">${episodeOptions()}</select></div><div><label class="lab-admin-label" for="${fieldId('screening-to')}">结束集</label><select id="${fieldId('screening-to')}" name="to">${episodeOptions()}</select></div></div>
+          <label class="lab-admin-label" for="${fieldId('screening-access')}">参与资格说明</label><input id="${fieldId('screening-access')}" name="accessNote" type="text" maxlength="160" required>
+          <p class="lab-admin-help">独立于常规排期，只配置活动展示；不会提前解锁剧集或改变会员权益。</p><p class="lab-admin-draft" data-admin-draft="screening" hidden></p>
+          <div class="lab-admin-form-bottom"><small>同日活动 · 北京时间</small><button class="lab-admin-primary" type="submit">保存点映礼排期</button></div>
+        </form>
       </section>
       <section role="tabpanel" id="${fieldId('panel-campaign')}" aria-labelledby="${fieldId('tab-campaign')}" data-admin-panel="campaign" hidden>
+        <form class="lab-admin-card" data-admin-form="highlight">
+          <div class="lab-admin-card-title"><h3>日历表情</h3><button type="button" class="lab-admin-text-button" data-admin-reload="highlight">载入当前</button></div>
+          <p class="lab-admin-help">绑定剧集，随 VIP / SVIP / 非VIP 排期移动；前台只显示表情，不加剧情解读。</p>
+          <div class="lab-admin-highlight-list" data-admin-highlights></div>
+          <div class="lab-admin-highlight-editor">
+            <div class="lab-admin-card-title"><strong data-admin-highlight-title>添加表情</strong><button type="button" class="lab-admin-text-button" data-admin-highlight-new hidden>添加新表情</button></div>
+            <div class="lab-admin-two-columns"><div><label class="lab-admin-label" for="${fieldId('highlight-episode')}">关联剧集</label><select id="${fieldId('highlight-episode')}" name="episode">${episodeOptions()}</select></div><div><label class="lab-admin-label" for="${fieldId('highlight-icon')}">表情（1–2 个）</label><input id="${fieldId('highlight-icon')}" name="icon" type="text" maxlength="40" autocomplete="off" required placeholder="🤝"></div></div>
+            <div class="lab-admin-emoji-picker" role="group" aria-label="快捷选择表情">${emojiOptions.map(([icon,label])=>`<button type="button" data-admin-emoji="${icon}" aria-label="选择${label}表情" aria-pressed="false">${icon}</button>`).join('')}</div>
+            <p class="lab-admin-draft" data-admin-draft="highlight" hidden></p>
+            <div class="lab-admin-form-bottom"><small>可直接输入系统表情</small><button class="lab-admin-primary" type="submit">保存表情</button></div>
+          </div>
+        </form>
         <form class="lab-admin-card" data-admin-form="campaign">
           <div class="lab-admin-card-title"><h3>底部营销位</h3><button type="button" class="lab-admin-text-button" data-admin-reload="campaign">载入当前</button></div>
           <label class="lab-admin-toggle"><span><strong>展示营销入口</strong><small>关闭后不展示会员或点映礼营销</small></span><input type="checkbox" name="enabled"><i aria-hidden="true"></i></label>
           <label class="lab-admin-label" for="${fieldId('campaign-mode')}">展示策略</label><select id="${fieldId('campaign-mode')}" name="mode"><option value="auto">自动匹配当前用户</option><option value="membership">优先展示会员营销</option><option value="screening">优先展示点映礼</option></select>
-          <label class="lab-admin-label" for="${fieldId('campaign-headline')}">营销标题</label><input id="${fieldId('campaign-headline')}" name="headline" type="text" maxlength="60" required placeholder="例：好故事，先一步看到">
-          <label class="lab-admin-toggle lab-admin-toggle-secondary"><span><strong>开放点映礼活动展示</strong><small>资格独立，不解锁普通会员播放权限</small></span><input type="checkbox" name="screeningEnabled"><i aria-hidden="true"></i></label>
           <p class="lab-admin-help">这里只调整演示曝光。点击营销入口不产生订单、付款或真实会员权益。</p><p class="lab-admin-draft" data-admin-draft="campaign" hidden></p>
           <div class="lab-admin-form-bottom"><span class="lab-admin-asset-note">本机模拟运营配置</span><button class="lab-admin-primary" type="submit">保存运营配置</button></div>
         </form>
@@ -205,6 +227,36 @@ export function mountAdmin(root, store) {
     find('[data-admin-reload="release"]').textContent = draft ? '放弃草稿并载入' : '载入当前批次';
   }
 
+  function renderHighlights() {
+    const highlights = [...(stateNow().drama.calendarHighlights || [])].sort((a,b)=>a.episode-b.episode);
+    const signature = JSON.stringify(highlights);
+    if (signature !== lastHighlightSignature) {
+      lastHighlightSignature = signature;
+      find('[data-admin-highlights]').innerHTML = highlights.length ? highlights.map(item=>`<div class="lab-admin-highlight-row"><span class="lab-admin-highlight-icon" aria-hidden="true">${escapeHTML(item.icon)}</span><strong>第 ${item.episode} 集</strong><button type="button" class="lab-admin-text-button" data-admin-highlight-edit="${escapeHTML(item.id)}" aria-label="编辑第 ${item.episode} 集表情">编辑</button><button type="button" class="lab-admin-text-button" data-admin-highlight-remove="${escapeHTML(item.id)}" aria-label="移除第 ${item.episode} 集表情">移除</button></div>`).join('') : '<p class="lab-admin-help">还没有表情，选一集添加吧。</p>';
+    }
+    const current = highlights.find(item=>item.id===highlightId);
+    if (!edits.highlight.dirty) {
+      if (!current) highlightId = null;
+      input('highlight','episode').value = String(current?.episode || Array.from({length:30},(_,index)=>index+1).find(episode=>!highlights.some(item=>item.episode===episode)) || 1);
+      input('highlight','icon').value = current?.icon || '';
+    }
+    find('[data-admin-highlight-title]').textContent = highlightId ? '编辑表情' : '添加表情';
+    find('[data-admin-highlight-new]').hidden = !highlightId;
+    form('highlight').querySelector('button[type="submit"]').textContent = highlightId ? '保存修改' : '添加表情';
+    updateEmojiSelection();
+  }
+
+  function updateEmojiSelection() {
+    root.querySelectorAll('[data-admin-emoji]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.adminEmoji===input('highlight','icon').value)));
+  }
+
+  function loadHighlight(id = null) {
+    if (edits.highlight.dirty) {feedback('表情有未保存的修改，请先保存，或点击「放弃草稿并载入」。',true);return;}
+    highlightId = id;
+    renderHighlights();
+    input('highlight','episode').focus();
+  }
+
   function render() {
     if (destroyed) return;
     const state = stateNow(), derived = selectLab(state), {user,progress} = derived;
@@ -238,9 +290,18 @@ export function mountAdmin(root, store) {
     if (!edits.campaign.dirty) {
       input('campaign','enabled').checked = Boolean(state.campaign.enabled);
       input('campaign','mode').value = state.campaign.mode;
-      input('campaign','headline').value = state.campaign.headline || '';
-      input('campaign','screeningEnabled').checked = Boolean(state.campaign.screeningEnabled);
     }
+    if (!edits.screening.dirty) {
+      const screening = state.drama.screeningEvents?.[0];
+      input('screening','enabled').checked = Boolean(state.campaign.screeningEnabled);
+      input('screening','date').value = screening?.date || derived.today;
+      input('screening','time').value = screening?.time || '18:00';
+      input('screening','endTime').value = screening?.endTime || '20:00';
+      input('screening','from').value = String(screening?.from || 27);
+      input('screening','to').value = String(screening?.to || 30);
+      input('screening','accessNote').value = screening?.accessNote || '需另行获取点映礼资格，普通会员不自动包含。';
+    }
+    renderHighlights();
     Object.keys(edits).forEach(updateDraft);
     selectedCount();
     refreshReleaseOptions();
@@ -260,6 +321,7 @@ export function mountAdmin(root, store) {
   root.addEventListener('input',event=>{
     const key = event.target.closest('form')?.dataset.adminForm;
     if (edits[key]) {edits[key].dirty=true;updateDraft(key);if(key==='history')selectedCount();}
+    if (key==='highlight') updateEmojiSelection();
     if (key==='release' && ['releaseDate','releaseTime'].includes(event.target.name)) {
       releaseDrafts.set(releaseKey,{date:input('release','releaseDate').value,time:input('release','releaseTime').value});
       const note = find('[data-admin-release-draft]');note.hidden=false;note.textContent='该批次有未保存修改；切换批次后草稿仍保留。';
@@ -284,7 +346,18 @@ export function mountAdmin(root, store) {
       if (key==='tier') {action={type:'SET_TIER',tier:input(key,'tier').value,expectedUserId:edits.tier.userId};message='会员身份已保存，实际可播范围已同步。';}
       if (key==='history') {action={type:'SET_COMPLETED',completed:[...form(key).querySelectorAll('input[name="episode"]:checked')].map(checkbox=>Number(checkbox.value)),expectedUserId:edits.history.userId};message='观看记录已保存，电子票进度已重新计算。';}
       if (key==='clock') {action={type:'SET_TIME',now:beijingISO(input(key,'now').value)};message='演示时间已调整（北京时间），左侧排期已同步。';}
-      if (key==='campaign') {action={type:'SET_CAMPAIGN',patch:{enabled:input(key,'enabled').checked,mode:input(key,'mode').value,headline:input(key,'headline').value.trim(),screeningEnabled:input(key,'screeningEnabled').checked}};message='运营配置已保存；不会产生订单或改变账号权益。';}
+      if (key==='campaign') {action={type:'SET_CAMPAIGN',patch:{enabled:input(key,'enabled').checked,mode:input(key,'mode').value}};message='运营配置已保存；不会产生订单或改变账号权益。';}
+      if (key==='highlight') {
+        action={type:'SET_HIGHLIGHT',...(highlightId?{id:highlightId}:{}),episode:Number(input(key,'episode').value),icon:input(key,'icon').value.trim()};
+        message='日历表情已保存，已同步到对应剧集的更新日期。';
+      }
+      if (key==='screening') {
+        const existing=state.drama.screeningEvents?.[0] || {id:'changan-screening',title:'点映礼'};
+        const date=input(key,'date').value,time=input(key,'time').value,endTime=input(key,'endTime').value;
+        beijingISO(`${date}T${time}`);beijingISO(`${date}T${endTime}`);
+        action={type:'SET_SCREENING',enabled:input(key,'enabled').checked,event:{...existing,date,time,endTime,from:Number(input(key,'from').value),to:Number(input(key,'to').value),accessNote:input(key,'accessNote').value.trim()}};
+        message='点映礼排期已保存；日历活动已同步，常规播放权益不变。';
+      }
       if (key==='release') {
         const {tier,index,release}=currentRelease();
         if (!release) throw new Error('该发布批次不存在，请重新选择。');
@@ -295,6 +368,7 @@ export function mountAdmin(root, store) {
       if (action && dispatch(action,message)) {
         if (edits[key]) edits[key].dirty=false;
         if (key==='release') releaseDrafts.delete(releaseKey);
+        if (key==='highlight') highlightId=null;
         render();
       }
     } catch(error) {feedback(error instanceof Error?error.message:'请检查输入后重试。',true);}
@@ -304,6 +378,19 @@ export function mountAdmin(root, store) {
     const button=event.target.closest('button');
     if (!button || !root.contains(button)) return;
     if (button.dataset.adminTab) setTab(button.dataset.adminTab);
+    if (button.dataset.adminEmoji) {
+      input('highlight','icon').value=button.dataset.adminEmoji;edits.highlight.dirty=true;updateDraft('highlight');updateEmojiSelection();
+    }
+    if (button.dataset.adminHighlightEdit) loadHighlight(button.dataset.adminHighlightEdit);
+    if (button.hasAttribute('data-admin-highlight-new')) loadHighlight();
+    if (button.dataset.adminHighlightRemove) {
+      const id=button.dataset.adminHighlightRemove;
+      if (edits.highlight.dirty && highlightId===id) {feedback('这条表情有未保存的修改，请先保存或放弃草稿。',true);return;}
+      if (dispatch({type:'REMOVE_HIGHLIGHT',id},'日历表情已移除，可重新添加。')) {
+        if(highlightId===id){highlightId=null;edits.highlight.dirty=false;}
+        render();input('highlight','episode').focus();
+      }
+    }
     if (button.dataset.adminReload) {
       const key=button.dataset.adminReload;
       if (key==='release') {releaseDrafts.delete(releaseKey);renderRelease();}
@@ -313,7 +400,7 @@ export function mountAdmin(root, store) {
     if (button.hasAttribute('data-admin-reset-open')) {find('[data-admin-reset-confirm]').hidden=false;find('[data-admin-reset-cancel]').focus();}
     if (button.hasAttribute('data-admin-reset-cancel')) {find('[data-admin-reset-confirm]').hidden=true;find('[data-admin-reset-open]').focus();}
     if (button.hasAttribute('data-admin-reset-confirm-button') && dispatch({type:'RESET'},'已恢复初始演示数据。')) {
-      Object.values(edits).forEach(editor=>{editor.dirty=false;});releaseDrafts.clear();
+      Object.values(edits).forEach(editor=>{editor.dirty=false;});releaseDrafts.clear();highlightId=null;
       find('[data-admin-reset-confirm]').hidden=true;render();find('[data-admin-reset-open]').focus();
     }
   },{signal:abort.signal});

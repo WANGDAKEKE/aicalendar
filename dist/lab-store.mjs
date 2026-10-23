@@ -11,6 +11,47 @@ const INITIAL_NOW = '2026-10-15T19:00:00+08:00';
 const clone = value => structuredClone(value);
 const fail = message => { throw new Error(message); };
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const emojiSegments = new Intl.Segmenter('zh', {granularity: 'grapheme'});
+const emojiPart = '\\p{Extended_Pictographic}[\\uFE0E\\uFE0F]?\\p{Emoji_Modifier}?';
+const emojiCluster = new RegExp(`^(?:${emojiPart})(?:\\u200D${emojiPart})*(?:[\\u{E0020}-\\u{E007E}]+\\u{E007F})?$`, 'u');
+const validId = value => typeof value === 'string' && /^[a-zA-Z0-9_-]{1,80}$/.test(value);
+const validText = (value, limit) => typeof value === 'string' && value.trim().length > 0 && value.length <= limit && !/[<>\u0000-\u001F]/.test(value);
+
+function validIcon(value) {
+  if(typeof value !== 'string' || value.length > 64) return false;
+  const parts = [...emojiSegments.segment(value)].map(part => part.segment);
+  return parts.length >= 1 && parts.length <= 2 && parts.every(part => emojiCluster.test(part)
+    || /^[\u{1F1E6}-\u{1F1FF}]{2}$/u.test(part) || /^[0-9#*]\uFE0F?\u20E3$/u.test(part));
+}
+
+function validateHighlights(highlights) {
+  if(!Array.isArray(highlights) || highlights.length > 30) fail('日历表情最多配置 30 条。');
+  const ids = new Set(), usedEpisodes = new Set();
+  for(const item of highlights) {
+    if(!isRecord(item) || !validId(item.id) || ids.has(item.id)) fail('表情配置编号无效。');
+    if(!Number.isSafeInteger(item.episode) || item.episode < 1 || item.episode > 30) fail('请选择 1–30 集中的一个集号。');
+    if(usedEpisodes.has(item.episode)) fail('这一集已有表情，请编辑原有配置。');
+    if(!validIcon(item.icon)) fail('请填写 1–2 个表情符号，不要填写文字或链接。');
+    if(!validText(item.title, 60)) fail('表情配置说明无效。');
+    ids.add(item.id);usedEpisodes.add(item.episode);
+  }
+}
+
+function validateScreenings(events) {
+  if(!Array.isArray(events) || events.length > 1) fail('当前演示支持配置一场点映礼。');
+  for(const event of events) {
+    if(!isRecord(event) || !validId(event.id) || !validText(event.title, 60)) fail('请填写有效的点映礼标题与编号。');
+    if(!validDate(event.date) || !validTime(event.time) || !validTime(event.endTime) || event.endTime <= event.time) fail('请填写有效活动日期，结束时间须晚于同日开始时间。');
+    if(!Number.isSafeInteger(event.from) || !Number.isSafeInteger(event.to) || event.from < 1 || event.to > 30 || event.from > event.to) fail('点映礼集数须在 1–30 集内，结束集不能小于开始集。');
+    if(!validText(event.accessNote, 240)) fail('请填写 1–240 个字符的参与资格说明。');
+    if(event.tiers !== undefined && (!Array.isArray(event.tiers) || !event.tiers.length || new Set(event.tiers).size !== event.tiers.length || event.tiers.some(tier => !TIERS.has(tier)))) fail('点映礼展示会员类型无效。');
+  }
+}
+
+const screeningSignature = event => event ? JSON.stringify([
+  event.id, event.title, event.date, event.time, event.endTime, event.from, event.to,
+  event.accessNote, event.tiers ? [...event.tiers].sort() : null,
+]) : null;
 
 function validDate(value) {
   if(typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -197,6 +238,48 @@ export function reduceLab(state, action) {
       record(next, source, 'campaign_updated', '更新活动配置');
       break;
     }
+    case 'SET_HIGHLIGHT': {
+      if(source !== 'admin') fail('只有演示后台可以调整日历表情。');
+      const highlights = next.drama.calendarHighlights;
+      const editing = action.id !== undefined;
+      if(editing && !validId(action.id)) fail('表情配置编号无效。');
+      const index = editing ? highlights.findIndex(item => item.id === action.id) : -1;
+      if(editing && index < 0) fail('这条表情已不存在，请载入当前配置后重试。');
+      let id = action.id || `highlight-${next.revision}`;
+      for(let suffix = 1; !editing && highlights.some(item => item.id === id); suffix++) id = `highlight-${next.revision}-${suffix}`;
+      const highlight = {id, episode: action.episode, icon: action.icon, title: '剧集表情'};
+      if(editing) highlights[index] = highlight;
+      else highlights.push(highlight);
+      validateHighlights(highlights);
+      if(editing && JSON.stringify(highlight) === JSON.stringify(state.drama.calendarHighlights[index])) return state;
+      record(next, source, 'highlight_updated', `${editing ? '修改' : '添加'}第 ${highlight.episode} 集的日历表情 ${highlight.icon}`);
+      break;
+    }
+    case 'REMOVE_HIGHLIGHT': {
+      if(source !== 'admin') fail('只有演示后台可以调整日历表情。');
+      if(!validId(action.id)) fail('表情配置编号无效。');
+      const index = next.drama.calendarHighlights.findIndex(item => item.id === action.id);
+      if(index < 0) return state;
+      const [removed] = next.drama.calendarHighlights.splice(index, 1);
+      record(next, source, 'highlight_removed', `移除第 ${removed.episode} 集的日历表情`);
+      break;
+    }
+    case 'SET_SCREENING': {
+      if(source !== 'admin') fail('只有演示后台可以调整点映礼排播。');
+      if(typeof action.enabled !== 'boolean' || !isRecord(action.event)) fail('请填写完整的点映礼活动配置。');
+      const allowed = ['id', 'title', 'date', 'time', 'endTime', 'from', 'to', 'accessNote', 'tiers'];
+      if(Object.keys(action.event).some(key => !allowed.includes(key))) fail('点映礼活动字段无效。');
+      const event = clone(action.event);
+      validateScreenings([event]);
+      event.title = event.title.trim();event.accessNote = event.accessNote.trim();
+      const existing = next.drama.screeningEvents;
+      if(existing.length && existing[0].id !== event.id) fail('这场点映礼已变化，请载入当前配置后重试。');
+      if(next.campaign.screeningEnabled === action.enabled && screeningSignature(existing[0]) === screeningSignature(event)) return state;
+      next.drama.screeningEvents = [event];
+      next.campaign.screeningEnabled = action.enabled;
+      record(next, source, 'screening_updated', `${action.enabled ? '开放' : '关闭'}点映礼展示 · ${event.date} ${event.time}–${event.endTime} · 第 ${event.from}–${event.to} 集`);
+      break;
+    }
     case 'LOG_EVENT':
       if(!LOG_KINDS.has(action.kind)) fail('此事件类型不可手动记录。');
       if(typeof action.label !== 'string' || !action.label.trim() || action.label.length > 160) fail('事件说明请填写 1–160 个字符。');
@@ -218,6 +301,8 @@ function validateStoredState(state) {
   if(!isRecord(state) || state.version !== 1 || !Number.isSafeInteger(state.revision) || state.revision < 0 || !validNow(state.now)) fail('演示数据格式无效。');
   if(!isRecord(state.drama) || state.drama.id !== originalDrama.id || state.drama.totalEpisodes !== 30 || state.drama.timeZone !== 'Asia/Shanghai' || !isRecord(state.drama.scheduleByTier)) fail('剧集配置无效。');
   for(const tier of TIERS) validateSchedule(state.drama.scheduleByTier[tier]);
+  validateHighlights(state.drama.calendarHighlights);
+  validateScreenings(state.drama.screeningEvents);
   validateCampaign(state.campaign);
   if(!isRecord(state.users) || !Object.hasOwn(state.users, state.activeUserId)) fail('演示用户数据无效。');
   const serials = new Set();

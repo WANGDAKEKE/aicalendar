@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createInitialState, reduceLab, selectLab, createLabStore} from '../dist/lab-store.mjs';
+import {getDateOperations} from '../dist/operations-model.mjs';
+import {selectMarketing} from '../dist/lab-marketing.mjs';
 
 const run = (state, type, fields = {}) => reduceLab(state, {type, ...fields});
 const range = count => Array.from({length: count}, (_, index) => index + 1);
@@ -308,5 +310,143 @@ test('corrupt saved state falls back safely and failed persistence does not clai
     assert.equal(result.ok, false);
     assert.match(result.error, /保存失败/);
     assert.equal(store.getState().users.lin.reminded, false);
+  });
+});
+
+test('calendar emoji can be added, edited and removed without changing account data', () => {
+  const initial = createInitialState();
+  let state = run(initial, 'SET_HIGHLIGHT', {episode: 12, icon: '🎉'});
+  const id = state.drama.calendarHighlights.at(-1).id;
+  assert.match(id, /^highlight-/);
+  assert.deepEqual(state.drama.calendarHighlights.at(-1), {id, episode: 12, icon: '🎉', title: '剧集表情'});
+  state = run(state, 'SET_HIGHLIGHT', {id, episode: 10, icon: '🤝💌'});
+  assert.equal(state.drama.calendarHighlights.find(item => item.id === id).episode, 10);
+  assert.equal(run(state, 'SET_HIGHLIGHT', {id, episode: 10, icon: '🤝💌'}), state);
+  state = run(state, 'REMOVE_HIGHLIGHT', {id});
+  assert.equal(state.drama.calendarHighlights.some(item => item.id === id), false);
+  assert.equal(run(state, 'REMOVE_HIGHLIGHT', {id}), state);
+  assert.deepEqual(state.users, initial.users);
+  assert.deepEqual(state.drama.scheduleByTier, initial.drama.scheduleByTier);
+  assert.deepEqual(state.drama.screeningEvents, initial.drama.screeningEvents);
+  assert.deepEqual(state.events.map(event => event.kind), ['highlight_updated', 'highlight_updated', 'highlight_removed']);
+  assert.deepEqual(initial, createInitialState());
+});
+
+test('editing an existing emoji preserves its id and drops the internal plot caption', () => {
+  const state = run(createInitialState(), 'SET_HIGHLIGHT', {id: 'companions', episode: 14, icon: '💖'});
+  assert.deepEqual(state.drama.calendarHighlights[0], {id: 'companions', episode: 14, icon: '💖', title: '剧集表情'});
+});
+
+test('emoji validation accepts grapheme variants and rejects prose, markup and excess symbols', () => {
+  const state = createInitialState();
+  for(const icon of ['🤝', '🤝🏽', '🫱🏻‍🫲🏽', '👨‍👩‍👧‍👦', '❤️', '🏳️‍🌈', '🇨🇳', '1️⃣', '🎉💌']) {
+    assert.doesNotThrow(() => run(state, 'SET_HIGHLIGHT', {episode: 12, icon}));
+  }
+  for(const icon of ['', ' ', '握手', 'hello', '<img src=x>', '🤝x', ' 🤝', '🤝 ', '🤝\n', '🎉💌🏡', '\u200D', '🏽', '1']) {
+    assert.throws(() => run(state, 'SET_HIGHLIGHT', {episode: 12, icon}), /表情/);
+  }
+  for(const fields of [{episode: 14, icon: '🎉'}, {episode: 0, icon: '🎉'}, {episode: 31, icon: '🎉'}, {episode: 1.5, icon: '🎉'}, {episode: '12', icon: '🎉'}, {id: 'missing', episode: 12, icon: '🎉'}, {id: '<script>', episode: 12, icon: '🎉'}]) {
+    assert.throws(() => run(state, 'SET_HIGHLIGHT', fields));
+  }
+  assert.throws(() => run(state, 'SET_HIGHLIGHT', {id: 'companions', episode: 22, icon: '🎉'}), /已有表情/);
+  assert.throws(() => run(state, 'REMOVE_HIGHLIGHT', {id: {}}));
+  assert.deepEqual(state, createInitialState());
+});
+
+test('an emoji remains attached to its episode across identity previews and release edits', () => {
+  const initial = createInitialState();
+  let state = run(initial, 'SET_HIGHLIGHT', {id: 'companions', episode: 14, icon: '🎉'});
+  const at = (tier, date) => getDateOperations(state.drama, {tier, date, now: state.now});
+  assert.equal(at('vip', '2026-10-16').highlights[0].icon, '🎉');
+  assert.equal(at('svip', '2026-10-15').highlights[0].icon, '🎉');
+  const freeRelease = state.drama.scheduleByTier.free.find(release => release.from <= 14 && release.to >= 14);
+  assert.equal(at('free', freeRelease.date).highlights[0].icon, '🎉');
+  // Move the first batch to a prior day and bind a separate emoji to it.
+  state = run(state, 'SET_HIGHLIGHT', {episode: 1, icon: '🍒'});
+  state = run(state, 'SET_RELEASE', {tier: 'vip', index: 0, release: {...state.drama.scheduleByTier.vip[0], date: '2026-10-09'}});
+  assert.equal(at('vip', '2026-10-10').highlights.length, 0);
+  assert.equal(at('vip', '2026-10-09').highlights[0].icon, '🍒');
+  assert.deepEqual(state.users, initial.users);
+});
+
+test('screening settings update atomically but never grant episodes or affect normal finale', () => {
+  const initial = createInitialState();
+  const event = {...initial.drama.screeningEvents[0], date: '2026-10-15', time: '18:30', endTime: '21:00', from: 25, to: 30, accessNote: ' 需单独获取资格。 '};
+  let state = run(initial, 'SET_SCREENING', {enabled: true, event});
+  assert.equal(state.drama.screeningEvents[0].accessNote, '需单独获取资格。');
+  const selected = selectLab(state);
+  assert.deepEqual(selected.availableEpisodes, range(12));
+  assert.deepEqual(state.users, initial.users);
+  assert.deepEqual(state.drama.scheduleByTier, initial.drama.scheduleByTier);
+  assert.equal(getDateOperations(state.drama, {tier: 'vip', date: '2026-10-15', now: state.now}).events[0].status, 'live');
+  assert.equal(selectMarketing({...selected, campaign: {...state.campaign, mode: 'screening'}}).event.from, 25);
+  assert.throws(() => run(state, 'COMPLETE_EPISODE', {episode: 25, source: 'front'}), /尚未/);
+  assert.equal(run(state, 'SET_SCREENING', {enabled: true, event: state.drama.screeningEvents[0]}), state);
+  assert.equal(run(state, 'SET_SCREENING', {enabled: true, event: Object.fromEntries(Object.entries(state.drama.screeningEvents[0]).reverse())}), state);
+  state = run(state, 'SET_SCREENING', {enabled: false, event: state.drama.screeningEvents[0]});
+  assert.equal(state.campaign.screeningEnabled, false);
+  assert.equal(selectMarketing({...selectLab(state), campaign: {...state.campaign, mode: 'screening'}}), null);
+  assert.equal(state.events.at(-1).kind, 'screening_updated');
+});
+
+test('screening validation rejects malformed activity metadata without partial toggle changes', () => {
+  const state = createInitialState(), event = state.drama.screeningEvents[0];
+  const invalid = [{id: 'unknown'}, {title: ''}, {title: '<script>'}, {date: '2026-02-30'}, {time: '24:00'}, {endTime: '18:00'}, {endTime: '17:00'}, {from: 0}, {to: 31}, {from: 30, to: 29}, {from: '27'}, {accessNote: ''}, {tiers: []}, {tiers: ['vip', 'vip']}, {tiers: ['__proto__']}, {tiers: 'vip'}, {playable: true}];
+  for(const patch of invalid) assert.throws(() => run(state, 'SET_SCREENING', {enabled: false, event: {...event, ...patch}}));
+  for(const enabled of ['true', null, 1]) assert.throws(() => run(state, 'SET_SCREENING', {enabled, event}));
+  assert.deepEqual(state, createInitialState());
+});
+
+test('screening can be created for an empty configuration and identity visibility stays independent', () => {
+  const initial = createInitialState();
+  initial.drama.screeningEvents = [];
+  const event = {...createInitialState().drama.screeningEvents[0], tiers: ['svip']};
+  const state = run(initial, 'SET_SCREENING', {enabled: true, event});
+  assert.deepEqual(state.drama.screeningEvents, [event]);
+  assert.equal(getDateOperations(state.drama, {tier: 'vip', date: event.date, now: state.now}).events.length, 0);
+  assert.equal(getDateOperations(state.drama, {tier: 'svip', date: event.date, now: state.now}).events.length, 1);
+  assert.deepEqual(state.users, initial.users);
+});
+
+test('front-end actions cannot edit screening or emoji configuration', () => {
+  const state = createInitialState();
+  for(const action of [
+    {type: 'SET_HIGHLIGHT', episode: 12, icon: '🤝'},
+    {type: 'REMOVE_HIGHLIGHT', id: 'companions'},
+    {type: 'SET_SCREENING', enabled: false, event: state.drama.screeningEvents[0]},
+  ]) assert.throws(() => reduceLab(state, {...action, source: 'front'}), /后台/);
+});
+
+test('old v1 data and new operations survive persistence without resetting user progress', () => {
+  const initial = JSON.parse(JSON.stringify(run(createInitialState(), 'COMPLETE_EPISODE', {episode: 10, source: 'front'})));
+  const browser = browserMock(JSON.stringify(initial));
+  withBrowser(browser, () => {
+    const store = createLabStore();
+    assert.deepEqual(store.getState(), initial);
+    assert.equal(store.dispatch({type: 'SET_HIGHLIGHT', episode: 12, icon: '🤝🏽'}).ok, true);
+    assert.equal(store.dispatch({type: 'SET_SCREENING', enabled: false, event: {...initial.drama.screeningEvents[0], date: '2026-10-25'}}).ok, true);
+    const restored = createLabStore().getState();
+    assert.deepEqual(restored, store.getState());
+    assert.equal(restored.drama.calendarHighlights.at(-1).icon, '🤝🏽');
+    assert.equal(restored.drama.screeningEvents[0].date, '2026-10-25');
+    assert.equal(restored.campaign.screeningEnabled, false);
+    assert.deepEqual(restored.users, initial.users);
+  });
+});
+
+test('malformed operations in cross-page storage cannot replace valid in-memory data', () => {
+  withBrowser(browserMock(), () => {
+    const browser = globalThis.window, store = createLabStore();
+    const valid = JSON.parse(JSON.stringify(run(createInitialState(), 'TOGGLE_REMINDER')));
+    browser.emit(JSON.stringify(valid));
+    for(const corrupt of [
+      state => {state.drama.calendarHighlights[0].icon = '<img>';},
+      state => {state.drama.calendarHighlights[1].episode = 14;},
+      state => {state.drama.screeningEvents[0].endTime = '17:00';},
+    ]) {
+      const incoming = structuredClone(valid);incoming.revision++;
+      corrupt(incoming);browser.emit(JSON.stringify(incoming));
+      assert.deepEqual(store.getState(), valid);
+    }
   });
 });

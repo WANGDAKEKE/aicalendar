@@ -1,7 +1,7 @@
-import {createLabStore,selectLab} from './lab-store.mjs';
-import {mountAdmin} from './lab-admin.mjs';
+import {createLabStore,selectLab} from './lab-store.mjs?v=2.9.1';
+import {mountAdmin} from './lab-admin.mjs?v=2.9.1';
 import {renderJourney,penguinArt,getPenguinState} from './lab-journey.mjs';
-import {selectMarketing} from './lab-marketing.mjs';
+import {selectMarketing,renderMarketingCard} from './lab-marketing.mjs?v=2.9.1';
 import {monthCells,shiftMonth,getSchedule,getReleaseViewingState,episodeLabel,shortDate} from './calendar-model.mjs';
 import {getTierContext} from './tier-model.mjs';
 import {getDateOperations} from './operations-model.mjs';
@@ -40,10 +40,9 @@ function renderCalendar(){
   }).join('');
 }
 function renderMarketing(){
-  const offer=selectMarketing(view);
-  $('labMarketing').hidden=!offer;
-  if(!offer){$('labMarketing').innerHTML='';return;}
-  $('labMarketing').innerHTML=`<article class="lab-offer ${offer.kind==='screening'?'olive':''}"><div class="lab-offer-kicker"><b>${offer.kind==='screening'?'特别企划':view.drama.tiers[offer.target]}</b>${esc(view.campaign.headline)}</div><div class="lab-offer-main"><div><strong>${esc(offer.title)}</strong><p>${esc(offer.caption)}</p></div><button data-lab-offer="${offer.kind}">${esc(offer.button)} ›</button></div></article>`;
+  const card=renderMarketingCard(view);
+  $('labMarketing').hidden=!card;
+  $('labMarketing').innerHTML=card;
 }
 function render(){
   $('labUserLabel').textContent=`${view.user.name} · ${view.drama.tiers[view.user.tier]}`;

@@ -91,6 +91,20 @@
 .lab-admin-toggle input:checked + i::after { transform: translateX(14px); }
 .lab-admin-toggle input:focus-visible + i { outline: 3px solid #be873d66; outline-offset: 3px; }
 .lab-admin-toggle-secondary { margin-top: 19px; padding-top: 15px; border-top: 1px solid var(--admin-line); }
+.lab-admin-highlight-list { margin-top: 13px; }
+.lab-admin-highlight-row { display: flex; align-items: center; gap: 10px; min-height: 48px; border-top: 1px solid var(--admin-line); }
+.lab-admin-highlight-row:last-child { border-bottom: 1px solid var(--admin-line); }
+.lab-admin-highlight-icon { width: 44px; flex: 0 0 auto; font-size: 21px; text-align: center; }
+.lab-admin-highlight-row strong { flex: 1; font-size: 12px; font-weight: 550; }
+.lab-admin-highlight-row button.lab-admin-text-button { min-width: 44px; min-height: 44px; }
+.lab-admin-highlight-editor { margin-top: 17px; }
+.lab-admin-highlight-editor > .lab-admin-card-title { margin-bottom: 0; }
+.lab-admin-highlight-editor > .lab-admin-card-title strong { font-size: 12px; font-weight: 550; }
+.lab-admin-emoji-picker { display: grid; grid-template-columns: repeat(4,minmax(44px,1fr)); gap: 6px; margin-top: 10px; }
+.lab-admin-emoji-picker button { min-width: 44px; min-height: 44px; font-size: 23px; border: 1px solid #e3e8d9; background: #f6f7ef; border-radius: 9px; }
+.lab-admin-emoji-picker button[aria-pressed="true"] { border-color: #789c78; background: #e8f0e0; }
+.lab-admin [data-admin-form="highlight"] input[name="icon"] { text-align: center; font-size: 20px; }
+.lab-admin [data-admin-form="screening"] .lab-admin-two-columns { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .lab-admin-asset-note { font-size: 9px; color: #9ca48e; }
 .lab-admin-asset-card { display: flex; align-items: flex-start; gap: 10px; padding: 0 3px 13px; color: #949d8c; }
 .lab-admin-asset-card > span { font-size: 23px; line-height: 1; color: #c0c9b0; }
@@ -127,6 +141,10 @@
   .lab-admin-body > section { padding-inline: 16px; }
   .lab-admin-feedback { margin-inline: 20px; }
   .lab-admin-footer { padding-inline: 20px; }
+  .lab-admin :is(select, input[type="text"], input[type="date"], input[type="time"], input[type="datetime-local"]) { min-height: 44px; }
+  .lab-admin button.lab-admin-primary, .lab-admin button.lab-admin-text-button { min-height: 44px; }
+  .lab-admin-toggle { min-height: 52px; }
+  .lab-admin-toggle input { width: 44px; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lab-admin *, .lab-admin *::before, .lab-admin *::after { transition: none !important; }
