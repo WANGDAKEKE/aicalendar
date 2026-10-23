@@ -19,10 +19,10 @@ export function selectMarketing({drama,user,now,campaign}) {
 
 const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
-// Keep the tier and actual benefit, without repeating an editorial slogan.
+// Membership is already named in the benefit and action; avoid a duplicate badge.
 export function renderMarketingCard(view) {
   const offer=selectMarketing(view);
   if(!offer)return '';
-  const badge=offer.kind==='screening'?'特别企划':view.drama.tiers[offer.target];
-  return `<article class="lab-offer ${offer.kind==='screening'?'olive':''}"><div class="lab-offer-kicker"><b>${escapeHTML(badge)}</b></div><div class="lab-offer-main"><div><strong>${escapeHTML(offer.title)}</strong><p>${escapeHTML(offer.caption)}</p></div><button data-lab-offer="${offer.kind}">${escapeHTML(offer.button)} ›</button></div></article>`;
+  const kicker=offer.kind==='screening'?'<div class="lab-offer-kicker"><b>特别企划</b></div>':'';
+  return `<article class="lab-offer ${offer.kind==='screening'?'olive':''}">${kicker}<div class="lab-offer-main"><div><strong>${escapeHTML(offer.title)}</strong><p>${escapeHTML(offer.caption)}</p></div><button data-lab-offer="${offer.kind}">${escapeHTML(offer.button)} ›</button></div></article>`;
 }

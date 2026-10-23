@@ -27,6 +27,7 @@
 .lab-offer.olive{background:#f3f5ed;border-color:#dfe4d5}
 .lab-offer-kicker{color:#8a7652;overflow-wrap:anywhere}
 .lab-offer-main{margin-top:4px}
+.lab-offer-main:first-child{margin-top:0}
 .lab-offer-main strong{color:#705b37}
 .lab-offer-main p{color:#8c7c61}
 .lab-offer-main button{background:#f1e5cd;border:1px solid #dac49a;color:#71572d;box-shadow:none}
