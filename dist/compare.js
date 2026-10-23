@@ -16,7 +16,7 @@ const validScenario=value=>Object.hasOwn(scenarios,value)?value:'near';
 
 function frameUrl(reward,scenario){
   const url=new URL('./index.html',location.href);
-  url.searchParams.set('v','2.7.2');
+  url.searchParams.set('v','2.8.0');
   url.searchParams.set('skin','lychee');
   url.searchParams.set('embed','1');
   url.searchParams.set('reward',reward);

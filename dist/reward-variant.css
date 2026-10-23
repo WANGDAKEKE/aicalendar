@@ -1,4 +1,4 @@
-/* Comparison framing only; default badge page remains exactly the same. */
+/* Embedded comparisons and the single-screen ticket presentation. */
 html[data-embedded=true] .presentation-header,
 html[data-embedded=true] .presentation-footer,
 html[data-embedded=true] .skin-preview-bar{display:none}
@@ -10,5 +10,15 @@ html[data-embedded=true] body:has(#playbackDemo:not([hidden])) .phone{height:cal
 html[data-embedded=true] .playback-demo{height:65px;margin:0;padding:6px;border:0;border-top:1px solid #d9e1cf;border-radius:0;background:#f2f4e9}
 html[data-embedded=true] .playback-demo button{margin-top:4px;padding:6px 16px}
 html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-heading strong::after{content:' · 电子票'}
-html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-entry{border-style:dashed;border-color:#b6bda1}
-html[data-reward-mode=ticket] .day-reward{width:12px;height:14px}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-entry{height:108px;border-style:dashed;border-color:#b6bda1}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-copy{padding:7px 30px 7px 12px}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-heading{line-height:13px}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-caption{display:block;margin-top:4px;font-size:9px;line-height:12px;color:#788369;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-arrow{bottom:18px}
+@media(max-width:480px) and (max-height:740px){
+  html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-entry{height:100px}
+}
+@media(max-width:350px){
+  html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-heading strong::after{content:' · 电子票'}
+  html[data-reward-mode=ticket][data-calendar-skin=lychee] .journey-copy{padding-right:24px}
+}

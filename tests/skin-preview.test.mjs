@@ -90,9 +90,33 @@ function assertPresentationOnly(app){
   assert.strictEqual(app.history.state,app.originalState);
 }
 
-test('missing, empty and explicit classic skin initialize the classic design without rewriting the URL',()=>{
-  for(const query of ['', '?skin=', '?skin=classic']){
+test('the single ticket entry defaults to lychee without rewriting the URL',()=>{
+  for(const query of ['', '?reward=ticket', '?reward=unknown', '?scenario=missed&embed=1']){
     const app=preview(`https://example.test/${query}#calendar`);
+    assertSelected(app,'lychee');
+    assert.equal(app.calls.replaceState.length,0);
+    assertPresentationOnly(app);
+  }
+});
+
+test('historical badge links keep the classic default unless a skin is explicitly supplied',()=>{
+  for(const [query,skin] of [
+    ['reward=badge','classic'],
+    ['reward=badge&scenario=partial','classic'],
+    ['reward=badge&skin=classic','classic'],
+    ['reward=badge&skin=lychee&embed=1','lychee'],
+    ['reward=ticket&skin=lychee&embed=1','lychee'],
+  ]){
+    const app=preview(`https://example.test/?${query}#calendar`);
+    assertSelected(app,skin);
+    assert.equal(app.calls.replaceState.length,0);
+    assertPresentationOnly(app);
+  }
+});
+
+test('explicit classic and empty skin values keep the classic design without rewriting the URL',()=>{
+  for(const query of ['skin=', 'skin=classic', 'reward=ticket&skin=classic', 'reward=badge&skin=']){
+    const app=preview(`https://example.test/?${query}#calendar`);
     assertSelected(app,'classic');
     assert.equal(app.calls.replaceState.length,0);
     assertPresentationOnly(app);
@@ -116,19 +140,35 @@ test('lychee URL initializes the illustrated skin and accessible pressed states'
   assertPresentationOnly(app);
 });
 
-test('switching to classic removes only skin while retaining scenario, hash and history.state',()=>{
-  const app=preview('https://example.test/demo/?scenario=partial&skin=lychee&campaign=review#calendar');
+test('switching to classic writes an explicit preference while retaining other URL parameters and history.state',()=>{
+  const app=preview('https://example.test/demo/?scenario=partial&skin=lychee&campaign=review&reward=ticket&rewardDemo=first&embed=1#calendar');
   app.choose('classic');
   assertSelected(app,'classic');
   assert.equal(app.url.pathname,'/demo/');
-  assert.equal(app.url.searchParams.has('skin'),false);
+  assert.equal(app.url.searchParams.get('skin'),'classic');
   assert.equal(app.url.searchParams.get('scenario'),'partial');
   assert.equal(app.url.searchParams.get('campaign'),'review');
+  assert.equal(app.url.searchParams.get('reward'),'ticket');
+  assert.equal(app.url.searchParams.get('rewardDemo'),'first');
+  assert.equal(app.url.searchParams.get('embed'),'1');
   assert.equal(app.url.hash,'#calendar');
   assert.equal(app.calls.replaceState.length,1);
   assert.strictEqual(app.calls.replaceState[0].state,app.originalState);
   assert.equal(app.calls.replaceState[0].title,'');
   assertPresentationOnly(app);
+});
+
+test('an explicitly chosen classic skin survives reloading a default ticket link',()=>{
+  const app=preview('https://example.test/?scenario=missed#calendar');
+  assertSelected(app,'lychee');
+  app.choose('classic');
+  assertSelected(app,'classic');
+  const reloaded=preview(app.url.href);
+  assertSelected(reloaded,'classic');
+  assert.equal(reloaded.url.searchParams.get('scenario'),'missed');
+  assert.equal(reloaded.calls.replaceState.length,0);
+  assertPresentationOnly(app);
+  assertPresentationOnly(reloaded);
 });
 
 test('switching to lychee adds the skin parameter without changing the active route or scenario',()=>{
@@ -147,7 +187,7 @@ test('repeated skin changes never access stored progress, reload, navigate or du
   for(const skin of ['lychee','lychee','classic','lychee','classic']){
     app.choose(skin);
     assertSelected(app,skin);
-    assert.deepEqual(app.url.searchParams.getAll('skin'),skin==='lychee'?['lychee']:[]);
+    assert.deepEqual(app.url.searchParams.getAll('skin'),[skin]);
     assert.equal(app.url.searchParams.get('scenario'),'partial');
     assert.equal(app.url.hash,'#episodes');
     assertPresentationOnly(app);
@@ -157,7 +197,11 @@ test('repeated skin changes never access stored progress, reload, navigate or du
 
 test('popstate reapplies the URL skin without replacing history or changing stored state',()=>{
   const app=preview();
-  for(const [query,skin] of [['skin=lychee','lychee'],['skin=unknown','classic'],['','classic']]){
+  for(const [query,skin] of [
+    ['skin=lychee','lychee'],['skin=unknown','classic'],['skin=classic','classic'],
+    ['','lychee'],['reward=badge','classic'],['reward=ticket','lychee'],
+    ['reward=badge&skin=lychee','lychee'],['reward=ticket&skin=classic','classic'],
+  ]){
     app.popstate(`https://example.test/?scenario=partial&${query}#calendar`);
     assertSelected(app,skin);
     assert.equal(app.calls.replaceState.length,0);

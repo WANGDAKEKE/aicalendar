@@ -9,7 +9,8 @@ import {createTicketDownload} from './ticket-download.mjs?v=2.7.2';
 
 const $ = id => document.getElementById(id);
 const query = new URLSearchParams(location.search);
-const ticketMode = query.get('reward')==='ticket';
+// The selected product is the growing ticket. Badges remain an explicit archive.
+const ticketMode = query.get('reward')!=='badge';
 const rewardDemo = getRewardDemoScenario(query.get('rewardDemo'));
 const sessionNow = rewardDemo?.now || demoSession.now;
 document.documentElement.dataset.rewardMode=ticketMode?'ticket':'badge';
@@ -81,9 +82,8 @@ function showToast(message) {
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,2600);
 }
 const medalMark='<svg viewBox="0 0 16 20" fill="none" aria-hidden="true"><path d="m4 12-1 6 5-2 5 2-1-6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="5.5" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-width="1.5"/><path d="m8 4 1 2 2 .3-1.5 1.5.4 2.2L8 9l-1.9 1 .4-2.2L5 6.3 7 6Z" fill="currentColor"/></svg>';
-const ticketMark='<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 2h12v5a3 3 0 0 0 0 6v5H4v-5a3 3 0 0 0 0-6V2Z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="1.4"/><path d="M7 5h6M7 15h6M8 8v4m4-4v4" stroke="currentColor" stroke-width="1.2"/></svg>';
 const badgeProgress=badge=>getBadgeProgress(badge,completed);
-const badgesForRelease=release=>release?(ticketMode?ticketLevels:drama.badges).filter(b=>b.episode>=release.from&&b.episode<=release.to):[];
+const badgesForRelease=release=>!ticketMode&&release?drama.badges.filter(b=>b.episode>=release.from&&b.episode<=release.to):[];
 const operationsForDate=date=>getDateOperations(drama,{tier:tierContext.preview.tier,date,now});
 const pendingEpisodeLabel=episodes=>episodes.at(-1)-episodes[0]+1===episodes.length?episodeLabel({from:episodes[0],to:episodes.at(-1)}):`${episodes.join('、')}集`;
 const isCatchUp=episode=>Number.isInteger(episode)&&!completed.has(episode)&&[...completed].some(n=>n>episode);
@@ -91,11 +91,12 @@ const viewingActionLabel=episode=>`${isCatchUp(episode)?'补看':'继续看'}第
 function renderJourney() {
   if(ticketMode){
     const ticket=getTicketProgress(completed),p=ticket.nextProgress;
-    $('journeyBadgeName').textContent=ticket.current?`${ticket.current.name} · Lv.${ticket.currentLevel}`:'初程票 · 待获得';
+    $('journeyBadgeName').textContent=ticket.current?`${ticket.current.name} · 已获得`:'初程票 · 待获得';
     $('journeyProgressText').textContent=p?`已看 ${p.watchedCount}/${p.total} 集`:'全剧已看完';
     $('journeyProgressFill').style.width=`${p?p.watchedCount/p.total*100:100}%`;
-    $('journeyCaption').textContent=p?`${ticket.current?'升级':'获得'}${ticket.next.name}还差 ${p.remaining} 集`:'典藏票已收好 · 查看电子票';
-    $('openCollection').setAttribute('aria-label',`查看我的电子票，${ticket.current?`当前${ticket.current.name}`:'尚未获得'}，${p?`已看${p.watchedCount}集，共${p.total}集`:'全剧已看完'}`);
+    const nextStep=p?`再看 ${p.remaining} 集${ticket.current?'升级':'获得'}${ticket.next.name}`:'全剧已追完，典藏票已收好';
+    $('journeyCaption').textContent=`${nextStep} · 查看票面`;
+    $('openCollection').setAttribute('aria-label',`查看我的电子票，${ticket.current?`${ticket.current.name}已获得`:'初程票待获得'}，${p?`前${p.total}集已看${p.watchedCount}集，`:''}${nextStep}`);
     return;
   }
   const next=drama.badges.find(b=>!badgeProgress(b).unlocked),featured=next||drama.badges.at(-1);
@@ -130,9 +131,10 @@ function renderCalendar() {
     const classes=['day-cell',release?'has-release':'',`is-${viewing.status}`,isToday?'is-today':'',selected?'selected':'',release?.milestone==='finale'?'finale':'',hasEvent?'has-screening':''].filter(Boolean).join(' ');
     const badges=badgesForRelease(release),allEarned=badges.length&&badges.every(b=>badgeProgress(b).unlocked);
     const watchLabel=viewing.status==='watched'?'，已看完':viewing.pendingEpisodes.length?`，待看${pendingEpisodeLabel(viewing.pendingEpisodes)}`:'';
-    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}${watchLabel}`:'无常规更新'}${badges.length?`，${ticketMode?'电子票':'勋章'}：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${!hasEvent&&operations.highlights.length?'，含趣味图标':''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
-    const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${ticketMode?ticketMark:medalMark}</span>`:'';
-    // Rewards own the corner. Content and events share the row below episodes;
+    const accessible=`${shortDate(date)} ${weekday(date)}${isToday?'，今天':''}，${release?`${release.time} ${episodeLabel(release)}${milestone?'，'+milestone:''}${released?'，已更新':'，待更新'}${watchLabel}`:'无常规更新'}${badges.length?`，勋章：${badges.map(b=>`${b.name}${badgeProgress(b).unlocked?'已点亮':'待解锁'}`).join('、')}`:''}${!hasEvent&&operations.highlights.length?'，含趣味图标':''}${hasEvent?`，另有${operations.events.map(event=>`${event.title} ${event.time}–${event.endTime}`).join('、')}，需单独活动资格`:''}`;
+    const marker=badges.length?`<span class="day-reward ${allEarned?'earned':''}">${medalMark}</span>`:'';
+    // Tickets live only in the top progress entry, not in date-cell corners.
+    // Content and events share the row below episodes;
     // an event takes priority there. Emoji never expand into plot explanations.
     const content=`<span class="day-content-slot" aria-hidden="true">${hasEvent?'<span class="day-event-label">点映礼</span>':operations.highlights.slice(0,2).map(item=>`<span class="day-operation">${esc(item.icon)}</span>`).join('')}</span>`;
     const expandable=hasEvent;
