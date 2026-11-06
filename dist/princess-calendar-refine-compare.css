@@ -3,6 +3,10 @@
 .prc-page { margin: 0; background: #e8e3df; color: #4d4138; font-family: -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; -webkit-font-smoothing: antialiased; }
 .prc-page *, .prc-page *::before, .prc-page *::after { box-sizing: border-box; }
 .prc-showcase { width: min(1510px,100%); margin: 0 auto; padding: 28px 24px 38px; }
+.prc-category-nav { display: flex; margin: 0 0 18px; }
+.prc-category-nav a { display: inline-flex; align-items: center; min-height: 48px; padding: 10px 16px; border: 1px solid #b5a394; border-radius: 8px; background: #f7f3ef; color: #594434; font-size: 18px; line-height: 28px; font-weight: 600; text-decoration: none; }
+.prc-category-nav a:hover { border-color: #8e6d54; background: #fffaf5; color: #743f25; }
+.prc-category-nav a:focus-visible { outline: 3px solid #92633f; outline-offset: 3px; }
 .prc-intro { margin-bottom: 28px; text-align: center; }
 .prc-intro h1 { margin: 0; color: #493d34; font-size: 18px; line-height: 28px; font-weight: 550; letter-spacing: .025em; }
 .prc-intro p { margin: 6px 0 0; color: #8b7e73; font-size: 12px; line-height: 20px; }

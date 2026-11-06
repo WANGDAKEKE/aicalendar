@@ -65,11 +65,38 @@ test('all nine standalone links preserve identity and layout while removing embe
 });
 
 test('the category switch is visible before the grid and all comparison regions remain accessible',()=>{
-  assert.match(html,/<nav class="prc-card__heading" aria-label="切换日历品类"><a href="\.\/princess-calendar-refine-compare\.html">← 尚公主 · 同版对照<\/a><\/nav>/);
+  assert.match(html,/<nav class="prc-category-nav" aria-label="切换日历品类"><a href="\.\/princess-calendar-refine-compare\.html\?v=nav-v3">← 尚公主 · 同版对照<\/a><\/nav>/);
   assert.ok(html.indexOf('aria-label="切换日历品类"')<html.indexOf('class="prc-intro"'));
   assert.equal((html.match(/class="prc-row-scroll"[^>]*role="region"[^>]*aria-label="[^"]+"[^>]*tabindex="0"/g)||[]).length,3);
   assert.match(html,/class="prc-scroll-hint"[^>]*>左右滑动/);
   assert.match(css,/grid-template-columns:\s*repeat\(3,minmax\(240px,1fr\)\)/);
   assert.match(css,/min-width:\s*768px/);
   assert.match(css,/\.prc-stage iframe\s*\{[^}]*width:\s*453px;[^}]*height:\s*912px;[^}]*transform:\s*scale\(var\(--prc-scale\)\)/);
+});
+
+test('both category links have prominent typography, a generous touch target and readable contrast without changing the nine-phone grid',()=>{
+  for(const page of [html,princess])assert.match(page,/href="\.\/princess-calendar-refine-compare\.css\?v=1\.1\.0"/,'both pages must bypass the old understated-navigation styles');
+  assert.match(princess,/<nav class="prc-category-nav" aria-label="切换日历品类"><a href="\.\/zhanshen-calendar-refine-compare\.html\?v=nav-v3">斩神Ⅱ · 同版对照 ↗<\/a><\/nav>/);
+  const clean=css.replace(/\/\*[\s\S]*?\*\//g,'');
+  const rule=clean.match(/\.prc-category-nav\s+a\s*\{([^}]*)\}/)?.[1];
+  assert.ok(rule,'the category switch must have its own styling rather than borrowing the 11px phone-card link');
+  const property=name=>rule.match(new RegExp(`(?:^|;)\\s*${name}\\s*:\\s*([^;]+)`))?.[1].trim();
+  assert.equal(property('font-size'),'18px');
+  assert.equal(property('line-height'),'28px');
+  assert.equal(property('min-height'),'48px');
+  assert.equal(property('padding'),'10px 16px');
+  assert.ok(Number(property('font-weight'))>=600);
+  assert.match(property('display'),/^(?:inline-)?flex$/);
+  assert.notEqual(property('background'),'transparent');
+  const rgb=value=>{
+    const color=value?.match(/^#([a-f\d]{3}|[a-f\d]{6})$/i)?.[1];
+    assert.ok(color,`the category link must use an explicit opaque neutral color: ${value}`);
+    const expanded=color.length===3?[...color].map(channel=>channel+channel).join(''):color;
+    return expanded.match(/../g).map(channel=>Number.parseInt(channel,16)/255);
+  };
+  const luminance=value=>rgb(value).map(channel=>channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4).reduce((sum,channel,index)=>sum+channel*[.2126,.7152,.0722][index],0);
+  const text=luminance(property('color')),surface=luminance(property('background'));
+  assert.ok((Math.max(text,surface)+.05)/(Math.min(text,surface)+.05)>=4.5,'the enlarged category label must retain AA text contrast on its button surface');
+  assert.equal(frames.length,9);
+  assert.match(clean,/grid-template-columns:\s*repeat\(3,minmax\(240px,1fr\)\)/);
 });

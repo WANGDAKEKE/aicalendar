@@ -47,7 +47,8 @@ test('nine standalone links retain identity and layout while dropping the embedd
     assert.equal(standalone.searchParams.has('presentation'),false);
   }
   assert.equal((html.match(/target="_blank" rel="noopener"/g)||[]).length,9);
-  assert.match(html,/<nav\b[^>]*aria-label="切换日历品类"[\s\S]*?href="\.\/zhanshen-calendar-refine-compare\.html"/);
+  assert.match(html,/<nav class="prc-category-nav" aria-label="切换日历品类"><a href="\.\/zhanshen-calendar-refine-compare\.html\?v=nav-v3">斩神Ⅱ · 同版对照 ↗<\/a><\/nav>/);
+  assert.match(html,/href="\.\/princess-calendar-refine-compare\.css\?v=1\.1\.0"/);
   assert.doesNotMatch(frames.join(''),/preview=|purpose=playback|zhanshen|calendar-player-compare|princess-calendar\.html\?/);
 });
 
