@@ -1,0 +1,11 @@
+/* Only the opt-in, refined 尚公主 half-screen layouts use these overrides.
+   The retained proposals and the default full-screen refinement stay intact. */
+.pcr-page.pc-playback-layout .pc-nav { display: none; }
+.pcr-page.pc-playback-layout .pc-scroll {
+  top: calc(var(--ply-top) + var(--ply-video-height) + var(--ply-bar-height));
+}
+.pcr-page.pc-playback-layout .pc-hero { height: 88px; }
+.pcr-page.pc-playback-layout .pc-hero__copy { bottom: 13px; }
+.pcr-page.pc-playback-layout .pc-hero__copy small { display: none; }
+.pcr-page.pc-playback-layout.pc-playback-full-hero .pc-hero { height: 196px; }
+.pcr-page.pc-playback-layout.pc-playback-full-hero .pc-hero__copy small { display: block; }

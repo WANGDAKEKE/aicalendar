@@ -1,0 +1,261 @@
+/* Opt-in playback-page context. Original full-screen calendar proposals do not
+   load this layout. The "video" uses the supplied playback stills, unaltered;
+   controls only illustrate the native playback surface, not real streaming. */
+.pc-page.pc-playback-layout .pc-app {
+  --ply-top: 54px;
+  --ply-video-height: 219.68px;
+  --ply-bar-height: 44px;
+  background: #070606;
+  color: #fff;
+}
+@supports (width: 1cqw) {
+  .pc-page.pc-playback-layout .pc-app { --ply-video-height: calc(100cqw * 218 / 390); }
+}
+.pc-playback-layout .pc-status { z-index: 6; color: #fff; }
+.pc-playback-layout .pc-nav { display: none; }
+.pc-playback-layout .ply-shell {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+}
+.pc-playback-layout .ply-player {
+  position: absolute;
+  top: var(--ply-top);
+  left: 0;
+  right: 0;
+  height: var(--ply-video-height);
+  overflow: hidden;
+  isolation: isolate;
+  background: #120b09;
+  color: #fff;
+  pointer-events: auto;
+}
+.pc-playback-layout .ply-art {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: #050609;
+  pointer-events: none;
+}
+.pc-playback-layout .ply-art[data-ip="princess"] {
+  background-image: url('./assets/princess/player-still.png');
+}
+.pc-playback-layout .ply-art[data-ip="zhanshen"] {
+  background-image: url('./assets/zhanshen/player-still.png');
+}
+.pc-playback-layout .ply-player::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg,#0008,transparent 35%,#0001 55%,#000b);
+  pointer-events: none;
+}
+.pc-playback-layout .ply-player button,
+.pc-playback-layout .ply-calendar-bar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.pc-playback-layout .ply-player button:focus-visible,
+.pc-playback-layout .ply-calendar-bar button:focus-visible,
+.pc-playback-layout .ply-player input:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -3px;
+}
+.pc-playback-layout .ply-player svg { width: 22px; height: 22px; }
+.pc-playback-layout .ply-topbar {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+}
+.pc-playback-layout .ply-topbar > button:first-child { margin-right: auto; }
+.pc-playback-layout .ply-topbar > div { display: flex; align-items: center; }
+.pc-playback-layout .ply-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.pc-playback-layout .ply-player button.ply-center {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #ffffff90;
+  border-radius: 50%;
+  background: #00000029;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.pc-playback-layout .ply-center svg { width: 23px; height: 23px; }
+.pc-playback-layout .ply-controls {
+  position: absolute;
+  left: 3px;
+  right: 4px;
+  bottom: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pc-playback-layout .ply-time {
+  flex: none;
+  color: #fff;
+  font-size: 9px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px #0008;
+}
+.pc-playback-layout .ply-controls input[type="range"] {
+  display: block;
+  flex: 1;
+  min-width: 20px;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  accent-color: #fff;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.pc-playback-layout .ply-controls input[type="range"]::-webkit-slider-runnable-track { height: 3px; background: #ffffff73; border-radius: 2px; }
+.pc-playback-layout .ply-controls input[type="range"]::-webkit-slider-thumb { width: 8px; height: 8px; margin-top: -2.5px; border: 0; border-radius: 50%; appearance: none; -webkit-appearance: none; background: #fff; }
+.pc-playback-layout .ply-controls input[type="range"]::-moz-range-track { height: 3px; background: #ffffff73; border-radius: 2px; }
+.pc-playback-layout .ply-controls input[type="range"]::-moz-range-progress { height: 3px; background: #fff; border-radius: 2px; }
+.pc-playback-layout .ply-controls input[type="range"]::-moz-range-thumb { width: 8px; height: 8px; border: 0; border-radius: 50%; background: #fff; }
+.pc-playback-layout .ply-fit { display: flex; flex: none; }
+.pc-playback-layout .ply-caption {
+  position: absolute;
+  left: 14px;
+  bottom: 45px;
+  padding: 2px 5px;
+  border: 1px solid #ffffff33;
+  border-radius: 2px;
+  background: #0004;
+  color: #ffffffe3;
+  font-size: 8px;
+  line-height: 13px;
+  font-weight: 400;
+  pointer-events: none;
+}
+.pc-playback-layout .ply-caption small { font: inherit; }
+.pc-playback-layout .ply-calendar-bar {
+  position: absolute;
+  top: calc(var(--ply-top) + var(--ply-video-height));
+  left: 0;
+  right: 0;
+  height: var(--ply-bar-height);
+  border-bottom: 1px solid #e7bd792e;
+  background: #8c0b08;
+  box-shadow: 0 2px 5px #3500001a;
+  color: #f9e4c1;
+  pointer-events: auto;
+}
+.pc-playback-layout .ply-calendar-bar button {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--ply-bar-height);
+  padding: 0 16px;
+  border-radius: 0;
+  color: inherit;
+  text-align: left;
+}
+.pc-playback-layout .ply-calendar-bar strong { overflow: hidden; font-size: 14px; line-height: 21px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.pc-playback-layout .ply-calendar-bar svg { width: 20px; height: 20px; }
+.pc-playback-layout .pc-scroll {
+  top: calc(var(--ply-top) + var(--ply-video-height) + var(--ply-bar-height));
+  right: 0;
+  bottom: 23px;
+  left: 0;
+  scroll-padding-top: 8px;
+}
+.pc-playback-layout .pc-hero,
+.pc-playback-layout .zs-hero { height: 88px; }
+.pc-playback-layout .pc-hero__copy,
+.pc-playback-layout .zs-hero__copy { bottom: 7px; }
+.pc-playback-layout .pc-hero__copy small,
+.pc-playback-layout .zs-hero__copy small { display: none; }
+/* Additive third proposal: use the retained full-screen hero's own height and
+   complete copy, without changing the player, type scale or query modules. */
+.pc-playback-layout.pc-playback-full-hero .pc-hero { height: 196px; }
+.pc-playback-layout.pc-playback-full-hero .zs-hero { height: 170px; }
+.pc-playback-layout.pc-playback-full-hero .pc-hero__copy,
+.pc-playback-layout.pc-playback-full-hero .zs-hero__copy { bottom: 10px; }
+.pc-playback-layout.pc-playback-full-hero .pc-hero__copy small,
+.pc-playback-layout.pc-playback-full-hero .zs-hero__copy small { display: block; }
+.pc-playback-layout .pc-contents,
+.pc-playback-layout .zs-contents { padding-top: 8px; }
+.pc-playback-layout .ply-underlay {
+  position: absolute;
+  top: calc(var(--ply-top) + var(--ply-video-height) + var(--ply-bar-height));
+  left: 0;
+  right: 0;
+  bottom: 23px;
+  display: none;
+  overflow: auto;
+  padding: 22px 18px 25px;
+  background: #f5f4f2;
+  color: #24211e;
+  pointer-events: auto;
+}
+.pc-playback-layout .ply-underlay h2 { margin: 0 0 7px; color: #1f1b18; font-size: 21px; line-height: 30px; font-weight: 650; }
+.pc-playback-layout .ply-underlay h3 { margin: 24px 0 10px; color: #292522; font-size: 15px; line-height: 22px; }
+.pc-playback-layout .ply-underlay p { margin: 5px 0; color: #7d7771; font-size: 12px; line-height: 21px; }
+.pc-playback-layout .ply-underlay > small { color: #8b8178; font-size: 10px; line-height: 18px; }
+.pc-playback-layout .ply-underlay__tabs { display: flex; gap: 25px; margin-top: 26px; padding: 0 0 13px; border-bottom: 1px solid #ded9d3; color: #79716a; font-size: 13px; }
+.pc-playback-layout .ply-underlay__tabs span:first-child { color: #2c2520; font-weight: 600; }
+.pc-playback-layout .ply-underlay > button { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; margin-top: 20px; padding: 0 14px; border: 1px solid #e1d8cd; border-radius: 6px; background: #ebe4db; color: #634c3b; font: inherit; font-size: 13px; text-align: left; }
+.pc-playback-layout .ply-underlay > button svg { width: 18px; height: 18px; }
+.pc-playback-layout .ply-underlay > button:focus-visible { outline: 2px solid #8c0b08; outline-offset: 3px; }
+.pc-playback-layout .ply-underlay__episodes { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; }
+.pc-playback-layout .ply-underlay__episodes span { display: grid; place-items: center; min-height: 43px; border-radius: 5px; background: #e8e5e1; color: #68615c; font-size: 13px; line-height: 19px; }
+.pc-playback-layout .ply-underlay__note { margin-top: 22px; padding-top: 13px; border-top: 1px solid #dcd8d2; }
+.pc-playback-layout .pc-app[data-calendar-open="false"] .pc-scroll { display: none; }
+.pc-playback-layout .pc-app[data-calendar-open="false"] .ply-underlay { display: block; }
+.pc-playback-layout .pc-app[data-player-expanded="true"] { --ply-video-height: 294.75px; }
+@supports (width: 1cqw) {
+  .pc-playback-layout .pc-app[data-player-expanded="true"] { --ply-video-height: 75cqw; }
+}
+.pc-playback-layout.zs-page .ply-calendar-bar { border-bottom-color: #8396e02b; background: #0b143c; color: #e7edff; }
+.pc-playback-layout.zs-page .ply-player { background: #03072d; }
+.pc-playback-layout.zs-page .ply-underlay { background: #f1f3f8; color: #1d273a; }
+.pc-playback-layout.zs-page .ply-underlay h2,
+.pc-playback-layout.zs-page .ply-underlay h3 { color: #202c46; }
+.pc-playback-layout.zs-page .ply-underlay p { color: #717b91; }
+.pc-playback-layout.zs-page .ply-underlay > button { background: #e2e7f3; border-color: #d1d9eb; color: #354a7c; }
+.pc-playback-layout.zs-page .ply-underlay > button:focus-visible { outline-color: #354a7c; }
+.pc-playback-layout.zs-page .ply-underlay__episodes span { background: #e0e6f1; color: #526383; }
+.pc-playback-layout.zs-page .ply-underlay__note { border-top-color: #d1d8e5; }
+@media (max-width: 600px) {
+  .pc-page.pc-playback-layout:not(.pc-embedded) .pc-app { --ply-top: env(safe-area-inset-top,0px); }
+  .pc-playback-layout:not(.pc-embedded) .pc-scroll,
+  .pc-playback-layout:not(.pc-embedded) .ply-underlay { bottom: env(safe-area-inset-bottom,0px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pc-playback-layout .ply-calendar-bar svg { transition: transform .18s ease; }
+}

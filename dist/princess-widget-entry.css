@@ -1,0 +1,78 @@
+/* Calendar entry and sheet layout. Current IP imagery is supplied by
+   calendar-poster-widget.css; legacy v4 rules remain isolated for retained drafts. */
+.pc-desktop-entry {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  min-height: 80px;
+  margin-top: 10px;
+  padding: 10px 8px 8px;
+  border-top: 1px solid #bc93544d;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(180deg, #fff4d544, #fff7df9c);
+  color: #743e24;
+}
+.pc-widget-mini { display: block; position: relative; flex: 0 0 52px; width: 52px; height: 52px; overflow: hidden; border-radius: 7px; pointer-events: none; }
+.pc-widget-mini > .widget-v4 { transform: scale(.30588235); transform-origin: top left; box-shadow: none; cursor: default; }
+.pc-desktop-entry__copy { display: block; min-width: 0; flex: 1; }
+.pc-desktop-entry__copy > strong { display: block; margin-bottom: 4px; color: #713e28; font-size: 12px; font-weight: 600; line-height: 18px; letter-spacing: -.1px; }
+.pc-desktop-entry__copy > span { display: block; color: #896b45; font-size: 10px; line-height: 16px; }
+.pc-desktop-entry__action { display: grid; place-items: center; flex: 0 0 auto; min-width: 42px; min-height: 34px; padding: 6px 9px; border: 1px solid #b88849; border-radius: 6px; background: #fff3d4; color: #865026; font-size: 11px; line-height: 18px; font-weight: 550; white-space: nowrap; }
+.pc-desktop-entry__action:focus-visible { outline: 2px solid #9b2616; outline-offset: 2px; }
+
+.pc-widget-setup { color: #5c452c; }
+.pc-widget-sizes { display: flex; width: fit-content; min-width: 156px; gap: 4px; margin: 0 auto 16px; padding: 4px; border: 1px solid #ddc7a1; border-radius: 9px; background: #efdfc4; }
+.pc-widget-sizes > button { flex: 1; min-height: 31px; padding: 5px 20px; border: 0; border-radius: 6px; background: transparent; color: #876949; font-size: 12px; line-height: 20px; }
+.pc-widget-sizes > button[aria-pressed="true"] { background: #fff8e8; color: #6d442a; box-shadow: 0 1px 4px #8b60231a; }
+.pc-widget-preview-surface { display: flex; align-items: center; justify-content: center; min-height: 206px; padding: 18px 12px; overflow: hidden; border: 1px solid #d9d3c1; border-radius: 15px; background: #e7e6e0; }
+.pc-widget-display { display: block; min-width: 0; width: 100%; max-width: 345px; }
+.pc-widget-display > .widget-v4 { box-sizing: border-box; cursor: default; }
+.pc-widget-display[data-size="wide"] > .widget-v4 { height: 154px; }
+.pc-widget-display[data-size="wide"] .widget-v4__headline { top: 43px; right: 70px; font-size: 22px; line-height: 28px; }
+.pc-widget-display[data-size="wide"] .widget-v4__eyes { top: 60px; }
+.pc-widget-display[data-size="wide"] .widget-v4__state { max-width: 94px; overflow: hidden; text-overflow: ellipsis; }
+.pc-widget-display[data-size="square"] { width: 170px; }
+.pc-widget-setup .pc-widget-setup__caption { margin: 15px 0 5px; color: #6f553b; text-align: center; font-size: 12px; line-height: 20px; }
+.pc-widget-setup .pc-widget-setup__note { margin: 10px 0 0; color: #907b62; text-align: center; font-size: 10px; line-height: 17px; }
+.pc-widget-setup__primary, .pc-widget-setup__secondary { display: block; width: 100%; min-height: 44px; margin-top: 16px; border: 0; border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 21px; text-align: center; }
+.pc-widget-setup__primary { background: #963021; color: #fff0d0; font-weight: 550; }
+.pc-widget-setup__secondary { border: 1px solid #d4bc95; background: #f5e6cc; color: #795b3a; }
+.pc-widget-home { position: relative; overflow: hidden; min-height: 328px; padding: 14px 15px 22px; border: 1px solid #d7d7ce; border-radius: 18px; background: radial-gradient(ellipse at 80% 2%,#ffffff99,transparent 65%),linear-gradient(155deg,#e9e9e5,#cfd6cc 130%); color: #353a31; }
+.pc-widget-home__heading { display: flex; justify-content: space-between; align-items: center; margin: 0 6px 17px; font-size: 11px; line-height: 16px; font-weight: 600; }
+.pc-widget-home__heading > span:last-child { color: #687060; font-size: 9px; font-weight: 400; letter-spacing: .1em; }
+.pc-widget-home__slot { margin: 0 auto; }
+.pc-widget-home__slot > .widget-v4 { cursor: pointer; }
+.pc-widget-home__label { display: block; margin-top: 7px; color: #50584b; font-size: 10px; line-height: 15px; text-align: center; }
+.pc-widget-home__apps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; justify-content: space-between; margin-top: 20px; }
+.pc-widget-home__apps > span { display: flex; flex-direction: column; align-items: center; min-width: 0; gap: 5px; }
+.pc-widget-home__apps small { color: #454d3f; font-size: 9px; line-height: 14px; white-space: nowrap; }
+.pc-widget-home__apps i { display: block; position: relative; width: 42px; height: 42px; overflow: hidden; border-radius: 10px; background: #fbfcf8; box-shadow: 0 1px 2px #69705e0d; font-style: normal; }
+.pc-widget-home__photos b { position: absolute; top: 5px; left: 16px; width: 11px; height: 18px; border-radius: 7px; background: #f7a24ccc; transform-origin: 50% 16px; }
+.pc-widget-home__photos b:nth-child(2) { background: #ed6a7bcd; transform: rotate(60deg); }
+.pc-widget-home__photos b:nth-child(3) { background: #bd80d1cc; transform: rotate(120deg); }
+.pc-widget-home__photos b:nth-child(4) { background: #5bade1cc; transform: rotate(180deg); }
+.pc-widget-home__photos b:nth-child(5) { background: #6ccdb8cc; transform: rotate(240deg); }
+.pc-widget-home__photos b:nth-child(6) { background: #bfce57cc; transform: rotate(300deg); }
+.pc-widget-home__calendar { text-align: center; }
+.pc-widget-home__calendar b { display: block; margin-top: 4px; color: #d26053; font-size: 7px; line-height: 10px; font-weight: 500; }
+.pc-widget-home__calendar strong { display: block; color: #3b3c36; font-size: 24px; line-height: 26px; font-weight: 400; }
+.pc-widget-home__apps .pc-widget-home__clock { background: #2b2e2b; border: 5px solid #2b2e2b; border-radius: 10px; }
+.pc-widget-home__clock::before { content: ""; position: absolute; inset: 1px; border: 1px dashed #919887; border-radius: 50%; }
+.pc-widget-home__clock b { position: absolute; top: 6px; left: 15px; width: 2px; height: 11px; border-radius: 2px; background: #f5f5e9; transform-origin: 50% 10px; transform: rotate(18deg); }
+.pc-widget-home__clock b::after { content: ""; position: absolute; left: 0; top: 9px; width: 10px; height: 2px; border-radius: 2px; background: #f5f5e9; transform: rotate(-25deg); transform-origin: 1px 50%; }
+.pc-widget-home__video img { display: block; width: 42px; height: 42px; object-fit: cover; }
+.pc-widget-home[data-size="square"] .pc-widget-home__slot { margin-left: auto; margin-right: auto; }
+
+@media (max-width: 350px) {
+  .pc-desktop-entry { gap: 7px; padding-left: 6px; padding-right: 6px; }
+  .pc-widget-mini { flex-basis: 46px; width: 46px; height: 46px; border-radius: 6px; }
+  .pc-widget-mini > .widget-v4 { transform: scale(.27058824); }
+  .pc-desktop-entry__copy > strong { font-size: 11px; line-height: 17px; }
+  .pc-desktop-entry__copy > span { font-size: 9px; line-height: 15px; }
+  .pc-desktop-entry__action { min-width: 38px; padding-left: 7px; padding-right: 7px; }
+  .pc-widget-preview-surface, .pc-widget-home { padding-left: 10px; padding-right: 10px; }
+  .pc-widget-display[data-size="wide"] .widget-v4__headline { right: 64px; font-size: 20px; line-height: 27px; }
+  .pc-widget-display[data-size="wide"] .widget-v4__eyes { right: 12px; transform: scale(.88) rotate(-7deg); transform-origin: right center; }
+  .pc-widget-display[data-size="wide"] .widget-v4__state { max-width: 78px; font-size: 9px; }
+}

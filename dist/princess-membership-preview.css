@@ -1,0 +1,27 @@
+/* All refinement layouts only. VIP uses an account-free plans asset; the
+   SVIP width-relative negative margin removes unrelated source chrome/ads. */
+.pcr-page .pc-sheet[data-membership-preview] { display: flex; flex-direction: column; width: 100%; margin: 0; padding: 0; overflow: hidden; background: #fff; color: #161616; }
+.pcr-page .pc-sheet[data-membership-preview="vip"] { height: 74%; max-height: 74%; border-radius: 16px 16px 0 0; }
+.pcr-page .pc-sheet[data-membership-preview="svip"] { height: 74%; max-height: 74%; border-radius: 16px 16px 0 0; }
+.pcr-page .pc-sheet[data-membership-preview] > header { display: none; }
+.pcr-page .pc-sheet[data-membership-preview] > .pc-sheet__body { display: flex; flex: 1; min-height: 0; width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; }
+.pcr-page .pmp-preview { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; width: 100%; height: 100%; margin: 0; padding: 0; background: #fff; color: #161616; }
+.pcr-page .pmp-toolbar { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; flex: 0 0 44px; min-height: 44px; margin: 0; padding: 0 8px; border: 0; background: #fff; color: #181818; }
+.pcr-page .pmp-toolbar h3 { min-width: 0; margin: 0; padding: 0; color: #181818; font-family: -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; font-size: 15px; font-weight: 550; line-height: 22px; text-align: center; }
+.pcr-page .pmp-close { display: grid; place-items: center; width: 44px; height: 44px; min-height: 44px; margin: 0; padding: 10px; border: 0; border-radius: 0; background: transparent; color: #1c1c1c; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.pcr-page .pmp-close svg { width: 24px; height: 24px; }
+.pcr-page .pmp-toolbar__spacer { display: block; width: 44px; height: 44px; pointer-events: none; }
+.pcr-page .pmp-disclaimer { display: block; flex: 0 0 auto; margin: 0; padding: 4px 12px 6px; border: 0; background: #fff; color: #8a8a8e; font-family: -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; font-size: 10px; font-weight: 400; line-height: 16px; text-align: center; }
+.pcr-page .pmp-image-scroll { flex: 1; min-width: 0; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: #f5f5f7; scrollbar-width: none; }
+.pcr-page .pmp-account { margin: 0; padding: 14px 16px 12px; background: #f5f5f7; color: #161616; font-family: -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; }
+.pcr-page .pmp-account strong { display: block; margin: 0; font-size: 19px; font-weight: 550; line-height: 27px; }
+.pcr-page .pmp-account p { margin: 8px 0 0; color: #505055; font-size: 12px; line-height: 20px; }
+.pcr-page .pmp-image-crop { width: 100%; min-height: 0; margin: 0; padding: 0; overflow: hidden; }
+.pcr-page .pmp-reference-image { display: block; width: 100%; max-width: none; height: auto; padding: 0; border: 0; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+/* VIP plans asset already excludes all original account details. */
+.pcr-page .pc-sheet[data-membership-preview="vip"] .pmp-reference-image { margin: 0; }
+/* SVIP crop: source y=900, beyond the unrelated video/ad area ending at y=803. */
+.pcr-page .pc-sheet[data-membership-preview="svip"] .pmp-reference-image { margin: -74.0131578947% 0 0; }
+.pcr-page .pmp-close:focus-visible,
+.pcr-page .pmp-image-scroll:focus-visible { outline: 2px solid #c79d49; outline-offset: -3px; }
+.pcr-page .pc-app:has(.pc-sheet[data-membership-preview]) .pc-home-indicator { background: #161616; }
