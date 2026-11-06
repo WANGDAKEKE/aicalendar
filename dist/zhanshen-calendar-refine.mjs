@@ -1,7 +1,7 @@
 // Query-only review. Account, viewing history and screenshot release schedules
 // stay separate; no membership order, media playback or notification is sent.
-import {createZhanshenRefineSession,selectZhanshenRefineCalendar,setZhanshenRefinePreview,shiftZhanshenRefinePeriod,switchZhanshenRefineMode} from './zhanshen-calendar-refine-model.mjs';
-import {renderZhanshenRefineContent} from './zhanshen-calendar-refine-view.mjs';
+import {createZhanshenRefineSession,selectZhanshenRefineCalendar,shiftZhanshenRefinePeriod,switchZhanshenRefineMode} from './zhanshen-calendar-refine-model.mjs?v=2';
+import {renderZhanshenRefineContent} from './zhanshen-calendar-refine-view.mjs?v=2';
 import {renderPrincessFrame} from './princess-calendar-view.mjs';
 import {renderZhanshenTicket,renderZhanshenWidgetSetup} from './zhanshen-calendar-view.mjs';
 import {animeTicketLevels} from './zhanshen-calendar-model.mjs';
@@ -15,16 +15,15 @@ if(embedded)document.body.classList.add('pc-embedded');
 if(playbackLayout)document.body.classList.add('pc-playback-layout');
 if(playbackLayout&&params.get('hero')==='full')document.body.classList.add('pc-playback-full-hero');
 const tier=['free','vip','svip'].includes(params.get('tier'))?params.get('tier'):'vip';
-let session=createZhanshenRefineSession({tier,previewTier:params.get('preview')||undefined,mode:params.get('mode')==='month'?'month':'week'});
+let session=createZhanshenRefineSession({tier,mode:params.get('mode')==='month'?'month':'week'});
 const mount=document.querySelector('#zhanshenRefineDemo');
 mount.innerHTML=renderPrincessFrame();
 const app=mount.querySelector('.pc-app'),scroll=app.querySelector('.pc-scroll'),nav=app.querySelector('.pc-nav'),layer=app.querySelector('.pc-layer'),sheet=app.querySelector('.pc-sheet');
 nav.querySelector('[data-action="share"]').remove();
-nav.querySelector('h1').textContent='追番日历';
+nav.querySelector('h1').textContent='限免日历';
 let returnFocus=null,modal=null,toastTimer,widgetSize='wide',saving=false;
 const playerShell=playbackLayout?attachCalendarPlayerShell(app,{ip:'zhanshen',onNotice:toast,onShare:()=>toast('请转发评审页面链接；当前为界面演示')}):null;
 const view=()=>selectZhanshenRefineCalendar(session);
-const tierName=value=>({free:'非VIP',vip:'VIP',svip:'SVIP'}[value]||'非VIP');
 
 function render(focusSelector){
   scroll.innerHTML=renderZhanshenRefineContent(view(),session);
@@ -73,11 +72,6 @@ async function saveTicket(level,button){
     const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`斩神Ⅱ-${animeTicketLevels.find(item=>item.level===level).name}.png`;link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);toast('电子票已生成，请在下载中查看');
   }catch{toast('生成失败，请稍后重试');}finally{saving=false;if(button.isConnected){button.disabled=false;button.textContent='保存电子票';}}
 }
-app.addEventListener('change',event=>{
-  if(!event.target.matches('select[data-preview-tier]'))return;
-  session=setZhanshenRefinePreview(session,event.target.value);render('select[data-preview-tier]');
-  if(view().isPreview)toast(`仅预览${tierName(session.previewTier)}排期，当前身份仍为${tierName(session.accountTier)}`);
-});
 app.addEventListener('click',async event=>{
   if(event.target===layer){close();return;}
   const button=event.target.closest('button');if(!button||button.disabled)return;
@@ -95,7 +89,7 @@ app.addEventListener('click',async event=>{
     case 'desktop':showWidget();break;
     case 'confirm-desktop':session={...session,widgetPreviewed:true};render();showWidget('desktop');break;
     case 'widget-calendar':if(modal==='widget-home'){close();toast('已回到追番日历，未连接实际播放器');}break;
-    case 'back':open('斩神Ⅱ · 追番日历','界面评审示意','<p>保留原运营蓝紫色皮肤及限免批次。VIP、SVIP排期未提供时不编造集数。</p><p>排期预览不会改变身份、历史或电子票进度；会员页为历史截图，不支付。</p><button type="button" class="pc-primary" data-action="close">回到日历</button>');break;
+    case 'back':open('斩神Ⅱ · 限免日历','界面评审示意','<p>所有身份都展示同一份限免活动日历：每周四公布限免批次，11月26日标注全季免费，12月3日第2–15集回锁会员。</p><p>回锁不代表已有会员权益失效。日历不提供实际播放授权，不改变身份、历史或电子票进度；会员页仅截图演示，不支付。</p><button type="button" class="pc-primary" data-action="close">回到日历</button>');break;
   }
 });
 document.addEventListener('keydown',event=>{

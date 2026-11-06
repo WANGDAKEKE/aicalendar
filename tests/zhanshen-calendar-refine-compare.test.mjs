@@ -40,7 +40,8 @@ test('the nine anime frames are row-major full-screen, compact and full-hero wit
     assert.equal(url.searchParams.get('tier'),tiers[index%3]);
     assert.equal(url.searchParams.get('layout'),row===0?null:'player');
     assert.equal(url.searchParams.get('hero'),row===2?'full':null);
-    assert.deepEqual([...url.searchParams.keys()],row===0?['presentation','tier']:row===1?['presentation','tier','layout']:['presentation','tier','layout','hero']);
+    assert.equal(url.searchParams.get('rev'),'campaign-v2','all frames bypass the obsolete membership-schedule cache');
+    assert.deepEqual([...url.searchParams.keys()],row===0?['rev','presentation','tier']:row===1?['rev','presentation','tier','layout']:['rev','presentation','tier','layout','hero']);
     assert.match(tag,/\bwidth="453"/);
     assert.match(tag,/\bheight="912"/);
     assert.match(tag,/title="斩神Ⅱ · /);

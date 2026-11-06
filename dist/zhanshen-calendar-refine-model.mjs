@@ -20,7 +20,9 @@ function normalize(input){
   const accountTier=own(source,'accountTier')&&source.accountTier!==undefined?resolveTier(source.accountTier):'vip';
   return {
     ...base,accountTier,
-    previewTier:own(source,'previewTier')&&validTier(source.previewTier)?source.previewTier:accountTier,
+    // One limited-free campaign applies to every identity; legacy preview
+    // options cannot select a different activity or a fabricated paid schedule.
+    previewTier:'free',
     reminded:own(source,'reminded')&&source.reminded===true,
     widgetPreviewed:own(source,'widgetPreviewed')&&source.widgetPreviewed===true,
   };
@@ -33,7 +35,7 @@ export function createZhanshenRefineSession(options={}){
     mode:own(source,'mode')?source.mode:undefined,
   });
   const accountTier=own(source,'tier')&&source.tier!==undefined?resolveTier(source.tier):'vip';
-  return normalize({...base,accountTier,previewTier:own(source,'previewTier')?source.previewTier:accountTier});
+  return normalize({...base,accountTier});
 }
 
 function marketingFor(accountTier){
@@ -44,16 +46,10 @@ function marketingFor(accountTier){
 
 function scheduleFor(session){
   const schedule=selectZhanshenCalendar(session);
-  const shared={...schedule,accountTier:session.previewTier,previewTier:session.previewTier,availableEpisodes:[],nextEpisode:null};
-  if(session.previewTier==='free')return {...shared,scheduleKnown:true};
-  // No VIP or SVIP release schedule was supplied. Do not reuse the limited-free
-  // batches as membership releases or infer actual viewing authorization.
-  const days=schedule.days.map(day=>({...day,event:null}));
   return {
-    ...shared,days,cells:days,events:[],selectedEvent:null,
-    selectedDay:days.find(day=>day.date===schedule.selectedDate)||null,
-    todayEvent:null,latestEvent:null,nextEvent:null,scheduleKnown:false,
-    scheduleNote:`${TIERS[session.previewTier]}会员排期待公布；当前仅有运营公布的限免排期，未提供会员排播，不作播放授权判断。`,
+    ...schedule,scheduleType:'limited-free',audience:'all',scheduleKnown:true,
+    availableEpisodes:[],nextEpisode:null,
+    scheduleNote:`${schedule.scheduleNote}这是面向所有身份的限免活动排期，不是会员排播或播放授权；回锁表示限免结束，不代表撤销已具备的会员观看权限。`,
   };
 }
 
@@ -61,17 +57,17 @@ export function selectZhanshenRefineCalendar(input){
   const session=normalize(input);
   const actual=selectZhanshenCalendar(session);
   return {
-    ...actual,accountTier:session.accountTier,previewTier:session.previewTier,
-    isPreview:session.previewTier!==session.accountTier,
+    ...actual,accountTier:session.accountTier,previewTier:'free',isPreview:false,
     // Screenshot dates describe a campaign, not a known playable episode set.
     availableEpisodes:[],nextEpisode:null,
     marketing:marketingFor(session.accountTier),schedule:scheduleFor(session),
   };
 }
 
-export function setZhanshenRefinePreview(input,tier){
-  const session=normalize(input);
-  return {...session,previewTier:validTier(tier)?tier:session.accountTier};
+export function setZhanshenRefinePreview(input,_tier){
+  // Compatibility only: this no longer changes the common campaign, account,
+  // ticket history or unknown viewing authorization.
+  return normalize(input);
 }
 
 export function shiftZhanshenRefinePeriod(input,delta){
