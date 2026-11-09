@@ -51,9 +51,9 @@ export function renderPrincessRefineContent(view,session){
         <div class="pc-weekdays" aria-hidden="true">${[...'一二三四五六日'].map(day=>`<span>周${day}</span>`).join('')}</div>
         <div class="pcr-schedule-grid" data-mode="${schedule.mode}"><div class="${schedule.mode==='week'?'pc-week-grid':'pc-month-grid'}" aria-label="${esc(tierName(previewTier))}排期">${days}</div>${previewTier==='free'?'<p class="pcr-free-schedule-note">免费排期待公布</p>':''}</div>
         ${activities?`<div class="pc-query-activities">${activities}</div>`:''}
-        ${renderPrincessWidgetEntry(view,{previewed:Boolean(session.widgetPreviewed)})}
+        ${renderMarketing(view.marketing)}
       </section>
-      ${renderMarketing(view.marketing)}
+      ${renderPrincessWidgetEntry(view,{previewed:Boolean(session.widgetPreviewed)})}
       <p class="pc-note pcr-footer-note">截图排期演示 · 非实时数据 · 以官方实际播出为准</p>
     </div>`;
 }

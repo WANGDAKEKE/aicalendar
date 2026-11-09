@@ -1,7 +1,7 @@
 // Isolated calendar study. Schedule previews are deliberately not account
 // changes, playback authorization, order creation or viewing-history writes.
 import {createPrincessRefineSession,selectPrincessRefineCalendar,setPrincessRefinePreview,shiftPrincessRefinePeriod,switchPrincessRefineMode} from './princess-calendar-refine-model.mjs';
-import {renderPrincessRefineContent} from './princess-calendar-refine-view.mjs';
+import {renderPrincessRefineContent} from './princess-calendar-refine-view.mjs?v=sections-v1';
 import {renderPrincessFrame,renderPrincessTicket} from './princess-calendar-view.mjs';
 import {renderPrincessWidgetSetup} from './princess-widget-entry.mjs';
 import {escapeHTML as esc} from './calendar-concept-view.mjs';

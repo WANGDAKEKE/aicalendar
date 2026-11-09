@@ -32,7 +32,7 @@
 .pcr-page .pcr-free-schedule-note { margin: 0; color: #805936; font-size: 11px; line-height: 24px; text-align: center; pointer-events: none; }
 .pcr-page .pcr-schedule-grid[data-mode="week"] .pcr-free-schedule-note { position: absolute; bottom: 2px; left: 0; right: 0; }
 .pcr-page .pc-query-activities { margin-top: 2px; }
-.pcr-page .pc-desktop-entry { margin-top: 12px; }
+.pcr-page .pc-contents > .pc-desktop-entry { margin-top: 0; padding: 12px; border: 1px solid #d9a864a6; border-radius: 4px; background: linear-gradient(110deg,#f2d69f,#ffefc9 65%,#e9c78b); }
 .pcr-page .pc-desktop-entry__action { min-height: 44px; }
 .pcr-page .pcr-marketing { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 78px; padding: 12px; }
 .pcr-page .pcr-marketing__copy { flex: 1; min-width: 0; }
@@ -42,6 +42,10 @@
 .pcr-page .pcr-rules { padding: 2px 12px 0; color: #f9dfb2; text-align: center; }
 .pcr-page .pcr-rules h3 { margin: 0; font-size: 13px; line-height: 20px; font-weight: 550; }
 .pcr-page .pcr-rules p { margin: 4px 0 0; color: #efc98f; font-size: 11px; line-height: 18px; }
+.pcr-page .pc-calendar > .pcr-marketing { margin-top: 12px; border-color: #bc93544d; background: linear-gradient(110deg,#fff2d58c,#f8e6bf80); color: #713e28; }
+.pcr-page .pc-calendar > .pcr-marketing p { color: #89643f; }
+.pcr-page .pc-calendar > .pcr-rules { margin-top: 12px; padding: 12px 0 0; border-top: 1px solid #bc93544d; color: #713e28; text-align: left; }
+.pcr-page .pc-calendar > .pcr-rules p { color: #89643f; }
 .pcr-page .pcr-footer-note { margin-top: 12px; }
 .pcr-page .pcr-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (max-width: 600px) {

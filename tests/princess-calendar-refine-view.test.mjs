@@ -9,17 +9,33 @@ const render=session=>renderPrincessRefineContent(selectPrincessRefineCalendar(s
 const dayHTML=(html,date)=>html.match(new RegExp(`<button\\b[^>]*data-date="${date}"[^>]*>[\\s\\S]*?<\\/button>`))?.[0];
 const section=(html,begin,end)=>html.slice(html.indexOf(begin),html.indexOf(end,html.indexOf(begin)));
 const ruleSection=html=>html.match(/<section\b[^>]*class="[^"]*(?:pcr-marketing|pcr-rules)[^"]*"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+// Calendar now contains a nested membership section, so find the matching
+// closing section rather than stopping at the first nested </section>.
+const sectionNode=(html,className)=>{
+  const tags=[...html.matchAll(/<\/?section\b[^>]*>/g)];
+  const first=tags.findIndex(([tag])=>!tag.startsWith('</')&&tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes(className));
+  if(first<0)return null;
+  let depth=0;
+  for(const tag of tags.slice(first)){
+    depth+=tag[0].startsWith('</')?-1:1;
+    if(depth===0){
+      const start=tags[first].index,end=tag.index+tag[0].length;
+      return {start,end,html:html.slice(start,end)};
+    }
+  }
+  return null;
+};
 
-test('the isolated refinement retains hero, ticket, schedule, widget and membership in order',()=>{
+test('the isolated refinement retains hero, ticket and calendar while moving membership before the external widget',()=>{
   const html=render(createPrincessRefineSession());
-  const positions=['class="pc-hero"','class="pc-ticket"','class="pc-calendar"','class="pc-desktop-entry"','class="pc-marketing'].map(value=>html.indexOf(value));
+  const positions=['class="pc-hero"','class="pc-ticket"','class="pc-calendar"','class="pc-marketing','class="pc-desktop-entry"'].map(value=>html.indexOf(value));
   assert.ok(positions.every(value=>value>=0));
   for(let index=1;index<positions.length;index++)assert.ok(positions[index]>positions[index-1]);
   assert.match(html,/<h2>尚公主<\/h2>/);
   assert.match(html,/尚公主原版人物海报/);
 });
 
-test('operational copy appears once at the bottom for every actual account and preview schedule',()=>{
+test('operational copy appears once in the calendar footer before the external widget for every account and preview',()=>{
   for(const tier of ['free','vip','svip'])for(const previewTier of ['free','vip','svip']){
     const session=setPrincessRefinePreview(createPrincessRefineSession({tier}),previewTier),html=render(session);
     const hero=section(html,'class="pc-hero"','class="pc-contents"');
@@ -30,9 +46,42 @@ test('operational copy appears once at the bottom for every actual account and p
     assert.match(rules,/SVIP抢先看1集/);
     assert.equal((html.match(/会员每日18点更新/g)||[]).length,1);
     assert.equal((html.match(/SVIP抢先看1集/g)||[]).length,1);
-    assert.ok(html.indexOf(rules)>html.indexOf('class="pc-desktop-entry"'),'rules are placed after the calendar widget entry');
+    const calendar=sectionNode(html,'pc-calendar'),widget=sectionNode(html,'pc-desktop-entry');
+    assert.ok(calendar&&widget);
+    assert.ok(calendar.html.includes(rules),'rules are placed within the calendar footer');
+    assert.ok(calendar.end<=widget.start,'the desktop widget follows the completed calendar');
     assert.doesNotMatch(html,/pc-today-summary|今日\s*18:00|可看至第|今日可看至|已更新\s*25|会员每日18:00更新/);
     assert.doesNotMatch(html,/data-action="today"|回到今天|pcr-calendar-utility|class="pcr-schedule-note"/);
+  }
+});
+
+test('membership or SVIP rules stay inside the calendar and the desktop card is its direct external successor in all projections',()=>{
+  for(const tier of ['free','vip','svip'])for(const previewTier of ['free','vip','svip'])for(const mode of ['week','month']){
+    const session=switchPrincessRefineMode(setPrincessRefinePreview(createPrincessRefineSession({tier}),previewTier),mode);
+    const view=selectPrincessRefineCalendar(session),html=renderPrincessRefineContent(view,session);
+    const label=`${tier}/${previewTier}/${mode}`;
+    const calendar=sectionNode(html,'pc-calendar'),widget=sectionNode(html,'pc-desktop-entry');
+    const membership=sectionNode(html,tier==='svip'?'pcr-rules':'pcr-marketing');
+    assert.ok(calendar&&widget&&membership,`${label}: all three sections remain present`);
+    assert.ok(calendar.start<membership.start&&membership.end<calendar.end,`${label}: membership is nested in the calendar`);
+    assert.ok(membership.start>html.indexOf('class="pcr-schedule-grid"'),`${label}: membership follows the calendar grid`);
+    assert.equal(html.slice(calendar.end,widget.start).trim(),'',`${label}: the desktop card directly follows the calendar`);
+    assert.doesNotMatch(calendar.html,/class="pc-desktop-entry"/);
+    assert.doesNotMatch(widget.html,/pcr-marketing|pcr-rules|data-action="membership"|data-action="preview-membership"/);
+    assert.equal((html.match(/<section class="pc-calendar"/g)||[]).length,1);
+    assert.equal((html.match(/<section class="pc-desktop-entry"/g)||[]).length,1);
+    assert.equal((html.match(/aria-label="会员排期与权益"|aria-label="排播更新说明"/g)||[]).length,1);
+    assert.equal((html.match(/data-action="desktop"/g)||[]).length,1);
+    if(tier==='svip'){
+      assert.doesNotMatch(membership.html,/<button\b|data-action="membership"|data-action="preview-membership"/);
+      assert.doesNotMatch(html,/data-action="membership"|data-action="preview-membership"/);
+    }else{
+      const action=view.marketing.kind==='preview'?'preview-membership':'membership';
+      assert.equal((html.match(/data-action="(?:membership|preview-membership)"/g)||[]).length,1);
+      assert.ok(membership.html.includes(`data-action="${action}"`),`${label}: moving the card must preserve its original action`);
+      assert.ok(membership.html.includes(`data-${action==='membership'?'target-tier':'preview-tier'}="${view.marketing.tier}"`));
+    }
+    assert.equal(session.accountTier,tier);
   }
 });
 
@@ -56,7 +105,7 @@ test('membership selector is a direct sibling of the calendar title and view swi
 test('the free schedule hint lives in the reserved grid area only when previewing unpublished free releases',()=>{
   for(const account of ['free','vip','svip'])for(const previewTier of ['free','vip','svip']){
     const session=setPrincessRefinePreview(createPrincessRefineSession({tier:account}),previewTier),html=render(session);
-    const grid=html.match(/<div class="pcr-schedule-grid"[^>]*>([\s\S]*?)<\/div>\s*(?:<div class="pc-query-activities"|<section class="pc-desktop-entry")/)?.[1];
+    const grid=html.match(/<div class="pcr-schedule-grid"[^>]*>([\s\S]*?)<\/div>\s*(?:<div class="pc-query-activities"|<section class="(?:pc-marketing pcr-marketing|pcr-rules)")/)?.[1];
     assert.ok(grid,'weekly cells have one wrapper for the overlaid unpublished-schedule hint');
     if(previewTier==='free'){
       assert.match(grid,/<p class="pcr-free-schedule-note">免费排期待公布<\/p>/);
