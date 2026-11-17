@@ -91,7 +91,7 @@ test('membership selector is a direct sibling of the calendar title and view swi
     const html=render(session);
     const header=html.match(/<div class="pc-calendar__top">\s*<strong>追剧日历<\/strong>\s*<label class="pcr-tier-select">([\s\S]*?)<\/label>\s*<div class="pc-segment" aria-label="排期视图">([\s\S]*?)<\/div>\s*<\/div>/);
     assert.ok(header,`${mode}/${tier}: title, membership selector and week/month switch must share the same header`);
-    assert.match(header[1],/<select aria-label="切换会员排期" data-preview-tier>/);
+    assert.match(header[1],/<select aria-label="切换会员日历" data-preview-tier>/);
     assert.equal((header[1].match(/<select\b/g)||[]).length,1);
     assert.match(header[2],/data-mode="week"/);
     assert.match(header[2],/data-mode="month"/);
@@ -117,17 +117,18 @@ test('the free schedule hint lives in the reserved grid area only when previewin
   }
 });
 
-test('VIP, SVIP and free schedule choices remain accessible and the real selected option is shown',()=>{
-  for(const tier of ['vip','svip','free']){
-    const session=setPrincessRefinePreview(createPrincessRefineSession(),tier),html=render(session);
-    assert.match(html,/<select aria-label="切换会员排期" data-preview-tier>/);
+test('VIP, SVIP and free calendar labels stay accessible and preserve each selected tier across all accounts and views',()=>{
+  for(const account of ['vip','svip','free'])for(const tier of ['vip','svip','free'])for(const mode of ['week','month']){
+    const session=switchPrincessRefineMode(setPrincessRefinePreview(createPrincessRefineSession({tier:account}),tier),mode),html=render(session);
+    assert.match(html,/<select aria-label="切换会员日历" data-preview-tier>/);
     assert.match(html,new RegExp(`<option value="${tier}" selected>`));
-    assert.match(html,/VIP排期/);
-    assert.match(html,/SVIP排期/);
-    assert.match(html,/非VIP排期/);
+    assert.match(html,/VIP日历/);
+    assert.match(html,/SVIP日历/);
+    assert.match(html,/非VIP日历/);
     const options=[...html.matchAll(/<option value="([^"]+)"( selected)?>([^<]*)<\/option>/g)];
-    assert.deepEqual(options.map(match=>[match[1],match[3]]),[['vip','VIP排期'],['svip','SVIP排期'],['free','非VIP排期']]);
+    assert.deepEqual(options.map(match=>[match[1],match[3]]),[['vip','VIP日历'],['svip','SVIP日历'],['free','非VIP日历']]);
     assert.deepEqual(options.filter(match=>Boolean(match[2])).map(match=>match[1]),[tier]);
+    assert.equal(session.accountTier,account,'renaming a calendar option must not change the real account');
   }
 });
 

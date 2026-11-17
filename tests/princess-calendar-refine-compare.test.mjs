@@ -28,7 +28,7 @@ test('the isolated local comparison has three rows and nine native phone canvase
     assert.equal(url.searchParams.get('tier'),tiers[index%3]);
     assert.equal(url.searchParams.get('layout'),row===0?null:'player');
     assert.equal(url.searchParams.get('hero'),row===2?'full':null);
-    assert.equal(url.searchParams.get('rev'),'sections-v1','all frames bypass the prior widget-before-membership layout cache');
+    assert.equal(url.searchParams.get('rev'),'calendar-label-v1','all frames bypass the prior schedule-label cache');
     assert.deepEqual([...url.searchParams.keys()].filter(key=>key!=='rev'),row===0?['presentation','tier']:row===1?['presentation','tier','layout']:['presentation','tier','layout','hero']);
     assert.match(tag,/\bwidth="453"/);
     assert.match(tag,/\bheight="912"/);
