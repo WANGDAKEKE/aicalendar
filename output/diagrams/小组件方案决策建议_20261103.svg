@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1290" viewBox="0 0 1000 1290" role="img" aria-labelledby="title description">
+  <title id="title">小组件方案下一步决策建议</title>
+  <desc id="description">先明确用户和需求，再核对现有能力及数据。优先评估复用，无法复用时补充新增必要性和维护方案。先验证原型，具备回退方案后再做小范围对照；有增量价值且风险可控时提交上级讨论，否则调整或暂停。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#8B978B"/></marker>
+    <style>
+      text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#243128;text-anchor:middle}
+      .title{font-size:32px;font-weight:600;text-anchor:start}
+      .subtitle{font-size:19px;fill:#68756B;text-anchor:start}
+      .main{font-size:23px;font-weight:500}
+      .detail{font-size:18px;fill:#657368}
+      .branch{font-size:19px;fill:#566A5B}
+      .node{fill:#FFFFFF;stroke:#D7DFD7;stroke-width:1.5}
+      .highlight{fill:#EFF6ED;stroke:#BED0B7;stroke-width:1.5}
+      .decision{fill:#F6F7F3;stroke:#D1DAD0;stroke-width:1.5}
+      .edge{fill:none;stroke:#8B978B;stroke-width:2;stroke-linejoin:round;marker-end:url(#arrow)}
+      .connector{fill:none;stroke:#8B978B;stroke-width:2;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1000" height="1290" fill="#FBFCF9"/>
+  <text x="64" y="64" class="title">小组件方案下一步怎么做</text>
+  <text x="64" y="102" class="subtitle">建议路径：先确认价值，再决定复用还是新增</text>
+
+  <rect x="220" y="145" width="560" height="86" rx="13" class="highlight"/>
+  <text x="500" y="180" class="main">先明确用户和主目标</text>
+  <text x="500" y="209" class="detail">通用续看与单剧追更，先确定首期重点</text>
+  <path d="M500 231 V269" class="edge"/>
+
+  <rect x="220" y="271" width="560" height="88" rx="13" class="node"/>
+  <text x="500" y="307" class="main">核对现有组件与真实数据</text>
+  <text x="500" y="335" class="detail">能力差异、目标用户、添加漏斗与统计口径</text>
+  <path d="M500 359 V393" class="edge"/>
+
+  <path d="M500 394 L730 470 L500 546 L270 470 Z" class="decision"/>
+  <text x="500" y="478" class="main">现有组件能否承载？</text>
+  <path d="M270 470 H262 V598" class="edge"/>
+  <path d="M730 470 H738 V598" class="edge"/>
+  <text x="240" y="571" class="branch" style="text-anchor:end">可以</text>
+  <text x="758" y="571" class="branch" style="text-anchor:start">不能或尚未确认</text>
+
+  <rect x="55" y="600" width="415" height="96" rx="13" class="highlight"/>
+  <text x="262" y="638" class="main">评估复用现有入口或模板</text>
+  <text x="262" y="668" class="detail">保留原有能力，验证新增效果</text>
+  <rect x="530" y="600" width="415" height="96" rx="13" class="node"/>
+  <text x="738" y="638" class="main">补充新增必要性与维护方案</text>
+  <text x="738" y="668" class="detail">先不急着新增系统组件入口</text>
+
+  <path d="M262 696 V742 H500" class="connector"/>
+  <path d="M738 696 V742 H500" class="connector"/>
+  <path d="M500 742 V778" class="edge"/>
+  <rect x="220" y="780" width="560" height="100" rx="13" class="highlight"/>
+  <text x="500" y="818" class="main">先做原型验证</text>
+  <text x="500" y="849" class="detail">具备回退方案后，再做小范围对照</text>
+  <path d="M500 880 V918" class="edge"/>
+
+  <path d="M500 920 L730 1000 L500 1080 L270 1000 Z" class="decision"/>
+  <text x="500" y="993" class="main">比现状更有效</text>
+  <text x="500" y="1022" class="main">且维护风险可控？</text>
+  <path d="M270 1000 H262 V1128" class="edge"/>
+  <path d="M730 1000 H738 V1128" class="edge"/>
+  <text x="240" y="1106" class="branch" style="text-anchor:end">否或证据不足</text>
+  <text x="758" y="1106" class="branch" style="text-anchor:start">是</text>
+
+  <rect x="55" y="1130" width="415" height="86" rx="13" class="node"/>
+  <text x="262" y="1166" class="main">调整方案或暂停</text>
+  <text x="262" y="1194" class="detail">暂不新增，保留现有能力</text>
+  <rect x="530" y="1130" width="415" height="86" rx="13" class="highlight"/>
+  <text x="738" y="1166" class="main">提交薇姐讨论是否扩大上线</text>
+  <text x="738" y="1194" class="detail">原型完成不等于可以推全</text>
+  <text x="500" y="1261" class="detail" style="font-size:16px">阈值、分流、回退和各平台能力需共同确认；以上为建议验证路径</text>
+</svg>

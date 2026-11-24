@@ -1,0 +1,31 @@
+.phone{container-type:inline-size}
+.phone::before{display:none}
+.phone .ios-screen{padding:0;display:block;width:100%;height:100%;border-radius:inherit;overflow:hidden;isolation:isolate;background:#526CB1;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC",sans-serif}
+.phone .ios-svg-library{position:absolute;pointer-events:none;overflow:hidden}
+.phone .ios-wallpaper{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#666d8b,#a08ca0 53%,#45526b)}
+.phone .ios-wallpaper>img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+.phone .ios-wallpaper::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,22,32,.26),rgba(13,22,32,.03) 20%,transparent 40%,rgba(13,22,32,.07) 70%,rgba(13,22,32,.2));pointer-events:none}
+.phone .ios-status{height:15.13cqw;display:flex;justify-content:space-between;align-items:flex-start;padding:5.8cqw 7.8cqw 0;font-size:4.1cqw;line-height:1;font-weight:650;letter-spacing:-.35px;position:relative;z-index:2;font-variant-numeric:tabular-nums}
+.phone .ios-status-right{display:flex;align-items:center;gap:1.25cqw;padding-top:.05cqw}
+.phone .ios-status-right svg{height:3.1cqw;fill:currentColor;overflow:visible}
+.phone .ios-status-right .ios-cellular{width:4.6cqw;height:3.1cqw}
+.phone .ios-status-right .ios-wifi{width:4.1cqw;height:3.1cqw}
+.phone .ios-status-right .ios-battery{width:6.8cqw;height:3.35cqw;margin-left:.25cqw}
+.phone .ios-island{position:absolute;width:30.8cqw;height:9.25cqw;top:3.1cqw;left:50%;transform:translateX(-50%);border-radius:6cqw;background:#050508;box-shadow:0 0 0 .2cqw #07070B;z-index:3}
+.phone .ios-island i{position:absolute;width:3cqw;height:3cqw;right:2.5cqw;top:3.1cqw;border-radius:50%;background:radial-gradient(circle at 60% 40%,#15224E 0 17%,#070B19 29%,#020306 60%);opacity:.7}
+.phone .ios-home-content{padding:5cqw 6.65cqw 0}
+.phone .ios-home-content .widget-slot{margin:0;width:100%}
+.phone .ios-home-content .companion-widget{width:100%;height:42.5cqw;min-height:0;max-height:42.5cqw;border-radius:6.1cqw}
+.phone .ios-home-content .widget-app-label{display:block;margin-top:1.6cqw;color:#fff;text-align:center;font-size:3.05cqw;font-weight:400;line-height:1.3;letter-spacing:0;text-shadow:0 .4cqw .9cqw #08234A65}
+.phone .ios-app-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:5.6cqw;row-gap:5.45cqw;margin-top:6.7cqw;padding:0 .5cqw}
+.phone .ios-app{display:flex;align-items:center;flex-direction:column;min-width:0;gap:1.45cqw;color:#fff;user-select:none}
+.phone .ios-app-icon{display:block;width:15.4cqw;height:15.4cqw;flex-shrink:0;overflow:hidden;filter:drop-shadow(0 .55cqw 1.1cqw #182A6B25);border-radius:3.8cqw}
+.phone .ios-app-icon>svg{width:100%;height:100%;display:block}
+.phone .ios-app-name{font-size:2.95cqw;font-weight:400;line-height:1.2;white-space:nowrap;text-shadow:0 .4cqw .9cqw #10235380;letter-spacing:-.12px}
+.phone .ios-search{position:absolute;bottom:33.2cqw;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.25cqw;padding:1.65cqw 3.1cqw;border-radius:8cqw;background:#1D242B3D;box-shadow:inset 0 0 0 .15cqw #FFFFFF1A;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);font-size:2.8cqw;font-weight:500;line-height:1;color:#fff}
+.phone .ios-search svg{width:2.9cqw;height:2.9cqw;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;opacity:.9}
+.phone .ios-dock{position:absolute;bottom:5.3cqw;left:3.9cqw;right:3.9cqw;height:24.1cqw;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;padding:0 4.35cqw;gap:5.6cqw;background:#F2F0E947;border:1px solid #FFFFFF33;border-radius:8.8cqw;box-shadow:0 .5cqw 1cqw #101A220C,inset 0 .2cqw .3cqw #FFFFFF24;backdrop-filter:blur(32px) saturate(1.2);-webkit-backdrop-filter:blur(32px) saturate(1.2)}
+.phone .ios-dock .ios-app{display:block}
+.phone .ios-dock .ios-app-name{display:none}
+.phone .ios-home-indicator{position:absolute;left:50%;transform:translateX(-50%);bottom:1.9cqw;width:34.5cqw;height:1.2cqw;border-radius:2cqw;background:#fff;opacity:.94}
+.phone .ios-screen [hidden]{display:none!important}

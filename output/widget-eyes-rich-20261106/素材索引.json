@@ -1,0 +1,553 @@
+{
+  "version": "2026-11-06-rich",
+  "newExpressions": 32,
+  "newPNG": 32,
+  "newSVG": 32,
+  "previousPNG": 29,
+  "items": [
+    {
+      "id": "01-holding-tears",
+      "name": "含泪忍住",
+      "group": "流泪委屈",
+      "hint": "泪水只在眼眶里打转；适合轻度想念、短期未续看。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/01_含泪忍住.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/01_含泪忍住.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 98,
+        "minY": 51,
+        "maxX": 413,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "02-one-teardrop",
+      "name": "单滴眼泪",
+      "group": "流泪委屈",
+      "hint": "一边忍着、一边掉一滴；适合温和的委屈提醒。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/02_单滴眼泪.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/02_单滴眼泪.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 80,
+        "minY": 65,
+        "maxX": 407,
+        "maxY": 312
+      }
+    },
+    {
+      "id": "03-two-teardrops",
+      "name": "双滴眼泪",
+      "group": "流泪委屈",
+      "hint": "左右各一滴、落点错开，情绪比单滴更明显。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/03_双滴眼泪.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/03_双滴眼泪.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 71,
+        "minY": 75,
+        "maxX": 435,
+        "maxY": 316
+      }
+    },
+    {
+      "id": "04-tear-streams",
+      "name": "泪流不止",
+      "group": "流泪委屈",
+      "hint": "两道连续泪流；适合明显的夸张撒娇，不用作严肃警告。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/04_泪流不止.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/04_泪流不止.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 98,
+        "minY": 75,
+        "maxX": 413,
+        "maxY": 342
+      }
+    },
+    {
+      "id": "05-drooping-sad",
+      "name": "委屈下垂",
+      "group": "流泪委屈",
+      "hint": "眼尾下垂、瞳孔靠内，轻轻委屈，不需要大颗眼泪。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/05_委屈下垂.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/05_委屈下垂.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 99,
+        "minY": 59,
+        "maxX": 415,
+        "maxY": 279
+      }
+    },
+    {
+      "id": "06-puppy-eyes",
+      "name": "汪汪大眼",
+      "group": "流泪委屈",
+      "hint": "放大黑瞳与高光，眼眶蓄泪；适合请求“再看一会儿”。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/06_汪汪大眼.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/06_汪汪大眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 65,
+        "maxX": 407,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "07-sobbing-squint",
+      "name": "哭到眯眼",
+      "group": "流泪委屈",
+      "hint": "眼睛挤成小缝、泪滴错落；适合表情包式的夸张哭哭。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/07_哭到眯眼.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/07_哭到眯眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 71,
+        "minY": 137,
+        "maxX": 440,
+        "maxY": 333
+      }
+    },
+    {
+      "id": "08-side-eye-tears",
+      "name": "泪眼斜看",
+      "group": "流泪委屈",
+      "hint": "半眯侧目加一滴泪，委屈里带一点“你自己看着办”。",
+      "png": "01_新增透明PNG_32款/01_流泪委屈/08_泪眼斜看.png",
+      "svg": "02_可编辑SVG_32款/01_流泪委屈/08_泪眼斜看.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 101,
+        "minY": 143,
+        "maxX": 447,
+        "maxY": 307
+      }
+    },
+    {
+      "id": "09-sleepy",
+      "name": "困得半眯",
+      "group": "困倦等你",
+      "hint": "等更新，安静陪伴",
+      "png": "01_新增透明PNG_32款/02_困倦等你/09_困得半眯.png",
+      "svg": "02_可编辑SVG_32款/02_困倦等你/09_困得半眯.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 103,
+        "minY": 151,
+        "maxX": 411,
+        "maxY": 281
+      }
+    },
+    {
+      "id": "10-asleep",
+      "name": "睡着弯眼",
+      "group": "困倦等你",
+      "hint": "休更或安静等待",
+      "png": "01_新增透明PNG_32款/02_困倦等你/10_睡着弯眼.png",
+      "svg": "02_可编辑SVG_32款/02_困倦等你/10_睡着弯眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 91,
+        "minY": 150,
+        "maxX": 420,
+        "maxY": 225
+      }
+    },
+    {
+      "id": "11-nodding",
+      "name": "左右打盹",
+      "group": "困倦等你",
+      "hint": "长时间等待时的搞怪表达",
+      "png": "01_新增透明PNG_32款/02_困倦等你/11_左右打盹.png",
+      "svg": "02_可编辑SVG_32款/02_困倦等你/11_左右打盹.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 135,
+        "maxX": 407,
+        "maxY": 289
+      }
+    },
+    {
+      "id": "12-half-awake",
+      "name": "一眼醒一眼睡",
+      "group": "困倦等你",
+      "hint": "轻量唤醒，半梦半醒",
+      "png": "01_新增透明PNG_32款/02_困倦等你/12_一眼醒一眼睡.png",
+      "svg": "02_可编辑SVG_32款/02_困倦等你/12_一眼醒一眼睡.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 78,
+        "maxX": 420,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "13-eye-roll",
+      "name": "等到翻白眼",
+      "group": "困倦等你",
+      "hint": "有待看时的俏皮催看，少量使用",
+      "png": "01_新增透明PNG_32款/02_困倦等你/13_等到翻白眼.png",
+      "svg": "02_可编辑SVG_32款/02_困倦等你/13_等到翻白眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 38,
+        "maxX": 407,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "14-indifferent",
+      "name": "冷漠横眼",
+      "group": "困倦等你",
+      "hint": "吐槽、无语，避免高频使用",
+      "png": "01_新增透明PNG_32款/02_困倦等你/14_冷漠横眼.png",
+      "svg": "02_可编辑SVG_32款/02_困倦等你/14_冷漠横眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 103,
+        "minY": 141,
+        "maxX": 408,
+        "maxY": 199
+      }
+    },
+    {
+      "id": "15-shocked",
+      "name": "震惊圆眼",
+      "group": "搞怪催看",
+      "hint": "上新、意外惊喜",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/15_震惊圆眼.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/15_震惊圆眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 94,
+        "minY": 36,
+        "maxX": 417,
+        "maxY": 276
+      }
+    },
+    {
+      "id": "16-shaky",
+      "name": "瞳孔地震",
+      "group": "搞怪催看",
+      "hint": "惊讶，适合强变化节点",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/16_瞳孔地震.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/16_瞳孔地震.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 51,
+        "minY": 65,
+        "maxX": 460,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "17-looking-around",
+      "name": "左右张望",
+      "group": "搞怪催看",
+      "hint": "寻找用户、等待回来",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/17_左右张望.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/17_左右张望.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 65,
+        "maxX": 407,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "18-sneaky",
+      "name": "偷偷侧瞄",
+      "group": "搞怪催看",
+      "hint": "轻微提醒，不强催",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/18_偷偷侧瞄.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/18_偷偷侧瞄.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 101,
+        "minY": 131,
+        "maxX": 405,
+        "maxY": 293
+      }
+    },
+    {
+      "id": "19-pleading",
+      "name": "委屈内八",
+      "group": "搞怪催看",
+      "hint": "想念、求续看",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/19_委屈内八.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/19_委屈内八.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 102,
+        "minY": 36,
+        "maxX": 409,
+        "maxY": 284
+      }
+    },
+    {
+      "id": "20-asymmetric",
+      "name": "一眼大一眼小",
+      "group": "搞怪催看",
+      "hint": "疑惑、调皮",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/20_一眼大一眼小.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/20_一眼大一眼小.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 85,
+        "minY": 69,
+        "maxX": 398,
+        "maxY": 289
+      }
+    },
+    {
+      "id": "21-raised-brow",
+      "name": "阴阳挑眉",
+      "group": "搞怪催看",
+      "hint": "熟人式吐槽，克制使用",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/21_阴阳挑眉.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/21_阴阳挑眉.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 102,
+        "minY": 25,
+        "maxX": 407,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "22-grumpy",
+      "name": "气鼓鼓",
+      "group": "搞怪催看",
+      "hint": "搞怪假生气，不搭配责备文案",
+      "png": "01_新增透明PNG_32款/03_搞怪催看/22_气鼓鼓.png",
+      "svg": "02_可编辑SVG_32款/03_搞怪催看/22_气鼓鼓.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 86,
+        "minY": 112,
+        "maxX": 422,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "23-sparkly",
+      "name": "星光闪闪",
+      "group": "开心回来",
+      "hint": "上新或欢迎回来",
+      "png": "01_新增透明PNG_32款/04_开心回来/23_星光闪闪.png",
+      "svg": "02_可编辑SVG_32款/04_开心回来/23_星光闪闪.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 54,
+        "minY": 65,
+        "maxX": 463,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "24-heart-eyes",
+      "name": "心动眼",
+      "group": "开心回来",
+      "hint": "喜欢、亲近、看完正反馈",
+      "png": "01_新增透明PNG_32款/04_开心回来/24_心动眼.png",
+      "svg": "02_可编辑SVG_32款/04_开心回来/24_心动眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 65,
+        "maxX": 407,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "25-big-smile",
+      "name": "笑成月牙",
+      "group": "开心回来",
+      "hint": "追平或全剧看完",
+      "png": "01_新增透明PNG_32款/04_开心回来/25_笑成月牙.png",
+      "svg": "02_可编辑SVG_32款/04_开心回来/25_笑成月牙.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 60,
+        "minY": 112,
+        "maxX": 451,
+        "maxY": 219
+      }
+    },
+    {
+      "id": "26-wink",
+      "name": "开心眨眼",
+      "group": "开心回来",
+      "hint": "欢迎回来、轻量互动",
+      "png": "01_新增透明PNG_32款/04_开心回来/26_开心眨眼.png",
+      "svg": "02_可编辑SVG_32款/04_开心回来/26_开心眨眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 76,
+        "maxX": 467,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "27-smug",
+      "name": "得意眯眼",
+      "group": "开心回来",
+      "hint": "陪用户追平后的轻松状态",
+      "png": "01_新增透明PNG_32款/04_开心回来/27_得意眯眼.png",
+      "svg": "02_可编辑SVG_32款/04_开心回来/27_得意眯眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 99,
+        "minY": 116,
+        "maxX": 406,
+        "maxY": 293
+      }
+    },
+    {
+      "id": "28-anticipating",
+      "name": "期待大眼",
+      "group": "开心回来",
+      "hint": "即将更新、期待续看",
+      "png": "01_新增透明PNG_32款/04_开心回来/28_期待大眼.png",
+      "svg": "02_可编辑SVG_32款/04_开心回来/28_期待大眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 57,
+        "minY": 65,
+        "maxX": 457,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "29-confused",
+      "name": "疑惑高低眉",
+      "group": "紧张疑惑",
+      "hint": "疑问、轻吐槽",
+      "png": "01_新增透明PNG_32款/05_紧张疑惑/29_疑惑高低眉.png",
+      "svg": "02_可编辑SVG_32款/05_紧张疑惑/29_疑惑高低眉.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 102,
+        "minY": 27,
+        "maxX": 407,
+        "maxY": 298
+      }
+    },
+    {
+      "id": "30-uneasy",
+      "name": "紧张冒汗",
+      "group": "紧张疑惑",
+      "hint": "剧情紧张或轻微紧张，不传达系统故障",
+      "png": "01_新增透明PNG_32款/05_紧张疑惑/30_紧张冒汗.png",
+      "svg": "02_可编辑SVG_32款/05_紧张疑惑/30_紧张冒汗.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 99,
+        "minY": 28,
+        "maxX": 468,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "31-speechless",
+      "name": "无语豆豆眼",
+      "group": "紧张疑惑",
+      "hint": "无语、短暂停顿",
+      "png": "01_新增透明PNG_32款/05_紧张疑惑/31_无语豆豆眼.png",
+      "svg": "02_可编辑SVG_32款/05_紧张疑惑/31_无语豆豆眼.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 89,
+        "minY": 41,
+        "maxX": 415,
+        "maxY": 286
+      }
+    },
+    {
+      "id": "32-dizzy",
+      "name": "晕乎乎",
+      "group": "紧张疑惑",
+      "hint": "剧情转折、看晕了的搞怪表达",
+      "png": "01_新增透明PNG_32款/05_紧张疑惑/32_晕乎乎.png",
+      "svg": "02_可编辑SVG_32款/05_紧张疑惑/32_晕乎乎.svg",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "visibleBounds": {
+        "minX": 104,
+        "minY": 65,
+        "maxX": 407,
+        "maxY": 286
+      }
+    }
+  ]
+}

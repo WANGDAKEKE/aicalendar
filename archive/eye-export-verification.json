@@ -1,0 +1,20 @@
+{
+  "beforeCount": 141,
+  "afterCount": 141,
+  "changed": [
+    "output/小眼睛透明PNG_20261106.zip",
+    "output/小眼睛表情扩展包_新增32款_20261106.zip"
+  ],
+  "added": [],
+  "removed": [],
+  "hashes": {
+    "output/小眼睛透明PNG_20261106.zip": {
+      "before": "01627140dd128d5edb26a16fa3442f78a7280869dacaf4bcd77c87e922246bba",
+      "after": "f6666b185535ebd793c566e373e7b51c936ae51959f2d3d7ee7c24a6b41f1edf"
+    },
+    "output/小眼睛表情扩展包_新增32款_20261106.zip": {
+      "before": "e07c7aa4f4cd954738346ff7a7618268a118870feb393d6c811b8d4a5f59580e",
+      "after": "61b4fbc1a55d016c9df666f01b3b4f80f8254b968959a86c81c4d811a5b2bdfd"
+    }
+  }
+}

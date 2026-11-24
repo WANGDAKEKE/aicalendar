@@ -1,0 +1,687 @@
+{
+  "checkedOn": "2026-11-24",
+  "repository": "https://github.com/WANGDAKEKE/aicalendar",
+  "visibility": "public",
+  "defaultBranch": "main",
+  "commit": {
+    "sha": "eda2092247b9e07705030e55e7197cb76a1544fa",
+    "date": "2026-11-17T08:06:46Z",
+    "message": "Rename membership schedule selector options to calendars"
+  },
+  "latestWorkflow": {
+    "id": 44043988786,
+    "sha": "eda2092247b9e07705030e55e7197cb76a1544fa",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/WANGDAKEKE/aicalendar/actions/runs/44043988786"
+  },
+  "treeTruncated": false,
+  "files": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "sha": "0644541873f5ba7019517c5c01c8f7e2318d5af6",
+      "size": 935,
+      "mode": "100644"
+    },
+    {
+      "path": ".gitignore",
+      "sha": "63ce66286bd0afb601bee50bea6e2306eee0311b",
+      "size": 121,
+      "mode": "100644"
+    },
+    {
+      "path": "CALENDAR-REVIEW.md",
+      "sha": "e8a71703dd557577dd84da7f998b98fd032f8d92",
+      "size": 1200,
+      "mode": "100644"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha": "628b1981169c47c4149a9ec9a032946226229e4e",
+      "size": 4401,
+      "mode": "100644"
+    },
+    {
+      "path": "README.md",
+      "sha": "aa2c02f87b09eabd96f9b3d888fe016e5ac12dec",
+      "size": 23755,
+      "mode": "100644"
+    },
+    {
+      "path": "design/lychee-journey-skin-source.png",
+      "sha": "199c3c83b02e9ceb1cc4d39cb81a0fe196c6a1c3",
+      "size": 2383418,
+      "mode": "100644"
+    },
+    {
+      "path": "design/lychee-skin-prompt.txt",
+      "sha": "9b85543f91274737be9c507f6f5a967c42770dd1",
+      "size": 1372,
+      "mode": "100644"
+    },
+    {
+      "path": "design/qq-companion-3d-prompts.txt",
+      "sha": "cb40e9c2fba84338f9d8b6ed61cc69082670eee8",
+      "size": 7098,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/.nojekyll",
+      "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "size": 1,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/apple/iphone-16-black-portrait.png",
+      "sha": "eb048de81d521846444572fea5865ea053391c3f",
+      "size": 474864,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/calendar-art.png",
+      "sha": "5c5e83054e03b33c8cea525cab3f977399d393bf",
+      "size": 178483,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/drama-recording.mp4",
+      "sha": "905bf5386f82b31eb4d5541e2a6c65ac633acc64",
+      "size": 55456706,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/lychee-journey-skin.jpg",
+      "sha": "a79cc6680f614f639212b8c339535818578cb861",
+      "size": 147097,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/lychee-paper-mark.svg",
+      "sha": "6a02fd1041ac10e47bcf767a41185213f8833a70",
+      "size": 265,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/princess/membership-svip-reference.jpg",
+      "sha": "f31d3b8a1e20ccb449d2f56ad4cc83dfb994f7fb",
+      "size": 616598,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/princess/membership-vip-plans.jpg",
+      "sha": "73ed2bf62fd6d8105071b32aedf9aec404495663",
+      "size": 39465,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/princess/player-still.png",
+      "sha": "eccb4bccc6faf805c5d8267bd434b5eaa3e1c0ef",
+      "size": 788247,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/princess/reference-poster.jpg",
+      "sha": "2c4570c86856a2ac61f2f611a88a925addeb7415",
+      "size": 1713381,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/princess/reference-scroll.jpg",
+      "sha": "db623b981d486809a4a7ab4e8ce6586e38afcf8f",
+      "size": 1312855,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/qq-companion-awake.png",
+      "sha": "b7cb8a11781e8a92b838e2867545d26402bc0f46",
+      "size": 1271139,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/qq-companion-celebrate.png",
+      "sha": "67e263a316abaa81b962c7d0a54e65a74ce5c940",
+      "size": 1274951,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/qq-companion-proud.png",
+      "sha": "b558e38769a146a3d524816d337abf417cf08c41",
+      "size": 1247873,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/qq-companion-sleep.png",
+      "sha": "e5d0e36e15786d35d73a28814ba80574b7eb8bf9",
+      "size": 898152,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/qq-penguin-official.png",
+      "sha": "f87b2ac9ee3171423be298000658f52b31b15664",
+      "size": 1167,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/qq-penguin-source.txt",
+      "sha": "865d7059fbe07970f968c7fb8c1e58e356f3d5a7",
+      "size": 1234,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/tencent/tencent-video-official-icon-192.png",
+      "sha": "953b6c8b66189433a1c3fe4c80cfa9f74db38cdd",
+      "size": 4866,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/video-hero.png",
+      "sha": "f494576cb9687247d56057282f9ad476901e4954",
+      "size": 131152,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/zhanshen/player-still.png",
+      "sha": "0dc5c917fec61000c44a01249957a335361a9819",
+      "size": 1245470,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/assets/zhanshen/reference-top.jpg",
+      "sha": "3f8a9b8ff10e397d450e4b8b04a2e1646d8a5bbb",
+      "size": 1365072,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/badge-model.mjs",
+      "sha": "2b5c44054d140df3b0768ff60b276d045d0af594",
+      "size": 1265,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-concept-view.mjs",
+      "sha": "ccbc45e9a16eb010af3d23bf610d7a00a7646c33",
+      "size": 12551,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-model.mjs",
+      "sha": "ff835de136b86953a65314c4764abe7eaea6b00a",
+      "size": 3072,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-player-shell.css",
+      "sha": "d4a588cd6f747bdc44fbf38e002f34e495ee87ef",
+      "size": 10408,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-player-shell.mjs",
+      "sha": "24ad9209ef19cf0625b2b6621674ba24fb7a0e4e",
+      "size": 6725,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-poster-widget.css",
+      "sha": "871256eb73ad111dc6d0b00b8923a82443c72b0b",
+      "size": 9360,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-poster-widget.mjs",
+      "sha": "9479083bb53df7130b6c24953e3f34568a2c4472",
+      "size": 3745,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/calendar-skin.css",
+      "sha": "18448cde52100af1966c4b3d78d8e82429924d11",
+      "size": 10479,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/companion-copy.mjs",
+      "sha": "7112972eacb870d0310dc422b42752f45f5b949c",
+      "size": 2692,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/compare.css",
+      "sha": "3be5d74486fa258fa0893099371061a68da9aee8",
+      "size": 4225,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/compare.html",
+      "sha": "02ab1c700fd05da7b16f67f248552fe792d4fcdb",
+      "size": 3630,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/compare.js",
+      "sha": "8376997aca10ff6c7244359b463f0004213e3a72",
+      "size": 3680,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/drama-config.mjs",
+      "sha": "45f602d3df8e0cfb9d4da3f3e1ada2fa2983b270",
+      "size": 4351,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/dual.js",
+      "sha": "cc4dd6cac2cf2f267ef194fb3404e45d4dc66d9d",
+      "size": 33816,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/index.html",
+      "sha": "5e6eea1fd08a75c502a911cf86cdd656caf2ae0b",
+      "size": 8868,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/ios-preview-v3.mjs",
+      "sha": "f8ff7ee76e5f1a4473a77784e7f25a616e38352e",
+      "size": 1997,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-admin.css",
+      "sha": "f8d273ede7e787a21684f84c201ee699a83cfc1b",
+      "size": 13659,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-admin.mjs",
+      "sha": "b64e6d6fd2d595e2a69419417b4ea6de9c8afdee",
+      "size": 34085,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-journey.css",
+      "sha": "7fc69f00236e416bc623404fcf7c91f8b73e1777",
+      "size": 8281,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-journey.mjs",
+      "sha": "55ac93ee0d6ea246336c27172c9c84e4bb2339cf",
+      "size": 5012,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-marketing.mjs",
+      "sha": "065b25e2240296ba4fda15cb8b2842a95bd563db",
+      "size": 2204,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-store.mjs",
+      "sha": "b716a4e328315fc0a3630f2ed76c11c25623dc41",
+      "size": 21859,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-widget.css",
+      "sha": "bb7a3511d3d0fa51801945fb93784c160dee9aab",
+      "size": 5460,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab-widget.mjs",
+      "sha": "5c057d80cc9adf434e9faab0e55b7fbb281dc36e",
+      "size": 4170,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab.css",
+      "sha": "d9decfae064bb030220ab2fc044479ce8bda4380",
+      "size": 19733,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab.html",
+      "sha": "8c8057a436d66f4d495161211a68f11879f5564a",
+      "size": 4361,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/lab.mjs",
+      "sha": "83b9cf15ec86968f12df16cea2fb3c2b11dee121",
+      "size": 19805,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/operations-model.mjs",
+      "sha": "0bc22ebb3ac7721cd40bdf8947dfe0ee51588bf5",
+      "size": 3048,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-model.mjs",
+      "sha": "487a1672585a1db8f3c09a3dbe13bfa95a9162b3",
+      "size": 7865,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine-compare.css",
+      "sha": "28e21426f78bbf42d0675f1cc37c197c30fd7658",
+      "size": 3328,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine-compare.html",
+      "sha": "a5523e80ad53aa3031ffe43a981548be3584b705",
+      "size": 6733,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine-compare.mjs",
+      "sha": "e6ce813d123ca64c359943ccbf5c6d69cc6efce1",
+      "size": 793,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine-model.mjs",
+      "sha": "c047f9e8eac9c2bb2081c79dbd620ddca9ce0af6",
+      "size": 3402,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine-player.css",
+      "sha": "23942315449a11a31e7fdc59302beb0f5c87f747",
+      "size": 697,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine-view.mjs",
+      "sha": "e77f00b2422358a68a485254743f26ee9d85fc90",
+      "size": 6833,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine.css",
+      "sha": "522938749d39a1848aec03081162e0fc11f8c0b1",
+      "size": 5821,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine.html",
+      "sha": "3bb719fab7b5bc70cfd07ef3f3a0059f53ff7d1f",
+      "size": 996,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-refine.mjs",
+      "sha": "75d48fddccfa290b4a98f14370233d7b2d5b7f37",
+      "size": 11712,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar-view.mjs",
+      "sha": "301b40bce1695856ee2d0c3d3cf1f018bb01b5eb",
+      "size": 10586,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-calendar.css",
+      "sha": "0eb22f00f8d3f3385d1922d41f2a8db3982ad7e1",
+      "size": 21569,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-membership-preview.css",
+      "sha": "87ebeeca2e26f9e10be22a2f12a140fa526ba9ed",
+      "size": 3609,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-membership-preview.mjs",
+      "sha": "e3144d1ffa52dd17ca6311253c0f946d64cb147d",
+      "size": 2416,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-widget-entry.css",
+      "sha": "8c9fb1cc5d6e7d8e92cf2d88c5033ecaebf4c95b",
+      "size": 7585,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/princess-widget-entry.mjs",
+      "sha": "ed39ca547c499e8a6a1aba35c61b7b892030c281",
+      "size": 5634,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/reward-variant.css",
+      "sha": "4c7d46d9cc4ab7f4c60640f470e8af6d3d535e4a",
+      "size": 1921,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/skin-preview.js",
+      "sha": "9a6c348de5c55e5beb3aad7ac1299a7ceb17999d",
+      "size": 1170,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/styles.css",
+      "sha": "7110db92a5678fe03bac1c689f1aa114ec384cfc",
+      "size": 24328,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/ticket-download.mjs",
+      "sha": "ad6ecc79e8c7bb1d19b2508e658e24287fef35ac",
+      "size": 10267,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/ticket-model.mjs",
+      "sha": "a4bb1e396dcc97d3605bd6c0cd96cde0e57307bb",
+      "size": 2749,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/ticket-view.mjs",
+      "sha": "f87d963a44866e2e7459964963ea47f96a7207ee",
+      "size": 6147,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/ticket.css",
+      "sha": "3d6a096c92942cc3edd301ab702885def4dd180b",
+      "size": 10110,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/tier-model.mjs",
+      "sha": "bfad71349ae1130c76f4ca10dc0dbf1242267eda",
+      "size": 736,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-model.mjs",
+      "sha": "60636894ed22c2d76ca19017a4aad663b863d174",
+      "size": 7817,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-refine-compare.html",
+      "sha": "4de7725f570d9c79b18c4547b94d0f70a44d109c",
+      "size": 6625,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-refine-model.mjs",
+      "sha": "abadab91a199994f50c6848aeb9b532b6e50b3d1",
+      "size": 3347,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-refine-view.mjs",
+      "sha": "a0ca857e1706f023a574e8d100561fb266c8aed6",
+      "size": 5682,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-refine.css",
+      "sha": "32907998631941bfecee5b8cb803d3fdb670fd31",
+      "size": 5058,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-refine.html",
+      "sha": "77014d5bf36dae99966f21b4ef4132687b6db18c",
+      "size": 997,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-refine.mjs",
+      "sha": "388dd5fa8225e399285a4e0a165deb7315d357bb",
+      "size": 8945,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar-view.mjs",
+      "sha": "601b8d79dcfecaba6dc533a00a6a2d4dce4eed39",
+      "size": 9383,
+      "mode": "100644"
+    },
+    {
+      "path": "dist/zhanshen-calendar.css",
+      "sha": "78e4da16a642125defd37e2735d5e6c5460555ab",
+      "size": 15345,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/badge-model.test.mjs",
+      "sha": "899be3fa1e70679737cff4f126d56cf900095de7",
+      "size": 5262,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/calendar-model.test.mjs",
+      "sha": "021095493c1aaa3ba42cbd9e1a9696e892457d01",
+      "size": 9175,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/lab-admin.test.mjs",
+      "sha": "7661415e5d76ec1d640627a87a67daf73d9e644c",
+      "size": 2688,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/lab-journey.test.mjs",
+      "sha": "0128637902f7702ba4f27b91319a0645599187cc",
+      "size": 7465,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/lab-marketing.test.mjs",
+      "sha": "0d199859d02d17b70cffa8be49b9b21680520b42",
+      "size": 3032,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/lab-penguin-interaction.test.mjs",
+      "sha": "f0dbcaae1133028b608c25350ed2a8cdda719b09",
+      "size": 3660,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/lab-store.test.mjs",
+      "sha": "cd282dc5032cbfb64b4a50628018a8dbb201698b",
+      "size": 25455,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/lab-widget.test.mjs",
+      "sha": "77e5f174b42b85f898487a3a348c9f2f1e8a57d0",
+      "size": 5912,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/operations-model.test.mjs",
+      "sha": "1270b4efb56fe88c4e2c9af0360297886f1c4163",
+      "size": 6778,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/princess-calendar-refine-compare.test.mjs",
+      "sha": "7df833a668528e231f3629508645a196c594a266",
+      "size": 7545,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/princess-calendar-refine-model.test.mjs",
+      "sha": "ecefe0ba3a852c190df518ebfae3174112e4f25f",
+      "size": 10576,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/princess-calendar-refine-view.test.mjs",
+      "sha": "782fd63cdfee1c543c0fa8678b00460827d9a54b",
+      "size": 19415,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/princess-membership-preview.test.mjs",
+      "sha": "491488ddf668d233d2735824f6c741a260d571d0",
+      "size": 9219,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/skin-preview.test.mjs",
+      "sha": "ca5bfc2157266baf5c1b0e0d4836989f4180adbc",
+      "size": 8561,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/ticket-download.test.mjs",
+      "sha": "45e6d9da89490befe3fb1c9dfa658c6006c08de4",
+      "size": 5750,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/ticket-model.test.mjs",
+      "sha": "b9ac940528816fdbb460c1e456879cb4b42c362f",
+      "size": 7629,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/ticket-view.test.mjs",
+      "sha": "07c11ba337ac47409b9f674f0080f020a856beae",
+      "size": 8631,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/tier-model.test.mjs",
+      "sha": "66fd6da90dbea6931b9ec62ff53bee27100f5b84",
+      "size": 6429,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/zhanshen-calendar-refine-compare.test.mjs",
+      "sha": "2e698f8346e0eca989e6f39ccf090cdc4e820d0a",
+      "size": 7188,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/zhanshen-calendar-refine-entry.test.mjs",
+      "sha": "5f44d324ab90fd4759745615158ab886e8123032",
+      "size": 18550,
+      "mode": "100644"
+    },
+    {
+      "path": "tests/zhanshen-calendar-refine-model.test.mjs",
+      "sha": "31b79934448490bf1605e454793d7a372bfd8bc9",
+      "size": 13284,
+      "mode": "100644"
+    }
+  ]
+}

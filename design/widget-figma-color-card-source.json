@@ -1,0 +1,102 @@
+{
+  "title": "取色色卡",
+  "sourceUrl": "https://www.figma.com/design/tV18dEXdgZUV82W4PfmukO/Untitled?node-id=4-1337",
+  "fileKey": "tV18dEXdgZUV82W4PfmukO",
+  "frameNodeId": "4:1337",
+  "readDate": "2026-10-29",
+  "method": "Read each rectangle's visible Figma Design inspector after selecting it on the canvas; validate its X/Y/width/height against the color-card grid. No screenshot pixel sampling or color generation.",
+  "csvFile": "widget-figma-color-card.csv",
+  "columnCount": 22,
+  "colorsPerColumn": 6,
+  "totalColorCount": 132,
+  "frame": {
+    "width": 1936,
+    "height": 721,
+    "pageX": 0,
+    "pageY": 928
+  },
+  "columnWidth": 88,
+  "rowOrderOnCanvas": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C6",
+    "C5"
+  ],
+  "rows": [
+    {
+      "id": "C1",
+      "y": 0,
+      "height": 221
+    },
+    {
+      "id": "C2",
+      "y": 221,
+      "height": 100
+    },
+    {
+      "id": "C3",
+      "y": 321,
+      "height": 100
+    },
+    {
+      "id": "C4",
+      "y": 421,
+      "height": 100
+    },
+    {
+      "id": "C6",
+      "y": 521,
+      "height": 100
+    },
+    {
+      "id": "C5",
+      "y": 621,
+      "height": 100
+    }
+  ],
+  "fillOpacityPercent": {
+    "all": 100,
+    "checkedRectangles": 132
+  },
+  "layerOpacityPercent": {
+    "all": 100,
+    "checkedRectangles": 132
+  },
+  "sampleC1Nodes": [
+    {
+      "hue": 20,
+      "nodeId": "4:1385",
+      "hex": "#FFF5F0"
+    },
+    {
+      "hue": 80,
+      "nodeId": "4:1393",
+      "hex": "#F4F9EB"
+    },
+    {
+      "hue": 160,
+      "nodeId": "4:1390",
+      "hex": "#EFFCF8"
+    },
+    {
+      "hue": 200,
+      "nodeId": "4:1403",
+      "hex": "#F2F8FC"
+    },
+    {
+      "hue": 260,
+      "nodeId": "4:1402",
+      "hex": "#F8F5FF"
+    }
+  ],
+  "notes": [
+    "Column headings are recorded as written. Hue interpretation is inferred from their arrangement; row usage/semantic token bindings were not defined by the visible inspector.",
+    "C1-C6 are source row identifiers, not confirmed light/dark mode roles. Do not assign semantic roles based only on brightness.",
+    "Rows C6 and C5 are preserved in their original canvas order, not renumbered.",
+    "Columns 0 and 360 are not identical in C4 and C5; preserve their original values instead of deduplicating or regenerating them mathematically.",
+    "All recorded fills and layers are 100% opaque. The previously supplied 30%/50% UI overlay examples are separate composition rules, not alpha values on these source swatches.",
+    "No Figma content, sharing, published site or demo palette was changed. This is an extraction snapshot, not a declaration that the file is an approved final brand standard."
+  ]
+}

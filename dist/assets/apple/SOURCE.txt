@@ -1,0 +1,56 @@
+Apple iPhone 16 product bezel — local design preview only
+
+Official source page:
+https://developer.apple.com/design/resources/
+
+Official package URL:
+https://devimages-cdn.apple.com/design/resources/download/Bezel-iPhone-16.dmg
+
+Original package path:
+PNG/iPhone 16/iPhone 16 - Black - Portrait.png
+
+Local copy:
+iphone-16-black-portrait.png
+
+Downloaded and extracted on 2026-10-29. The human user explicitly
+approved using the official template after the license was presented.
+The disk image was then mounted read-only. No software was installed.
+The PNG is an unchanged, byte-for-byte copy of the official asset.
+
+SHA-256:
+946575d68516ed911ef41e76532e898cedafa3ee220a9528507606616f20054e
+
+Original raster size:
+1359 x 2736 pixels, RGBA
+
+Screen opening:
+x=90, y=90, width=1179, height=2556
+Coordinates are in original raster pixels. The bounding rectangle
+contains rounded screen corners, which remain masked by the original
+bezel asset. Use this PNG above the screen content without cropping,
+retouching or adding a separate shadow to the Apple product image.
+
+The PNG already contains the Dynamic Island and camera artwork.
+Measured nontransparent island bounding box:
+x=492, y=123, width=375, height=112
+Do not draw another Dynamic Island over this official artwork.
+
+The package contains portrait/landscape product bezel PNG and PSD
+assets plus the license. It does not contain a Home Screen screenshot,
+system app icons or a standalone iOS UI Kit. Screen content in the
+prototype is custom and must not be described as an Apple UI Kit.
+
+License:
+App-Store-Marketing-Artwork-License-Agreement.rtf
+An unchanged copy from the official package is preserved beside this
+file. A reviewable text transcription is also available at:
+../../../design/apple-template-license.txt (repository-relative path:
+design/apple-template-license.txt).
+
+Usage guidelines:
+https://developer.apple.com/app-store/marketing/guidelines/
+
+This copy is for the explicitly requested local Tencent Video widget
+design preview. It has not been published or uploaded to GitHub.
+Apple and iPhone are trademarks of Apple Inc., registered in the U.S.
+and other countries. This prototype does not imply Apple endorsement.

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f3f0">
+  <title>追剧小组件 · 现有样式改版</title>
+  <link rel="stylesheet" href="./ios-home-v4.css?v=0.4.1">
+  <link rel="stylesheet" href="./widget-refresh.css?v=1">
+</head>
+<body>
+  <main class="refresh-page">
+    <header class="refresh-header">
+      <div><p class="refresh-eyebrow">腾讯视频 · 小组件设计提案</p><h1>保留故事，接上进度。</h1><p class="refresh-intro">沿用现有海报结构，让更新状态和个人续看更清楚。</p></div>
+      <span class="refresh-local">本地设计稿 · 未发布</span>
+    </header>
+
+    <section class="refresh-toolbar" aria-label="预览设置">
+      <label class="refresh-scene-label" for="refresh-scene">观看场景<select id="refresh-scene"></select></label>
+      <div class="refresh-theme" role="group" aria-label="手机桌面外观"><button type="button" data-appearance="light" aria-pressed="true">浅色桌面</button><button type="button" data-appearance="dark" aria-pressed="false">深色桌面</button></div>
+    </section>
+
+    <div class="refresh-layout">
+      <aside class="refresh-preview" aria-label="选中样式的手机预览">
+        <div class="refresh-device-wrap"><div class="refresh-device" id="refresh-device"></div></div>
+        <div class="refresh-variants" role="group" aria-label="手机中的组件样式"><button type="button" data-variant="split" aria-pressed="true">海报＋功能区</button><button type="button" data-variant="poster" aria-pressed="false">整幅海报</button></div>
+        <p class="refresh-phone-caption" id="refresh-phone-caption" aria-live="polite"></p>
+      </aside>
+
+      <section class="refresh-studies" aria-label="两种现有结构的改版对比">
+        <article class="refresh-study" data-study="split">
+          <header class="refresh-study-header"><div><span class="refresh-study-index">方案 A</span><h2>海报＋功能区</h2></div><button class="refresh-preview-choice" type="button" data-variant="split" aria-pressed="true">手机预览 <span aria-hidden="true">↗</span></button></header>
+          <div class="refresh-card-stage"><div class="refresh-card-zoom"><div id="refresh-split"></div></div></div>
+          <p class="refresh-study-note">保留首页、下载入口；在续看区补上更新状态与已看位置。</p>
+        </article>
+        <article class="refresh-study" data-study="poster">
+          <header class="refresh-study-header"><div><span class="refresh-study-index">方案 B</span><h2>整幅海报</h2></div><button class="refresh-preview-choice" type="button" data-variant="poster" aria-pressed="false">手机预览 <span aria-hidden="true">↗</span></button></header>
+          <div class="refresh-card-stage"><div class="refresh-card-zoom"><div id="refresh-poster"></div></div></div>
+          <p class="refresh-study-note">保留 IP 主视觉；只留一处主操作，追平后从播放切换为看排期。</p>
+        </article>
+        <p class="refresh-state-note" id="refresh-state-note" role="status"></p>
+      </section>
+    </div>
+
+    <footer class="refresh-footer"><span>两版共用同一内容、同一进度。素材取自提供的参考图；集数、排期和观看记录均为虚构演示。未接真实播放、下载、账号或原生组件。</span><a href="./widget-atlas.html">查看上一版 ↗</a></footer>
+  </main>
+  <script type="module" src="./widget-refresh.mjs?v=1"></script>
+</body>
+</html>

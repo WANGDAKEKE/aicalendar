@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-17",
+  "status": "deployed",
+  "commit": "eda2092247b9e07705030e55e7197cb76a1544fa",
+  "url": "https://wangdakeke.github.io/aicalendar/princess-calendar-refine-compare.html?v=calendar-label-v1",
+  "workflowRun": "https://github.com/WANGDAKEKE/aicalendar/actions/runs/44043988786",
+  "workflowConclusion": "success",
+  "onlineVerified": true,
+  "tests": {
+    "workspacePassed": 514,
+    "releasePassed": 231
+  },
+  "scope": "Rename Princess membership selector options to VIP日历, SVIP日历 and 非VIP日历 across nine frames",
+  "preserved": [
+    "option values",
+    "selected state",
+    "account identity",
+    "viewing history",
+    "membership CTA",
+    "calendar dates",
+    "styles and geometry",
+    "Zhanshen pages"
+  ],
+  "proof": "calendar-labels.jpg"
+}

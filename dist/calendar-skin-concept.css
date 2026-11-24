@@ -1,0 +1,287 @@
+/* E · 长安绮卷. A page-wide IP skin around the calibrated paper calendar.
+   Tile size, 40:7 grid geometry, typography, and emoji placement are inherited
+   from data-calendar-layout="figma" without any structural overrides here. */
+.cc-app[data-style="skin"] {
+  --cc-bg: #f5e8cd;
+  --cc-surface: #fff5df;
+  --cc-fg: #563c2c;
+  --cc-muted: #80674e;
+  --cc-accent: #96503d;
+  --cc-accent-soft: #edd3b5;
+  --cc-line: #d9bd8e;
+  --cc-marketing: #85372c;
+  background: #76392e;
+  color: var(--cc-fg);
+}
+
+.cc-app[data-style="skin"] .cc-status,
+.cc-app[data-style="skin"] .cc-nav {
+  color: #f5e3be;
+}
+
+.cc-app[data-style="skin"] .cc-nav {
+  border-bottom: 1px solid #e9bc7a29;
+  background: #76392e;
+}
+
+.cc-app[data-style="skin"] .cc-nav h1 {
+  font-weight: 500;
+  letter-spacing: .1em;
+}
+
+.cc-app[data-style="skin"] .cc-scroll,
+.cc-app[data-style="skin"] .cc-content {
+  background: #76392e;
+}
+
+.cc-app[data-style="skin"] .cc-content {
+  padding-top: 9px;
+  padding-bottom: 18px;
+  background-image:
+    radial-gradient(ellipse at 100% 0, #b7704233, transparent 48%),
+    radial-gradient(ellipse at 0 100%, #4d251933, transparent 52%);
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero {
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  height: 184px;
+  margin: 0 0 12px;
+  overflow: hidden;
+  border: 1px solid #c89b66;
+  border-radius: 3px;
+  background: #946446;
+  box-shadow: 0 4px 12px #3a140f29;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero__poster {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(90deg, #4d2015b8, #632c1e29 65%, transparent),
+    linear-gradient(0deg, #59241cea, #632d2190 28%, transparent 70%);
+  pointer-events: none;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero::after {
+  position: absolute;
+  inset: 5px;
+  content: "";
+  border: 1px solid #f6d69e62;
+  pointer-events: none;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero__copy {
+  position: absolute;
+  left: 17px;
+  right: 14px;
+  bottom: 13px;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero__eyebrow {
+  margin: 0 0 4px;
+  color: #f2d6a5;
+  font-size: 9.5px;
+  line-height: 13px;
+  font-weight: 400;
+  letter-spacing: .13em;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero h2 {
+  margin: 0 0 5px;
+  color: #fff0cd;
+  font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  font-size: 30px;
+  line-height: 38px;
+  font-weight: 600;
+  letter-spacing: .065em;
+  text-shadow: 0 1px 5px #3d170c55;
+}
+
+.cc-app[data-style="skin"] .cc-skin-hero__meta {
+  margin: 0;
+  color: #ebcfa2;
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: .04em;
+}
+
+.cc-app[data-style="skin"] .cc-ticket {
+  border-color: #c79a60;
+  border-radius: 3px;
+  background: linear-gradient(95deg, #ebcc9e40, transparent 62%), #f7e8c9;
+  box-shadow: 0 2px 0 #491e1833;
+}
+
+.cc-app[data-style="skin"] .cc-ticket::before {
+  border-left-color: #ceb080;
+}
+
+.cc-app[data-style="skin"] .cc-ticket__copy strong {
+  color: #6d442c;
+}
+
+.cc-app[data-style="skin"] .cc-ticket__copy > span {
+  color: #8a6947;
+}
+
+.cc-app[data-style="skin"] .cc-ticket__track {
+  background: #e4cda3;
+}
+
+.cc-app[data-style="skin"] .cc-ticket__track i {
+  background: #a55c43;
+}
+
+.cc-app[data-style="skin"] .cc-calendar {
+  background:
+    radial-gradient(ellipse at 12% 8%, #fff8e9ad, transparent 58%),
+    repeating-linear-gradient(0deg, transparent 0 5px, #94713a04 5px 6px),
+    #f2dfba;
+  box-shadow:
+    0 4px 12px #461c1833,
+    inset 0 0 0 1px #fbeccb;
+}
+
+.cc-app[data-style="skin"] .cc-calendar::before {
+  position: absolute;
+  inset: -4px;
+  border: 1px solid #c99c62;
+  border-radius: 3px;
+  content: "";
+  pointer-events: none;
+}
+
+.cc-app[data-style="skin"] .cc-calendar::after {
+  position: absolute;
+  inset: 4px;
+  content: "";
+  background:
+    linear-gradient(#bb8b4d, #bb8b4d) left top / 14px 1px,
+    linear-gradient(#bb8b4d, #bb8b4d) left top / 1px 14px,
+    linear-gradient(#bb8b4d, #bb8b4d) right top / 14px 1px,
+    linear-gradient(#bb8b4d, #bb8b4d) right top / 1px 14px,
+    linear-gradient(#bb8b4d, #bb8b4d) left bottom / 14px 1px,
+    linear-gradient(#bb8b4d, #bb8b4d) left bottom / 1px 14px,
+    linear-gradient(#bb8b4d, #bb8b4d) right bottom / 14px 1px,
+    linear-gradient(#bb8b4d, #bb8b4d) right bottom / 1px 14px;
+  background-repeat: no-repeat;
+  opacity: .72;
+  pointer-events: none;
+}
+
+.cc-app[data-style="skin"] .cc-monthbar {
+  border-radius: 1px;
+  background: linear-gradient(90deg, #7e3328, #9b5037 52%, #7e3328);
+  box-shadow: inset 0 1px #e4bf8559, inset 0 -1px #4d1e2040;
+}
+
+.cc-app[data-style="skin"] .cc-monthbar h3 {
+  color: #ffedc7;
+}
+
+.cc-app[data-style="skin"] .cc-monthbar button {
+  color: #f4d8a5;
+}
+
+.cc-app[data-style="skin"] .cc-tierbar select {
+  border-color: #c59b65;
+  background-color: #f1dfbb;
+  color: #714d31;
+}
+
+.cc-app[data-style="skin"] .cc-tierbar > span {
+  color: #f0d9b1;
+}
+
+.cc-app[data-style="skin"] .cc-tierbar > button {
+  color: #f4dbad;
+}
+
+.cc-app[data-style="skin"] .cc-weekdays {
+  color: #876444;
+}
+
+.cc-app[data-style="skin"] .cc-day {
+  color: #624b33;
+  background-color: #e9d4ad;
+  background-image: linear-gradient(130deg, #fff7e12b, transparent 76%);
+  box-shadow: inset 0 0 0 1px #c9a36b1f;
+}
+
+.cc-app[data-style="skin"] .cc-day.is-none,
+.cc-app[data-style="skin"] .cc-day.is-outside {
+  background-color: #ebdbbd;
+}
+
+.cc-app[data-style="skin"] .cc-day.is-watched {
+  background-color: #dfddc5;
+}
+
+.cc-app[data-style="skin"] .cc-day.is-partial {
+  background-color: #eacbb1;
+}
+
+.cc-app[data-style="skin"] .cc-day.is-unwatched {
+  background-color: #efdbb1;
+}
+
+.cc-app[data-style="skin"] .cc-day.is-upcoming {
+  background-color: #ead7b4;
+}
+
+.cc-app[data-style="skin"] .cc-day.is-today .cc-day__number {
+  background-color: #8f4938;
+  color: #fff1d5;
+}
+
+.cc-app[data-style="skin"] .cc-day__episodes {
+  color: #715339;
+}
+
+.cc-app[data-style="skin"] .cc-day__hint {
+  color: #9a4c32;
+}
+
+.cc-app[data-style="skin"] .cc-marketing {
+  border-color: #bc915c;
+  border-radius: 3px;
+  background: linear-gradient(100deg, #9a4b37, #7c332b);
+  color: #ffe5b8;
+  box-shadow: inset 0 0 0 2px #edc28413;
+}
+
+.cc-app[data-style="skin"] .cc-marketing span span {
+  color: #efd2a5;
+  opacity: 1;
+}
+
+.cc-app[data-style="skin"] .cc-reminder {
+  color: #efd6ad;
+}
+
+.cc-app[data-style="skin"] .cc-reminder[aria-pressed="true"] {
+  color: #fff0cc;
+}
+
+.cc-app[data-style="skin"] .cc-disclaimer {
+  color: #d6b68b;
+}
+
+.cc-app[data-style="skin"] .cc-home-indicator {
+  background: #f1d7ae;
+}

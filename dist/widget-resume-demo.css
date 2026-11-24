@@ -1,0 +1,49 @@
+.resume-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+.resume-strategy-link { color: #52675b; font-size: 12px; text-decoration: none; white-space: nowrap; }
+.resume-strategy-link:hover { text-decoration: underline; }
+.resume-size-switch { display: flex; gap: 3px; margin-top: 14px; padding: 3px; border: 1px solid #dce0d9; border-radius: 9px; }
+.resume-size-switch button { appearance: none; background: transparent; border: 0; border-radius: 6px; padding: 5px 16px; color: #7b837d; font: inherit; font-size: 11px; cursor: pointer; }
+.resume-size-switch button[aria-pressed="true"] { color: #28382e; background: #fff; box-shadow: 0 1px 3px #192c2110; }
+.resume-size-switch + .atlas-preview-caption { margin-top: 9px; }
+.resume-demo { padding-bottom: 6px; }
+.resume-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; color: #717b74; font-size: 11px; }
+.resume-toolbar label { white-space: nowrap; }
+.resume-toolbar select { min-width: 180px; max-width: 100%; padding: 8px 26px 8px 10px; border: 1px solid #d6ddd5; border-radius: 8px; background: #fafbf9; color: #33463a; font: inherit; font-size: 12px; }
+.resume-toolbar #resume-appearance { min-width: 126px; }
+.resume-date-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-left: auto; }
+.resume-date-tools time { font-variant-numeric: tabular-nums; color: #818980; }
+.resume-date-tools button { appearance: none; border: 0; padding: 6px 0; background: transparent; color: #496151; font: inherit; cursor: pointer; }
+.resume-date-tools button:disabled { opacity: .5; cursor: default; }
+.resume-rule { margin: 12px 0 18px; padding-left: 10px; border-left: 2px solid #c9d6c9; color: #6d7a71; font-size: 11px; line-height: 1.8; }
+.resume-rule strong { font-weight: 500; color: #3a5041; }
+.resume-comparison { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; padding: 20px; border-radius: 20px; background: #eaece7; }
+.resume-size-sample { margin: 0; min-width: 0; }
+.resume-size-frame { width: calc(var(--resume-native-width) * var(--resume-pair-scale,1)); height: calc(170px * var(--resume-pair-scale,1)); }
+.resume-size-frame > .atlas-widget { transform: scale(var(--resume-pair-scale,1)); transform-origin: top left; cursor: default; }
+.resume-size-sample figcaption { margin-top: 10px; font-size: 10px; line-height: 1.7; color: #778276; }
+.resume-demo-note { margin: 12px 2px 0; font-size: 10px; line-height: 1.8; color: #7d897e; }
+.resume-feedback { margin: 5px 2px 0; min-height: 16px; color: #4a6852; font-size: 10px; line-height: 1.6; }
+.resume-alternative { margin-top: 30px; padding-top: 20px; border-top: 1px solid #dce0d9; }
+.resume-alternative > summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; color: #5a6b5e; font-size: 12px; cursor: pointer; }
+.resume-alternative > summary::before { content: "+"; }
+.resume-alternative[open] > summary::before { content: "−"; }
+.resume-alternative > summary > span { font-size: 10px; color: #91998f; }
+.resume-alternative > .atlas-section { margin-top: 24px; }
+.resume-sheet-layer { position: absolute; inset: 0; z-index: 4; display: flex; align-items: flex-end; padding: 14px; background: #10181050; }
+.resume-sheet-layer[hidden] { display: none; }
+.resume-sheet { position: relative; width: 100%; padding: 28px 22px 26px; border-radius: 24px; background: #fafbf8; color: #293c30; box-shadow: 0 10px 40px #11111115; }
+.resume-sheet-brand { display: flex; align-items: center; gap: 6px; margin: 0 0 26px; font-size: 12px; color: #52685a; }
+.resume-sheet-brand img { width: 16px; height: 16px; }
+.resume-sheet h2 { font-size: 23px; line-height: 1.4; padding-right: 5px; overflow-wrap: anywhere; }
+.resume-sheet-progress { font-size: 14px; line-height: 1.8; color: #637368; margin: 12px 0 24px; }
+.resume-sheet-action { width: 100%; padding: 14px 12px; border: 0; border-radius: 12px; background: #385b46; color: #fff; font: inherit; font-size: 14px; cursor: pointer; }
+.resume-sheet-note { font-size: 11px; line-height: 1.8; color: #7b887e; margin: 12px 0 0; }
+.resume-sheet-close { position: absolute; right: 14px; top: 14px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: #e9ede6; color: #52675b; font: inherit; font-size: 21px; cursor: pointer; }
+.resume-sheet-layer[data-appearance="dark"] .resume-sheet { color: #f5f5f5; background: #272727; }
+.resume-sheet-layer[data-appearance="dark"] .resume-sheet-brand,
+.resume-sheet-layer[data-appearance="dark"] .resume-sheet-progress,
+.resume-sheet-layer[data-appearance="dark"] .resume-sheet-note { color: #c4cec6; }
+.resume-sheet-layer[data-appearance="dark"] .resume-sheet-close { background: #444; color: #eee; }
+.resume-demo button:focus-visible, .resume-toolbar select:focus-visible, .resume-size-switch button:focus-visible, .resume-strategy-link:focus-visible, .resume-alternative summary:focus-visible { outline: 2px solid #56745e; outline-offset: 4px; }
+@media (max-width:860px) { .resume-comparison { gap: 20px; padding: 16px; } .resume-date-tools { width: 100%; margin-left: 0; } }
+@media (max-width:560px) { .resume-heading { align-items: flex-start; gap: 10px; } .resume-strategy-link { padding-top: 7px; font-size: 11px; } .resume-comparison { flex-direction: column; } }

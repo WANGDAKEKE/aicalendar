@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "date": "2026-11-06",
+  "repository": "https://github.com/WANGDAKEKE/aicalendar",
+  "commit": "4303278071c1f57e7017d7aab0b2160099a085af",
+  "workflow": "https://github.com/WANGDAKEKE/aicalendar/actions/runs/42183907423",
+  "princess_url": "https://wangdakeke.github.io/aicalendar/princess-calendar-refine-compare.html",
+  "zhanshen_url": "https://wangdakeke.github.io/aicalendar/zhanshen-calendar-refine-compare.html",
+  "workspace_tests_passed": 507,
+  "clean_release_tests_passed": 226,
+  "excluded_private_reference": "dist/assets/princess/membership-vip-reference.jpg",
+  "notes": "Published only the audited dependency closure and selected regression tests from a clean checkout. Original index, unrelated drafts and the user's dirty worktree were preserved."
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="384" viewBox="0 0 160 120" role="img" aria-label="含泪忍住"><title>含泪忍住</title><g transform="translate(0 4)"><g transform="rotate(0 80 56)"><g transform="rotate(0 53 53)"><defs><clipPath id="eye-extension-1"><path d="M33 32.2Q53 37 73 24.2Q81 85 53 85Q25 85 33 32.2Z"/></clipPath></defs><g fill="#F5F5F5" stroke="#111111" stroke-opacity=".15" stroke-width=".8"><path d="M33 32.2Q53 37 73 24.2Q81 85 53 85Q25 85 33 32.2Z"/></g><g clip-path="url(#eye-extension-1)"><ellipse cx="55" cy="56" rx="10" ry="16" fill="#111111"/><ellipse cx="58" cy="49.6" rx="2.8000000000000003" ry="3" fill="#F5F5F5"/></g></g><g transform="rotate(0 107 49)"><defs><clipPath id="eye-extension-2"><path d="M87 28.2Q107 33 127 20.2Q135 81 107 81Q79 81 87 28.2Z"/></clipPath></defs><g fill="#F5F5F5" stroke="#111111" stroke-opacity=".15" stroke-width=".8"><path d="M87 28.2Q107 33 127 20.2Q135 81 107 81Q79 81 87 28.2Z"/></g><g clip-path="url(#eye-extension-2)"><ellipse cx="105" cy="52" rx="10" ry="16" fill="#111111"/><ellipse cx="108" cy="45.6" rx="2.8000000000000003" ry="3" fill="#F5F5F5"/></g></g></g>
+  <path d="M 40 72 Q 53 68 66 72
+    Q 64 76 53 77
+    Q 42 76 40 72Z"
+    fill="#60C6F4" fill-opacity=".88"/>
+  <path d="M 45 73 Q 50 71 55 72"
+    fill="none" stroke="#F5F5F5" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 94 68 Q 107 64 120 68
+    Q 118 72 107 73
+    Q 96 72 94 68Z"
+    fill="#60C6F4" fill-opacity=".88"/>
+  <path d="M 99 69 Q 104 67 109 68"
+    fill="none" stroke="#F5F5F5" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 35 22 Q 45 15 54 20" fill="none" stroke="#111111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 108 16 Q 119 10 127 18" fill="none" stroke="#111111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

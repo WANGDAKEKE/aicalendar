@@ -1,0 +1,51 @@
+{
+  "checkedOn": "2026-11-24",
+  "online": [
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/",
+      "httpStatus": 200
+    },
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/lab.html?v=2.9.2",
+      "httpStatus": 200
+    },
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/princess-calendar-refine-compare.html?v=calendar-label-v1",
+      "httpStatus": 200
+    },
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/zhanshen-calendar-refine-compare.html?v=nav-v3",
+      "httpStatus": 200
+    }
+  ],
+  "notPublishedExamples": [
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/widget-v4.html",
+      "httpStatus": 404
+    },
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/calendar-player-compare.html",
+      "httpStatus": 404
+    },
+    {
+      "url": "https://wangdakeke.github.io/aicalendar/calendar-concepts.html",
+      "httpStatus": 404
+    }
+  ],
+  "oldSites": {
+    "status": "active",
+    "latest_version_number": 0,
+    "current_live_url": null
+  },
+  "test": {
+    "scope": "Full local workspace",
+    "runtime": "Node v24.22.3",
+    "passed": 514,
+    "failed": 0
+  },
+  "limits": [
+    "HTTP status checks confirm availability, not end-to-end business functionality.",
+    "GitHub Pages is the static demo deployment, not a connected Tencent production service.",
+    "The saved GitHub snapshot is pinned to the verified main commit; branch/tag history and other personal or corporate storage are not exhaustively audited."
+  ]
+}

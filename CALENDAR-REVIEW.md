@@ -1,5 +1,7 @@
 # 追剧日历评审版 · 2026-11-06
 
+> 当前页面路径继续保留。2026-11-24 已补齐可公开的项目与历史资料，完整入口、变更过程和未实现需求见根目录 README；本文下方保留原评审说明。
+
 - 尚公主：`/princess-calendar-refine-compare.html`
 - 斩神Ⅱ：`/zhanshen-calendar-refine-compare.html`
 

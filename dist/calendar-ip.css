@@ -1,0 +1,236 @@
+/* D · 荔枝赴长安. The month itself inherits the paper calendar unchanged.
+   Artwork, ticket framing, and shell carry the richer IP treatment. */
+.cc-app[data-style="ip"] {
+  --cc-bg: #f5eddf;
+  --cc-surface: #fffaf0;
+  --cc-fg: #3c3029;
+  --cc-muted: #877565;
+  --cc-accent: #994a42;
+  --cc-accent-soft: #f0ded3;
+  --cc-line: #e1d3bf;
+  --cc-marketing: #853b32;
+  --cc-ip-inset: 16px;
+  background: #48281f;
+  color: var(--cc-fg);
+}
+
+.cc-app[data-style="ip"] .cc-status,
+.cc-app[data-style="ip"] .cc-nav {
+  color: #f7ecdc;
+}
+
+.cc-app[data-style="ip"] .cc-nav {
+  border-bottom: 1px solid #f9e7c71f;
+  background: #48281f;
+}
+
+.cc-app[data-style="ip"] .cc-nav h1 {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .08em;
+}
+
+.cc-app[data-style="ip"] .cc-scroll {
+  background: var(--cc-bg);
+}
+
+.cc-app[data-style="ip"] .cc-content {
+  position: relative;
+  padding: 0 var(--cc-ip-inset) 18px;
+  background:
+    radial-gradient(ellipse at 100% 12%, #c9a97b12, transparent 48%),
+    var(--cc-bg);
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero {
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  height: 276px;
+  margin: 0 calc(-1 * var(--cc-ip-inset)) 12px;
+  overflow: hidden;
+  background: #d6bda1;
+  border-bottom: 1px solid #d5bda1;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__poster {
+  position: absolute;
+  z-index: -2;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__veil {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(180deg,
+    transparent 0,
+    transparent 145px,
+    #f5eddf50 176px,
+    #f5eddfed 215px,
+    #f5eddf 244px);
+  pointer-events: none;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__copy {
+  position: absolute;
+  left: 21px;
+  right: 20px;
+  bottom: 16px;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__eyebrow {
+  margin: 0 0 4px;
+  color: #775743;
+  font-size: 9px;
+  line-height: 13px;
+  font-weight: 500;
+  letter-spacing: .15em;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero h2 {
+  margin: 0 0 4px;
+  font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  color: #542c23;
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 600;
+  letter-spacing: .065em;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__meta {
+  margin: 0;
+  color: #826750;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: .04em;
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__seal {
+  position: absolute;
+  right: 24px;
+  bottom: 38px;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 29px;
+  border: 1px solid #a75445;
+  border-radius: 2px;
+  outline: 1px solid #a7544542;
+  outline-offset: 2px;
+  color: #a75445;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 18px;
+  line-height: 24px;
+  transform: rotate(3deg);
+}
+
+.cc-app[data-style="ip"] .cc-ip-hero__folio {
+  display: none;
+}
+
+.cc-app[data-style="ip"] .cc-ticket {
+  height: 46px;
+  margin-bottom: 12px;
+  border: 1px solid #c8a985;
+  border-radius: 3px;
+  padding-left: 11px;
+  background:
+    linear-gradient(90deg, #ecd7b633, transparent 54%),
+    #fff9ed;
+  box-shadow: 0 2px 0 #cfb99a2b;
+}
+
+.cc-app[data-style="ip"] .cc-ticket::before {
+  border-left-color: #d3bca0;
+}
+
+.cc-app[data-style="ip"] .cc-ticket__copy strong {
+  color: #65452e;
+}
+
+.cc-app[data-style="ip"] .cc-ticket__copy > span {
+  color: #8a735c;
+}
+
+.cc-app[data-style="ip"] .cc-ticket__track {
+  background: #ecdfc9;
+}
+
+.cc-app[data-style="ip"] .cc-ticket__track i {
+  background: #a75445;
+}
+
+.cc-app[data-style="ip"] .cc-calendar {
+  padding: 8px;
+  border: 1px solid #dfcfb9;
+  border-radius: 3px;
+  background: #fffaf1;
+  box-shadow: 0 3px 14px #72513608;
+}
+
+.cc-app[data-style="ip"] .cc-marketing {
+  height: 56px;
+  margin-top: 13px;
+  border: 1px solid #75332d;
+  border-radius: 3px;
+  background: #853b32;
+  color: #fff1dc;
+  box-shadow: inset 0 0 0 2px #f2d9ad11;
+}
+
+.cc-app[data-style="ip"] .cc-marketing strong {
+  font-size: 13px;
+  font-weight: 550;
+  letter-spacing: .02em;
+}
+
+.cc-app[data-style="ip"] .cc-marketing span span {
+  color: #f1dbc2;
+  opacity: 1;
+}
+
+.cc-app[data-style="ip"] .cc-reminder {
+  margin-top: 7px;
+  color: #846c58;
+}
+
+.cc-app[data-style="ip"] .cc-disclaimer {
+  color: #9a8874;
+}
+
+.cc-app[data-style="ip"] .cc-home-indicator {
+  background: #f3e5d3;
+}
+
+/* Native-width preview uses the same readable type, not a smaller scale. */
+@media (max-width: 600px) {
+  body[data-single="true"] .cc-app[data-style="ip"] .cc-content {
+    padding-left: var(--cc-ip-inset);
+    padding-right: var(--cc-ip-inset);
+  }
+}
+
+@media (max-width: 350px) {
+  .cc-app[data-style="ip"] {
+    --cc-ip-inset: 14px;
+  }
+
+  .cc-app[data-style="ip"] .cc-ip-hero__copy {
+    left: 19px;
+  }
+
+  .cc-app[data-style="ip"] .cc-ip-hero h2 {
+    font-size: 32px;
+    letter-spacing: .04em;
+  }
+
+  .cc-app[data-style="ip"] .cc-ip-hero__seal {
+    right: 19px;
+  }
+}

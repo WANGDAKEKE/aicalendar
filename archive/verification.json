@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-24",
+  "baselineCommit": "eda2092247b9e07705030e55e7197cb76a1544fa",
+  "sourceCollection": {
+    "copiedOrSanitizedFiles": 580,
+    "sanitizedFiles": 18,
+    "duplicateFilesMapped": 166,
+    "excludedEntries": 15,
+    "sourceLedger": "archive/source-collection.json",
+    "originalProjectFilesDeletedOrMoved": false
+  },
+  "automatedTests": {
+    "command": "node --test tests/*.test.mjs",
+    "nodeVersion": "v24.22.3",
+    "passed": 514,
+    "failed": 0,
+    "skipped": 0
+  },
+  "staticDependencies": {
+    "distTextFilesChecked": 118,
+    "explicitLocalReferencesChecked": 317,
+    "missing": 0,
+    "readmeAndChangelogLocalMarkdownLinks": "passed"
+  },
+  "syntaxChecks": {
+    "distAndScriptsJavaScriptFilesChecked": 67,
+    "failed": 0
+  },
+  "baselinePreservation": {
+    "existingDistFilesUnchanged": 82,
+    "onlyModifiedPreviouslyTrackedPaths": [
+      ".gitignore",
+      "CALENDAR-REVIEW.md",
+      "CHANGELOG.md",
+      "README.md"
+    ]
+  },
+  "eyeExports": {
+    "basicPngs": 29,
+    "richNewPngs": 32,
+    "richNewSvgs": 32,
+    "transparencyCountAndZipCrcChecks": "passed",
+    "regeneratedOutputFiles": 141,
+    "outputContentDifferences": 0,
+    "zipByteDifferencesBeforeRestoration": "Two ZIP timestamps only; extracted entries were identical.",
+    "finalArchiveAction": "Retained the two original ZIP bytes after successful export verification.",
+    "report": "archive/eye-export-verification.json"
+  },
+  "privacyChecks": {
+    "knownPersonalNicknameOriginal": "excluded",
+    "distReferencesToExcludedImage": 0,
+    "accountConfigurationCredentialFilesAndSymlinks": "excluded or absent",
+    "textAndOfficeContentScan": "no identified personal data or credential values",
+    "imageAndVideoBoundary": "No exhaustive pixel OCR or frame-by-frame review."
+  },
+  "unimplementedItems": [
+    "Default member calendar for free accounts",
+    "Separate limited-free audience and normal member entitlement calendars",
+    "Hide next-week navigation after the finale",
+    "Latest nine-frame standalone HTML export",
+    "Real account, media, payment, notification and native-widget services"
+  ],
+  "publicationAndRecovery": "Final commit, Pages workflow and ZIP recovery verification are recorded beside the downloadable ZIP after publication; this report contains pre-publication checks."
+}

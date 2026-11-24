@@ -1,0 +1,318 @@
+/* B + E: shared geometry calibrated from the original Figma member-calendar component.
+   Its 322px grid is 7 × 40px tiles + 6 × 7px gutters.
+   At 393px: 339px grid, 42.11px tiles and 7.37px gutters; paper palette stays. */
+.cc-app[data-calendar-layout="figma"] .cc-content {
+  padding-left: 17px;
+  padding-right: 17px;
+  container-type: inline-size;
+}
+
+/* Keep secondary product copy readable beside the compact calendar type. */
+.cc-app[data-calendar-layout="figma"] .cc-ticket {
+  height: 48px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-ticket__copy strong {
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-ticket__copy > span {
+  font-size: 10.5px;
+  line-height: 15px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-ticket__count {
+  font-size: 19px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-marketing {
+  height: 60px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-marketing strong {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-marketing span span {
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-calendar {
+  position: relative;
+  margin-top: 28px;
+  padding: 10px;
+  border: 0;
+  border-radius: 2px;
+  background: #f0ede5;
+  box-shadow: none;
+}
+
+/* Keep the product-specific entitlement controls outside the reference grid. */
+.cc-app[data-calendar-layout="figma"] .cc-tierbar {
+  position: absolute;
+  top: -28px;
+  left: 0;
+  right: 0;
+  height: 22px;
+  margin: 0;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-tierbar select {
+  height: 22px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-tierbar > button {
+  height: 22px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-monthbar {
+  height: 32px;
+  margin: 0;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-monthbar h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-monthbar button {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-weekdays {
+  height: 30px;
+  gap: 7.37px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-weekdays span:nth-last-child(-n+2) {
+  color: inherit;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-grid {
+  gap: 7.37px;
+  grid-auto-rows: auto;
+  border: 0;
+}
+
+/* One inline-size-derived length drives both axes, including on six-row months.
+   Unlike a percentage row-gap, this cannot resolve against grid height. */
+@supports (width: 1cqw) {
+  .cc-app[data-calendar-layout="figma"] .cc-grid,
+  .cc-app[data-calendar-layout="figma"] .cc-weekdays {
+    gap: calc((100cqw - 20px) * 7 / 322);
+  }
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 2px;
+  background: #e5e1d8;
+  box-shadow: none;
+  outline: none;
+  text-align: left;
+}
+
+/* The invisible hit area uses half of each gutter without overlapping peers. */
+.cc-app[data-calendar-layout="figma"] .cc-day::before {
+  position: absolute;
+  inset: -3px;
+  content: "";
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-none,
+.cc-app[data-calendar-layout="figma"] .cc-day.is-outside {
+  background: #e9e6df;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-watched {
+  background: #e1e4da;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-partial {
+  background: #eadbd3;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-unwatched {
+  background: #e8e0d0;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-upcoming {
+  background: #e5e1d8;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-today,
+.cc-app[data-calendar-layout="figma"] .cc-day.is-selected {
+  outline: none;
+  box-shadow: none;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-selected:not(.is-today) {
+  box-shadow: inset 0 0 0 1px var(--cc-accent);
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day:focus-visible {
+  outline: 2px solid var(--cc-accent);
+  outline-offset: 2px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day__number {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: auto;
+  height: 13px;
+  margin: 0;
+  color: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: 0;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-today .cc-day__number {
+  display: block;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #453c32;
+  color: #fffaf0;
+  font-size: 0;
+  line-height: 17px;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day.is-today .cc-day__number::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  content: "今";
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day__episodes {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 4px;
+  height: 11px;
+  font-size: 10px;
+  line-height: 11px;
+  letter-spacing: -.4px;
+  text-align: center;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day__hint {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 3px;
+  height: 9px;
+  font-size: 9px;
+  line-height: 9px;
+  text-align: center;
+}
+
+.cc-app[data-calendar-layout="figma"] .cc-day__hint.is-emoji {
+  top: 3px;
+  left: auto;
+  right: 3px;
+  bottom: auto;
+  width: 14px;
+  height: 14px;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+/* Viewing history belongs in the ticket header and date detail, not every tile. */
+.cc-app[data-calendar-layout="figma"] .cc-day.is-watched .cc-day__hint,
+.cc-app[data-calendar-layout="figma"] .cc-day.is-partial .cc-day__hint,
+.cc-app[data-calendar-layout="figma"] .cc-day.is-unwatched .cc-day__hint {
+  display: none;
+}
+
+/* Keep the existing premiere / finale / event wording clear of episode ranges. */
+.cc-app[data-calendar-layout="figma"] .cc-day.is-upcoming:has(.cc-day__hint:not(.is-emoji):not(:empty)) .cc-day__episodes {
+  bottom: 13px;
+}
+
+/* Narrow phones keep square cells, compact episode ranges and event wording. */
+@media (max-width: 390px) {
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__episodes {
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__episodes::after {
+    content: attr(data-compact-range);
+    font-size: 10px;
+    line-height: 11px;
+    letter-spacing: -.4px;
+  }
+}
+
+@media (max-width: 370px) {
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__number {
+    left: 3px;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day.is-today .cc-day__number {
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day.is-today .cc-day__number::after {
+    font-size: 10px;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__episodes,
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day.is-upcoming:has(.cc-day__hint:not(.is-emoji):not(:empty)) .cc-day__episodes {
+    bottom: 3px;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__hint {
+    top: 3px;
+    left: auto;
+    right: 2px;
+    bottom: auto;
+    width: auto;
+    max-width: 18px;
+    height: 12px;
+    color: inherit;
+    font-size: 0;
+    line-height: 12px;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__hint::after {
+    content: attr(data-compact);
+    font-size: 8px;
+    line-height: 12px;
+  }
+
+  body[data-single="true"] .cc-app[data-calendar-layout="figma"] .cc-day__hint.is-emoji::after {
+    font-size: 11px;
+  }
+}

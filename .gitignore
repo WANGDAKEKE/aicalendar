@@ -1,6 +1,31 @@
 .DS_Store
 *.log
 .openai/
+node_modules/
+.venv/
+venv/
+__pycache__/
+font-cache/
+/archives/
+.env
+.env.*
+.npmrc
+.netrc
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+credentials
+credentials.*
+secrets
+secrets.*
+
+# Personal nickname original; generic review assets are retained.
+/dist/assets/princess/membership-vip-reference.jpg
+
+# Original duplicates / moved tools: see archive/source-collection.json.
 /*-preview.jpg
 /参考视频.mp4
 /render-preview.swift

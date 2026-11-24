@@ -1,0 +1,16 @@
+/* Additive comparison page. The retained full-screen proposals are unmodified. */
+.cpc-showcase { width: min(1460px, 100%); padding-top: 27px; padding-bottom: 45px; }
+.cpc-page .pcc-versions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.cpc-intro { margin-bottom: 27px; }
+.cpc-group + .cpc-group { margin-top: 42px; padding-top: 29px; border-top: 1px solid #cfc6be; }
+.cpc-group__heading { margin: 0 0 16px; text-align: center; }
+.cpc-group__heading h2 { margin: 0; color: #4f4137; font-size: 15px; line-height: 23px; font-weight: 600; letter-spacing: .025em; }
+.cpc-page .pcc-version__heading h3 { margin: 0; color: #5c4e44; font-size: 12px; line-height: 20px; font-weight: 550; white-space: nowrap; }
+@media (max-width: 960px) {
+  .cpc-showcase { padding-top: 22px; padding-bottom: 32px; }
+  .cpc-intro { margin-bottom: 27px; }
+  .cpc-group + .cpc-group { margin-top: 33px; padding-top: 24px; }
+  .cpc-group__heading { margin-bottom: 16px; }
+  .cpc-group__heading h2 { font-size: 14px; line-height: 22px; }
+  .cpc-page .pcc-versions { grid-template-columns: minmax(0, 1fr); gap: 29px; }
+}

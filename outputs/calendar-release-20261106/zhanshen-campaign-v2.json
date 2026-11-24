@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-06",
+  "scope": "Zhanshen common limited-free campaign refinement; existing nine-frame comparison",
+  "status": "deployed",
+  "commit": "432fa0d6a187cad7d1c45a01f7922088615fd5be",
+  "url": "https://wangdakeke.github.io/aicalendar/zhanshen-calendar-refine-compare.html?v=campaign-v2",
+  "workflowRun": "https://github.com/WANGDAKEKE/aicalendar/actions/runs/42187131911",
+  "workflowConclusion": "success",
+  "onlineVerified": true,
+  "proof": [
+    "zhanshen-common-campaign-v2.jpg",
+    "zhanshen-season-free-v2.jpg"
+  ],
+  "tests": {
+    "workspacePassed": 511,
+    "releasePassed": 229,
+    "scriptsSyntaxChecked": 35
+  },
+  "changes": [
+    "One limited-free campaign for SVIP, VIP and free accounts",
+    "Remove member schedule dropdown and obsolete unknown-schedule placeholder",
+    "November 26 season-free milestone; December 3 episodes 2-15 membership relock",
+    "Membership status only controls bottom membership entry",
+    "Keep original blue-purple artwork and full/compact/tall geometry"
+  ],
+  "preserved": [
+    "Princess pages",
+    "shared membership screenshot sheet",
+    "assets",
+    "actual account identity",
+    "watch history",
+    "ticket progress"
+  ],
+  "privacy": "No new screenshot assets uploaded; personal-nickname reference remains excluded"
+}

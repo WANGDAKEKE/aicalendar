@@ -1,0 +1,20 @@
+{
+  "name": "aicalendar-archive",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "preview": "python3 -m http.server 4173 --bind 127.0.0.1 --directory dist",
+    "export:calendar": "node scripts/export-calendar-review.mjs",
+    "export:eyes": "node scripts/export-widget-eyes.mjs",
+    "export:eyes:rich": "node scripts/export-widget-eyes-rich.mjs"
+  },
+  "devDependencies": {
+    "sharp": "0.35.5",
+    "jszip": "3.10.1"
+  }
+}

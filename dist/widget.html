@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f2f6">
+  <title>追剧搭子 · iOS 桌面组件</title>
+  <link rel="stylesheet" href="./widget.css?v=0.2.0">
+  <link rel="stylesheet" href="./ios-home.css?v=0.2.1">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./widget.html"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 28 28"><path d="M5 5.8Q4 2 8 4l16 8Q28 14 24 16L8 24Q4 26 5 22Z" fill="#19bc90"/><path d="m10 8 12 6-12 6Z" fill="#ffcb49"/><path d="m10 8 5 6-5 6Z" fill="#4e9dff"/></svg></span><span>追剧搭子</span><span class="brand-divider"></span><span class="brand-caption">桌面组件提案</span></a>
+    <span class="version"><i></i> 本地交互预览 <span>02</span></span>
+  </header>
+  <main>
+    <section class="workbench" aria-label="小组件交互体验">
+      <aside class="controls">
+        <div class="intro"><span class="eyebrow">YOUR DRAMA. YOUR LITTLE NUDGE.</span><h1>你不看，<br>它有意见<span>。</span></h1><p>把没看完的故事，留在桌面。<br>偶尔嘴欠，但一直替你记着。</p></div>
+        <div class="control-panel">
+          <div class="section-heading"><h2>给搭子换个心情</h2><span>8 种观看情境</span></div>
+          <div class="scenario-list" id="scenarioList" role="group" aria-label="模拟用户观看状态"></div>
+          <div class="tone-control"><span id="toneLabel">说话方式</span><div class="tone-options" id="toneOptions" role="group" aria-labelledby="toneLabel"><button data-tone="gentle" aria-pressed="false">温柔点</button><button data-tone="cheeky" aria-pressed="true">有点欠</button></div><button class="refresh-copy" id="refreshCopy" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 6A5.2 5.2 0 1 0 13 10M13 2.5V6H9.5"/></svg>换句台词</button></div>
+          <details class="history-details"><summary>看看它记住了什么 <span aria-hidden="true">＋</span></summary><div id="stateReason"></div><div class="history-list" id="historyList"></div></details>
+        </div>
+      </aside>
+      <div class="preview-column">
+        <div class="preview-meta"><span>iPhone · 主屏幕</span><span><i></i> 点击组件可体验续看</span></div>
+        <div class="phone-stage"><div class="phone-wrap"><div class="phone" aria-label="iOS 主屏幕中的追剧小组件"></div></div></div>
+        <p id="widgetHint" class="preview-hint">点一下搭子，接着上次的故事。</p>
+        <div class="preview-actions"><span id="reaction" role="status" aria-live="polite"></span><button class="text-button" id="resetDemo">重置当前情境</button></div>
+      </div>
+    </section>
+    <section class="research" aria-labelledby="researchTitle"><div class="research-heading"><span class="eyebrow">SMALL WIDGET. BIG PERSONALITY.</span><h2 id="researchTitle">不是闹钟，是一个有反应的搭子。</h2></div><div class="principles"><article><span>01</span><h3>没来，闹一下。</h3><p>根据时段和离开天数换情绪，大字先吸引你看一眼。</p></article><article><span>02</span><h3>来了，就哄好。</h3><p>真正观看后切换欢迎状态，不把打开页面当作已观看。</p></article><article><span>03</span><h3>点开，接着看。</h3><p>跨剧续接最近的可播进度，追平了就一起等更新。</p></article></div><p class="research-source">机制参考 <a href="https://blog.duolingo.com/widget-feature/" target="_blank" rel="noreferrer">Duolingo 官方组件介绍 ↗</a> · 首版以大字和情绪验证回访，角色 IP 可后续接入。</p></section>
+    <footer class="page-footer"><span>DESKTOP COMPANION / CONCEPT 02</span><span>观看记录与播放均为本地模拟 · 未发布线上</span></footer>
+  </main>
+  <dialog id="returnDialog" aria-labelledby="returnTitle"><button class="dialog-close" id="closeDialog" aria-label="关闭回流预览">×</button><div id="returnBody"></div></dialog>
+  <script type="module" src="./widget.mjs?v=0.2.0"></script>
+</body>
+</html>

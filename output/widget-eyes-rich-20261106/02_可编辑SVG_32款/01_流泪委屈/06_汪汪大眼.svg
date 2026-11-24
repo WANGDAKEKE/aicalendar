@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="384" viewBox="0 0 160 120" role="img" aria-label="汪汪大眼"><title>汪汪大眼</title><g transform="translate(0 4)"><g transform="rotate(0 80 56)"><g transform="rotate(0 53 53)"><defs><clipPath id="eye-extension-11"><ellipse cx="53" cy="53" rx="20" ry="32"/></clipPath></defs><g fill="#F5F5F5" stroke="#111111" stroke-opacity=".15" stroke-width=".8"><ellipse cx="53" cy="53" rx="20" ry="32"/></g><g clip-path="url(#eye-extension-11)"><ellipse cx="55" cy="53" rx="13" ry="19" fill="#111111"/><ellipse cx="58.9" cy="45.4" rx="3.6400000000000006" ry="3.9" fill="#F5F5F5"/></g></g><g transform="rotate(0 107 49)"><defs><clipPath id="eye-extension-12"><ellipse cx="107" cy="49" rx="20" ry="32"/></clipPath></defs><g fill="#F5F5F5" stroke="#111111" stroke-opacity=".15" stroke-width=".8"><ellipse cx="107" cy="49" rx="20" ry="32"/></g><g clip-path="url(#eye-extension-12)"><ellipse cx="105" cy="49" rx="13" ry="19" fill="#111111"/><ellipse cx="108.9" cy="41.4" rx="3.6400000000000006" ry="3.9" fill="#F5F5F5"/></g></g></g>
+  <circle cx="51" cy="46" r="4.3" fill="#F5F5F5"/>
+  <circle cx="56" cy="52" r="1.5" fill="#F5F5F5"/>
+  <circle cx="101" cy="42" r="4.3" fill="#F5F5F5"/>
+  <circle cx="106" cy="48" r="1.5" fill="#F5F5F5"/>
+      
+  <path d="M 39.5 72 Q 53 67 66.5 72
+    Q 64.5 77 53 78
+    Q 41.5 77 39.5 72Z"
+    fill="#60C6F4" fill-opacity=".88"/>
+  <path d="M 44.5 73 Q 50 71 55 72"
+    fill="none" stroke="#F5F5F5" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M 93.5 68 Q 107 63 120.5 68
+    Q 118.5 73 107 74
+    Q 95.5 73 93.5 68Z"
+    fill="#60C6F4" fill-opacity=".88"/>
+  <path d="M 98.5 69 Q 104 67 109 68"
+    fill="none" stroke="#F5F5F5" stroke-width="1.8" stroke-linecap="round"/></g></svg>

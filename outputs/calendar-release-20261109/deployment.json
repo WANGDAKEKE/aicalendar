@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-09",
+  "status": "deployed",
+  "commit": "6cc4582db7ee16a036bf888357af4cec948e3e91",
+  "url": "https://wangdakeke.github.io/aicalendar/princess-calendar-refine-compare.html?v=sections-v1",
+  "workflowRun": "https://github.com/WANGDAKEKE/aicalendar/actions/runs/42585802970",
+  "workflowConclusion": "success",
+  "onlineVerified": true,
+  "proof": "princess-sections-swapped.jpg",
+  "tests": {
+    "workspacePassed": 514,
+    "releasePassed": 231,
+    "scriptsSyntaxChecked": 35
+  },
+  "scope": "Princess refinement: swap calendar membership footer and external desktop widget card across all nine layouts and identities",
+  "preserved": [
+    "account and schedule model",
+    "ticket progress",
+    "member screenshot sheet",
+    "widget preview behavior",
+    "original phone and hero proportions",
+    "Zhanshen pages",
+    "shared assets"
+  ],
+  "workspaceOnlyTest": "Princess controller entry test retains old unpublished-page isolation fixtures and is verified in the full workspace rather than deployed"
+}

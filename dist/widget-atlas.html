@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f4f1">
+  <title>近期长视频续看 · 小组件 Demo</title>
+  <link rel="stylesheet" href="./companion-v4.css?v=0.4.1">
+  <link rel="stylesheet" href="./ios-home-v4.css?v=0.4.1">
+  <link rel="stylesheet" href="./widget-atlas.css?v=4">
+  <link rel="stylesheet" href="./widget-resume-demo.css?v=1">
+</head>
+<body>
+  <main class="atlas-page">
+    <header class="atlas-page-header">
+      <p class="atlas-kicker">腾讯视频 · 桌面组件</p>
+      <div class="resume-heading"><h1>故事换了，进度跟上。</h1><a class="resume-strategy-link" href="./widget-strategy.html" target="_blank" rel="noopener">策略说明 ↗</a></div>
+      <p class="atlas-intro">近期长视频续看 · 两种尺寸，同一份内容与进度。虚构数据演示，不接真实账号。</p>
+    </header>
+    <div class="atlas-layout">
+    <aside class="atlas-preview" aria-label="所选方案的手机预览">
+      <div class="atlas-device-wrap"><div class="atlas-device" id="atlas-device"></div></div>
+      <div class="resume-size-switch" role="group" aria-label="手机内的组件尺寸"><button type="button" data-phone-size="square" aria-pressed="true">1×1</button><button type="button" data-phone-size="wide" aria-pressed="false">1×3</button></div>
+      <p class="atlas-preview-caption" id="atlas-preview-caption" aria-live="polite"></p>
+      <div class="atlas-source" id="atlas-source" aria-label="所选配色的原始色值及延展说明"></div>
+    </aside>
+    <div class="atlas-collection">
+    <section class="atlas-section resume-demo" aria-labelledby="resume-title">
+      <header class="atlas-section-header"><div><span class="atlas-number">01</span><h2 id="resume-title">最近看到哪，就从哪继续。</h2></div></header>
+      <div class="resume-toolbar"><label for="resume-scenario">演示场景</label><select id="resume-scenario"></select><label class="atlas-visually-hidden" for="resume-appearance">组件外观</label><select id="resume-appearance"></select><div class="resume-date-tools"><time id="resume-date"></time><button type="button" id="resume-next-day">下一天 →</button><button type="button" id="resume-reset">重置</button></div></div>
+      <p class="resume-rule" id="resume-rule" aria-live="polite"></p>
+      <div class="resume-comparison" id="resume-comparison" aria-label="同一内容的双尺寸对照"></div>
+      <p class="resume-demo-note">统一顺序：品牌 → 内容标题 → 文案与表情 → 观看进度。点击左侧手机组件，可预览续看；仅明确模拟观看才更新演示记录。</p>
+      <p class="resume-feedback" id="resume-feedback" role="status"></p>
+    </section>
+    <section class="atlas-section" aria-labelledby="story-title">
+      <header class="atlas-section-header">
+        <div><span class="atlas-number">02</span><h2 id="story-title">状态与配色</h2></div>
+        <p>长视频进度 · 浅／深色 · 纯色／轻渐变</p>
+      </header>
+      <div class="atlas-board" id="story-studies" aria-label="近期长视频续看配色方案"></div>
+      <p class="atlas-section-note">点选一张色卡，手机与双尺寸对照同步切换该示例。同列数据一致，浅／深色成对比较；浅色渐变终点为80% C1＋20% C2的延展值。3天／7天与每日文案规则均为待评审提案，详见策略说明。</p>
+    </section>
+    <details class="resume-alternative"><summary>备选探索：把时间，看成陪伴 <span>暂不作为首期主方案</span></summary>
+    <section class="atlas-section" aria-labelledby="time-title">
+      <header class="atlas-section-header">
+        <div><span class="atlas-number">备选</span><h2 id="time-title">把时间，看成陪伴</h2></div>
+        <p id="time-direction">文案 + 眼神 + 累计观看天数</p>
+      </header>
+      <div class="atlas-board" id="time-studies" aria-label="观看时间方案"></div>
+      <p class="atlas-section-note" id="time-note"></p>
+    </section>
+    </details>
+    <footer class="atlas-footer"><span>配色取自项目 Figma，角色与渐变为提案。所有观看记录只在当前页内存演示，刷新重置；未安装原生组件，未同步线上。</span><a href="./widget-strategy.html">查看完整策略 <span aria-hidden="true">↗</span></a></footer>
+    </div>
+    </div>
+  </main>
+  <script type="module" src="./widget-resume-demo.mjs?v=1"></script>
+</body>
+</html>

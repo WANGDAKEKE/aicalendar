@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f6f3">
+  <meta name="description" content="用模拟参数理解腾讯视频续看小组件：输入事实、查看命中规则、预览文案。仅本地演示，不接真实用户数据。">
+  <title>小组件 · 策略调试台</title>
+  <link rel="stylesheet" href="./companion-v4.css?v=0.4.1">
+  <link rel="stylesheet" href="./ios-home-v4.css?v=0.4.1">
+  <link rel="stylesheet" href="./widget-atlas.css?v=4">
+  <link rel="stylesheet" href="./widget-policy.css?v=1">
+</head>
+<body>
+  <main class="policy-page">
+    <header class="policy-header">
+      <div><p class="policy-kicker"><img src="./assets/tencent/tencent-video-official-icon-192.png" alt="" width="18" height="18">腾讯视频 <span>/</span> 小组件策略</p><h1>把参数，变成一句话。</h1><p class="policy-intro">改几个条件，看看为什么命中这个状态，以及最终会说什么。</p></div>
+      <div class="policy-header-side"><span class="local-badge"><i></i>本地模拟 · V0.1</span><a href="./widget-atlas.html">原小组件 Demo ↗</a></div>
+    </header>
+
+    <section class="scenario-bar" aria-label="快速体验">
+      <label for="policy-scenario">从一个场景开始</label><select id="policy-scenario" aria-label="演示场景"></select>
+      <div class="scenario-actions"><button type="button" id="policy-next-day">推进一天 <span aria-hidden="true">→</span></button><button type="button" id="policy-watch" class="primary-button">模拟有效观看</button><button type="button" id="policy-reset" class="quiet-button">重置</button></div>
+    </section>
+    <p id="policy-feedback" class="policy-feedback" role="status">所有记录都是虚构数据；修改参数不会触发真实播放、登录或付费。</p>
+
+    <div class="policy-workspace">
+      <section class="policy-panel input-panel" aria-labelledby="input-title">
+        <header class="panel-heading"><span class="step-number">01</span><div><h2 id="input-title">输入事实</h2><p>这些是需要和研发核对的参数</p></div></header>
+        <form id="policy-form" novalidate>
+          <fieldset><legend>账号与时间</legend>
+            <div class="field-row"><label for="is_logged_in">登录状态<code>is_logged_in</code></label><select id="is_logged_in" name="is_logged_in"><option value="true">已登录</option><option value="false">未登录</option></select></div>
+            <div class="field-row"><label for="member_tier">会员身份<code>member_tier</code></label><select id="member_tier" name="member_tier"><option value="NONE">非会员</option><option value="VIP">VIP</option><option value="SVIP">SVIP</option><option value="UNKNOWN">未知</option></select><small>影响权益处理，不直接决定企鹅的情绪。</small></div>
+            <div class="field-row"><label for="now">当前模拟时间<code>now · 北京时间</code></label><input id="now" name="now" type="datetime-local" step="60"></div>
+            <div class="field-row"><label for="last_valid_watch_at">最近一次有效观看<code>last_valid_watch_at</code></label><input id="last_valid_watch_at" name="last_valid_watch_at" type="datetime-local" step="60"><small>跨所有长视频的最新时间，不是这部剧的时间。留空代表没有有效历史。</small></div>
+          </fieldset>
+          <fieldset><legend>续看与数据</legend>
+            <div class="field-row"><label for="target_status">续看接口结果<code>target_status</code></label><select id="target_status" name="target_status"><option value="READY">有续看候选</option><option value="NO_PENDING">确认暂无待续看</option><option value="UNAVAILABLE">候选暂不可用</option><option value="UNKNOWN">结果未知</option></select></div>
+            <div class="field-row"><label for="history_status">历史数据获取<code>history_status</code></label><select id="history_status" name="history_status"><option value="SUCCESS">成功</option><option value="ERROR">失败</option><option value="UNKNOWN">未知</option></select></div>
+          </fieldset>
+          <details class="input-details" open><summary>内容与观看进度 <span>标题、集／期、位置</span></summary><div class="details-content">
+            <div class="field-row"><label for="content_type">内容类型<code>content_type</code></label><select id="content_type" name="content_type"><option value="drama">电视剧</option><option value="variety">综艺</option><option value="movie">电影</option><option value="anime">动漫</option><option value="documentary">纪录片</option></select></div>
+            <div class="field-row"><label for="content_title">内容标题<code>content_title</code></label><input id="content_title" name="content_title" type="text" maxlength="100"></div>
+            <div class="field-pair"><div class="field-row"><label for="unit_label">集／期<code>unit_label</code></label><input id="unit_label" name="unit_label" type="text" maxlength="40"></div><div class="field-row"><label for="position_seconds">已看位置 · 秒<code>position_seconds</code></label><input id="position_seconds" name="position_seconds" type="number" min="0" step="1"></div></div>
+          </div></details>
+          <details class="input-details"><summary>更多接口字段 <span>ID、完播、权限</span></summary><div class="details-content">
+            <div class="field-row"><label for="user_key">模拟账号标识<code>user_key</code></label><input id="user_key" name="user_key" type="text" maxlength="100"></div>
+            <div class="field-row"><label for="content_id">内容主体 ID<code>content_id</code></label><input id="content_id" name="content_id" type="text" maxlength="100"></div>
+            <div class="field-row"><label for="play_unit_id">单集／期 ID<code>play_unit_id</code></label><input id="play_unit_id" name="play_unit_id" type="text" maxlength="100"></div>
+            <div class="field-row"><label for="is_completed">当前集／期是否看完<code>is_completed</code></label><select id="is_completed" name="is_completed"><option value="false">未看完</option><option value="true">已看完</option></select></div>
+            <div class="field-row"><label for="has_next">是否已有下一条正片<code>next_play_unit</code></label><select id="has_next" name="has_next"><option value="false">暂无</option><option value="true">有，且已更新</option></select></div>
+            <div class="field-pair"><div class="field-row"><label for="next_unit_id">下一条 ID<code>play_unit_id</code></label><input id="next_unit_id" name="next_unit_id" type="text" maxlength="100"></div><div class="field-row"><label for="next_unit_label">下一集／期<code>unit_label</code></label><input id="next_unit_label" name="next_unit_label" type="text" maxlength="40"></div></div>
+            <div class="field-row"><label for="content_status">内容可用性<code>content_status</code></label><select id="content_status" name="content_status"><option value="AVAILABLE">正常</option><option value="UNAVAILABLE">下架／不可用</option><option value="UNKNOWN">未知</option></select></div>
+            <div class="field-row"><label for="play_access_status">客户端鉴权结果<code>play_access_status</code></label><select id="play_access_status" name="play_access_status"><option value="ALLOWED">可直接播放</option><option value="REQUIRES_ENTITLEMENT">需开通权益／购买</option><option value="UNAVAILABLE">不可播放</option><option value="UNKNOWN">待客户端校验</option></select><small>与会员身份分别输入，不用 VIP 身份猜测是否能播。</small></div>
+          </div></details>
+        </form>
+      </section>
+
+      <section class="policy-panel reasoning-panel" aria-labelledby="reasoning-title">
+        <header class="panel-heading"><span class="step-number">02</span><div><h2 id="reasoning-title">看懂判断</h2><p>事实 → 计算 → 命中规则</p></div></header>
+        <div class="derived-grid" id="policy-derived" aria-live="polite"></div>
+        <div class="day-shortcuts" aria-label="快速设置距最近观看的天数"><span>试试边界</span><div><button type="button" data-day="0">今天</button><button type="button" data-day="3">3天</button><button type="button" data-day="7">7天</button><button type="button" data-day="14">14天</button><button type="button" data-day="21">21天</button><button type="button" data-day="30">30天</button></div></div>
+        <div id="policy-result" aria-live="polite"></div>
+        <div id="policy-expression" class="expression-card"></div>
+        <div id="policy-copy-selection" class="copy-selection"></div>
+        <div id="policy-warnings" role="status"></div>
+        <details class="trace-details"><summary>为什么命中这条？ <span>展开看完整判断过程</span></summary><ol id="policy-trace" class="policy-trace"></ol></details>
+        <details class="formula-details"><summary>用表达式理解这件事</summary><pre>D = 当前日期 − 最近有效观看日期
+state = F(登录态, 数据状态, 续看目标, D)
+copy = G(state, D, 时段, 日期, 文案配置)</pre><p>此页使用“观看汇总＋续看候选”的模拟输入，不替代真实历史排序、播放鉴权或客户端接口。</p></details>
+      </section>
+
+      <section class="policy-panel preview-panel" aria-labelledby="preview-title">
+        <header class="panel-heading"><span class="step-number">03</span><div><h2 id="preview-title">看实际效果</h2><p>两种尺寸，共用同一份结果</p></div></header>
+        <div class="preview-controls"><div class="size-control" role="group" aria-label="组件尺寸"><button type="button" data-size="square" aria-pressed="true">1×1</button><button type="button" data-size="wide" aria-pressed="false">1×3</button></div><label class="sr-only" for="policy-appearance">组件外观</label><select id="policy-appearance"><option value="light-gradient">浅色 · 轻渐变</option><option value="light-solid">浅色 · 纯色</option><option value="dark-gradient">深色 · 轻渐变</option><option value="dark-solid">深色 · 纯色</option></select></div>
+        <div class="policy-phone-stage"><div class="policy-phone-wrap"><div class="policy-phone" id="policy-phone"></div></div></div>
+        <dl class="output-details" id="policy-output"></dl>
+        <p class="preview-note">Apple 官方设备外框＋本地模拟桌面。点击仅说明跳转去向，不计为观看，也不会安装系统组件。</p>
+      </section>
+    </div>
+
+    <section class="policy-panel parameter-panel" aria-labelledby="parameters-title">
+      <header class="parameter-heading"><div><p class="policy-kicker">给研发一起看</p><h2 id="parameters-title">每个字段，从哪里来？</h2><p>建议字段名，不是现有接口承诺。可在本页标注已有情况；所有修改仅保留在当前页，刷新会重置。</p></div><button type="button" id="policy-json">查看／复制参数 JSON <span aria-hidden="true">↗</span></button></header>
+      <div class="parameter-scroll"><table class="parameter-table"><thead><tr><th scope="col">建议参数／类型</th><th scope="col">当前模拟值</th><th scope="col">用途／建议来源</th><th scope="col">和研发核对</th></tr></thead><tbody id="policy-parameters"></tbody></table></div>
+      <div class="config-note"><strong>首期建议配置</strong><span>北京时间自然日 · 3／7／14／21／30 天分段 · 22:00–08:00 安静时段</span><span>文案、表情与配色均为评审提案；原 Demo 和线上版本未改变。</span></div>
+    </section>
+    <footer class="policy-footer"><span>仅演示条件判断，不接真实账号、历史接口或在线 AI。</span><a href="./widget-strategy.html">原策略说明 ↗</a></footer>
+  </main>
+  <dialog id="policy-json-dialog" aria-labelledby="json-title"><div class="dialog-heading"><div><p class="policy-kicker">规范化示例，不代表现有接口</p><h2 id="json-title">参数与判断结果</h2></div><button type="button" id="policy-json-close" aria-label="关闭参数弹窗">×</button></div><label class="sr-only" for="policy-json-text">参数与判断结果 JSON</label><textarea id="policy-json-text" readonly spellcheck="false"></textarea><div class="dialog-footer"><span id="policy-copy-feedback" role="status">包含模拟输入、计算结果和字段核对标记。</span><button type="button" class="primary-button" id="policy-copy-json">复制 JSON</button></div></dialog>
+  <script type="module" src="./widget-policy.mjs?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f4f1">
+  <meta name="description" content="腾讯视频桌面小组件的近期长视频续看策略提案：统一尺寸、内容选择、状态判断及文案轮换。">
+  <title>近期长视频续看 · 策略说明</title>
+  <link rel="stylesheet" href="./widget-strategy.css?v=1">
+</head>
+<body>
+  <div class="document-shell">
+    <header class="document-header">
+      <a class="back-link" href="./widget-atlas.html"><span aria-hidden="true">←</span> 返回组件 Demo</a>
+      <p class="document-kicker">腾讯视频 · 桌面小组件</p>
+      <h1>近期长视频续看<br><span>策略说明</span></h1>
+      <div class="document-meta"><span>评审提案 · V0.1</span><time datetime="2026-11-02">2026.11.02</time></div>
+      <p class="document-summary">小组件负责告诉用户“最近看到哪里，可以接着看”；情绪文案让这个入口更有陪伴感，不以持续催促或观看时长竞赛为目标。</p>
+      <p class="proposal-note"><strong>本页是待评审方案，不是已上线规则。</strong> Demo 使用虚构数据，未接入真实账号、观看历史或原生桌面组件。阈值、接口及刷新方式需与运营、设计、研发共同确认。</p>
+    </header>
+
+    <nav class="document-nav" aria-label="说明目录">
+      <a href="#scope">01 范围与展示</a><a href="#selection">02 内容选择</a><a href="#states">03 状态判断</a><a href="#copy">04 文案轮换</a><a href="#review">05 待确认项</a>
+    </nav>
+
+    <main>
+      <section id="scope" aria-labelledby="scope-title">
+        <header class="section-heading"><span>01</span><h2 id="scope-title">一份内容，两种尺寸</h2></header>
+        <p>首期聚焦<strong>近期长视频续看</strong>，涵盖电视剧、综艺、电影、动漫、纪录片；App 累计使用时长暂不作为主方案。</p>
+        <p>1×1 与 1×3 使用同一份展示数据，统一为：<strong>顶部品牌 → 品牌下方的内容标题 → 中部文案与眼神 → 底部观看进度</strong>。尺寸仅改变排版和字号，不改变标题位置层级，不省略已看时间。同一时刻两种尺寸的内容、状态、文案、进度一致。</p>
+        <div class="table-scroll"><table>
+          <caption>进度字段示例（均为虚构数据）</caption>
+          <thead><tr><th scope="col">类型</th><th scope="col">内容标题</th><th scope="col">底部进度</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">电视剧／动漫／纪录片</th><td>南风来信</td><td>第8集 · 已看13:32</td></tr>
+            <tr><th scope="row">综艺</th><td>周末请就位</td><td>第3期（上）· 已看23:10</td></tr>
+            <tr><th scope="row">电影</th><td>云上散步</td><td>已看42:18</td></tr>
+          </tbody>
+        </table></div>
+        <p class="section-note">长标题单行截断，完整名称在落地页查看；综艺上下期、加更等沿用内容元数据，不伪造“第几集”。下一集尚未开始时显示“第9集 · 待观看”，不把上一集的时间带入下一集。</p>
+      </section>
+
+      <section id="selection" aria-labelledby="selection-title">
+        <header class="section-heading"><span>02</span><h2 id="selection-title">先找能接着看的内容</h2></header>
+        <ol class="rules-list">
+          <li><strong>取有效记录。</strong> 登录用户的近期长视频观看历史按最后有效观看时间倒序；不纳入广告、预告、短视频或误触预览。有效观看标准沿用客户端现有口径。</li>
+          <li><strong>选最近可续看内容。</strong> 优先恢复最近一条有效、可播放且未完成的观看记录。昨天看电视剧，今天有效观看综艺后，组件更新为综艺；不是固定绑定某一部剧。</li>
+          <li><strong>看完一集／期，接下一条。</strong> 当前集／期已完成且有下一条可播正片时，转为下一条待观看。电影完成后不自动从头续播。</li>
+          <li><strong>一个内容无待看，继续找其他。</strong> 当前内容全部看完、尚未更新，或暂不可播时，查找其他可续看的长视频；没有其他目标才进入兜底。</li>
+        </ol>
+        <div class="table-scroll"><table>
+          <caption>无可续看目标时的兜底</caption>
+          <thead><tr><th scope="col">情况</th><th scope="col">展示与点击</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">尚未登录</th><td>提示登录后接续观看，不展示账号历史；点击进入登录。</td></tr>
+            <tr><th scope="row">无有效历史</th><td>欢迎态，不虚构标题和进度；点击进入内容发现入口。</td></tr>
+            <tr><th scope="row">全部追平／暂无待续看</th><td>休息或等待更新态，不按离开天数催看；点击进入相应内容页或客户端续看入口。</td></tr>
+            <tr><th scope="row">内容不可播／记录异常</th><td>有其他有效目标则切换；无目标则提示暂不可用，允许进入客户端查找内容。</td></tr>
+          </tbody>
+        </table></div>
+        <p class="section-note">点击组件只发起跳转，不伪造观看、不自动标记完成，也不绕过会员、付费、版权或地区限制。具体落地页和权限拦截沿用客户端流程。</p>
+      </section>
+
+      <section id="states" aria-labelledby="states-title">
+        <header class="section-heading"><span>03</span><h2 id="states-title">内容选择与情绪判断分开</h2></header>
+        <p><strong>展示哪部内容</strong>看最近可续看记录；<strong>用哪种情绪</strong>看用户最近一次有效长视频观看，跨上述所有内容类型。今天看过综艺，就不能因某部电视剧七天没看而判为“久未观看”。打开 App、点击组件，不等于有效观看。</p>
+        <p>提案按 UTC+8 自然日计算间隔：今天为0天、昨天为1天；不是按满24小时滚动计算。判定时区和真实接口口径待研发确认。</p>
+        <div class="table-scroll"><table class="state-table">
+          <caption>有可续看目标时的状态规则（阈值待确认）</caption>
+          <thead><tr><th scope="col">状态</th><th scope="col">触发条件</th><th scope="col">表达方向／示例</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">今天已看</th><td>今天有有效长视频观看</td><td>开心、不催：“行，来过就行。今天不闹你。”</td></tr>
+            <tr><th scope="row">温和等待</th><td>最近一次有效观看在7天及以上前</td><td>温和保留入口：“有空再来，进度替你留着。”</td></tr>
+            <tr><th scope="row">久未观看</th><td>最近一次有效观看在3–6天前</td><td>轻度俏皮：“你再不来，我要长蘑菇了。”</td></tr>
+            <tr><th scope="row">晚间等待</th><td>最近观看在1–2天前，且当前18:00≤时间＜22:00</td><td>轻松邀请：“今晚有空，回来坐坐。”</td></tr>
+            <tr><th scope="row">普通续看</th><td>最近观看在1–2天前，且不在上述晚间时段</td><td>保留进度：“人是走了，进度还在这。”</td></tr>
+          </tbody>
+        </table></div>
+        <p class="priority-line"><span>判断优先级</span>账号／数据／可播兜底及无待续看 → 今天已看 → 温和／久未等待 → 晚间等待 → 普通续看</p>
+        <p class="section-note">“普通续看”不要求每天观看；“今天已看”也不等于久别回归。安静时段暂定22:00–次日08:00（待确认），所有状态均不使用催促文案或紧迫表达，久未状态改用温和文案，不再升级提醒强度。</p>
+      </section>
+
+      <section id="copy" aria-labelledby="copy-title">
+        <header class="section-heading"><span>04</span><h2 id="copy-title">每天有变化，同一天不乱跳</h2></header>
+        <ul class="rules-list">
+          <li><strong>每个状态准备3–5条审核后的静态文案。</strong> 搭配表情、颜色表达情绪，不需要复杂动态填词，也不编造用户已完成、奖励或剧情。</li>
+          <li><strong>同一天保持稳定。</strong> 同一用户、内容目标、状态及文案时段，对应同一条文案；反复打开、刷新或切换尺寸不重新抽签。22:00进入安静时段或次日08:00离开时，允许切换相应文案池，即使状态名称不变。</li>
+          <li><strong>次日轮换，目标／状态变化可更换。</strong> 尽量避免与前一天重复；有新有效观看、切换到新的续看内容或进入新状态时，允许切换相应文案。</li>
+          <li><strong>七天后不加码施压。</strong> 可以每天换一句温和文案，但不增加责备、威胁、虚假倒计时或观看负担；22:00–次日08:00安静时段使用温和文案池。</li>
+        </ul>
+        <p class="section-note">“每天换文案”是内容策略，不代表桌面组件一定在零点实时刷新。正式产品的更新时机受客户端与系统能力约束；Demo 中切换场景仅用于评审验证。</p>
+      </section>
+
+      <section id="review" aria-labelledby="review-title">
+        <header class="section-heading"><span>05</span><h2 id="review-title">评审时需定下的边界</h2></header>
+        <div class="table-scroll"><table>
+          <thead><tr><th scope="col">待确认事项</th><th scope="col">需要对齐的口径</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">有效观看与完成</th><td>有效播放时长、预览过滤、片尾／跳片尾的完成判断、下一集接续规则。</td></tr>
+            <tr><th scope="row">内容与权限</th><td>综艺期数／上下期／加更字段，下一可播正片顺序，会员与版权变化后的降级处理。</td></tr>
+            <tr><th scope="row">账号、跨端与数据</th><td>历史回溯与同步范围、登录／切账号清理、删除历史后的更新、记录延迟和异常处理。</td></tr>
+            <tr><th scope="row">状态与文案</th><td>3天／7天阈值、UTC+8自然日、18:00–22:00晚间时段及22:00–次日08:00安静时段、各状态静态文案池及审核机制。</td></tr>
+            <tr><th scope="row">原生组件能力</th><td>支持的尺寸与系统、数据拉取及缓存、刷新频率、点击落地与异常跳转；不承诺实时刷新。</td></tr>
+            <tr><th scope="row">设计交付</th><td>标题截断和长文案边界、浅／深色适配、表情资产及文案颜色配对。沿用项目Figma色卡，配色角色与渐变方式仍是本次提案。</td></tr>
+          </tbody>
+        </table></div>
+        <p class="section-note">取色依据：<a href="https://www.figma.com/design/tV18dEXdgZUV82W4PfmukO/Untitled?node-id=4-1337" target="_blank" rel="noopener noreferrer">项目小组件 Figma 色卡</a>；不将其称为腾讯全局官方设计规范。</p>
+      </section>
+    </main>
+    <footer class="document-footer"><span>策略说明 · 本地评审稿 · 2026.11.02</span><a href="./widget-atlas.html">查看组件 Demo <span aria-hidden="true">↗</span></a></footer>
+  </div>
+</body>
+</html>

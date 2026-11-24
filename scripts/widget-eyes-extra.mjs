@@ -1,0 +1,28 @@
+import {C,eye,pair,line,sweat,sparkle,star,heart} from './widget-eyes-shapes.mjs';
+const item=(id,name,group,art,hint)=>({id,name,group,art,hint});
+export const extraExpressions=[
+ item('09-sleepy','困得半眯','困倦等你',pair({mode:'half',py:8,upperSlope:1},{mode:'half',py:8,upperSlope:1},{angle:3}),'等更新，安静陪伴'),
+ item('10-asleep','睡着弯眼','困倦等你',pair({mode:'closed',rot:3},{mode:'closed',rot:-4}),'休更或安静等待'),
+ item('11-nodding','左右打盹','困倦等你',eye(53,62,{mode:'half',rot:12,ry:24,py:8})+eye(107,46,{mode:'half',rot:-8,ry:26,py:8}),'长时间等待时的搞怪表达'),
+ item('12-half-awake','一眼醒一眼睡','困倦等你',eye(53,53,{px:4,prx:7,pry:12})+eye(107,58,{mode:'closed',rot:-8}),'轻量唤醒，半梦半醒'),
+ item('13-eye-roll','等到翻白眼','困倦等你',pair({py:-20,prx:9,pry:12},{py:-20,prx:9,pry:12})+line('M36 14Q49 10 64 14','#111111',2)+line('M93 11Q106 7 119 11','#111111',2),'有待看时的俏皮催看，少量使用'),
+ item('14-indifferent','冷漠横眼','困倦等你',pair({mode:'squint',py:1,px:6,prx:5,pry:8},{mode:'squint',py:1,px:6,prx:5,pry:8}),'吐槽、无语，避免高频使用'),
+ item('15-shocked','震惊圆眼','搞怪催看',pair({rx:23,ry:29,prx:4,pry:8,py:0},{rx:23,ry:29,prx:4,pry:8,py:0})+line('M31 17Q51 9 72 15')+line('M86 13Q107 5 127 12'),'上新、意外惊喜'),
+ item('16-shaky','瞳孔地震','搞怪催看',pair({prx:5,pry:10,px:2,py:0},{prx:5,pry:10,px:-2,py:0})+line('M21 36L17 42L21 48',C.ink,2)+line('M139 31L143 37L139 43',C.ink,2)+line('M27 69L23 74',C.ink,2)+line('M133 65L137 70',C.ink,2),'惊讶，适合强变化节点'),
+ item('17-looking-around','左右张望','搞怪催看',pair({px:-10,py:4,prx:8},{px:10,py:4,prx:8}),'寻找用户、等待回来'),
+ item('18-sneaky','偷偷侧瞄','搞怪催看',pair({mode:'half',px:10,py:10,prx:8,upperSlope:-3},{mode:'half',px:10,py:10,prx:8,upperSlope:-3},{angle:-5}),'轻微提醒，不强催'),
+ item('19-pleading','委屈内八','搞怪催看',pair({rot:12,px:5,py:-3,prx:11,pry:16},{rot:-12,px:-5,py:-3,prx:11,pry:16})+line('M34 13Q46 23 65 21')+line('M95 17Q114 19 126 9'),'想念、求续看'),
+ item('20-asymmetric','一眼大一眼小','搞怪催看',eye(51,52,{rx:24,ry:34,px:4,prx:10,pry:15})+eye(108,51,{rx:16,ry:23,px:-4,prx:6,pry:10}),'疑惑、调皮'),
+ item('21-raised-brow','阴阳挑眉','搞怪催看',pair({mode:'half',px:7,py:8,upperSlope:-4},{px:5,py:4,ry:29,prx:8,pry:12})+line('M35 36L70 28')+line('M91 12Q108 0 126 10'),'熟人式吐槽，克制使用'),
+ item('22-grumpy','气鼓鼓','搞怪催看',pair({mode:'half',px:5,py:8,upperSlope:8},{mode:'half',px:-5,py:8,upperSlope:-8})+line('M29 37L73 52',C.ink,4)+line('M87 48L130 33',C.ink,4),'搞怪假生气，不搭配责备文案'),
+ item('23-sparkly','星光闪闪','开心回来',pair({pupil:'star',prx:12,pry:16,py:2},{pupil:'star',prx:12,pry:16,py:2})+sparkle(22,30,5)+sparkle(139,67,6),'上新或欢迎回来'),
+ item('24-heart-eyes','心动眼','开心回来',pair({pupil:'heart',pupilColor:C.pink,prx:11,pry:13,py:2},{pupil:'heart',pupilColor:C.pink,prx:11,pry:13,py:2}),'喜欢、亲近、看完正反馈'),
+ item('25-big-smile','笑成月牙','开心回来',pair({mode:'happy',rot:-6},{mode:'happy',rot:5})+sparkle(24,42,5)+sparkle(137,35,4),'追平或全剧看完'),
+ item('26-wink','开心眨眼','开心回来',eye(53,53,{px:5,prx:10,pry:15})+eye(107,54,{mode:'happy',rot:-8})+sparkle(140,26,6),'欢迎回来、轻量互动'),
+ item('27-smug','得意眯眼','开心回来',pair({mode:'half',px:5,py:6,prx:8,pry:9,upperSlope:-1},{mode:'half',px:-5,py:6,prx:8,pry:9,upperSlope:1},{angle:-5})+line('M32 37Q48 31 68 35',C.ink,2),'陪用户追平后的轻松状态'),
+ item('28-anticipating','期待大眼','开心回来',pair({prx:12,pry:18,py:-1,px:4},{prx:12,pry:18,py:-1,px:-4})+sparkle(23,77,5,C.blue)+sparkle(138,24,5,C.blue),'即将更新、期待续看'),
+ item('29-confused','疑惑高低眉','紧张疑惑',eye(53,57,{px:4,prx:8,pry:12,mode:'half'})+eye(107,46,{px:-3,prx:10,pry:15})+line('M34 35L69 33')+line('M89 12Q106 0 126 12'),'疑问、轻吐槽'),
+ item('30-uneasy','紧张冒汗','紧张疑惑',pair({prx:6,pry:11,px:4},{prx:6,pry:11,px:-4})+sweat(138,29,{scale:.82,angle:-18})+line('M32 13Q49 23 69 18',C.ink,2)+line('M89 14Q111 20 126 6',C.ink,2),'剧情紧张或轻微紧张，不传达系统故障'),
+ item('31-speechless','无语豆豆眼','紧张疑惑',pair({pupil:'tiny',prx:3.3,py:4,highlight:false},{pupil:'tiny',prx:3.3,py:4,highlight:false})+line('M29 14L70 14',C.ink,2)+line('M88 10L129 10',C.ink,2),'无语、短暂停顿'),
+ item('32-dizzy','晕乎乎','紧张疑惑',pair({prx:0,pry:0,highlight:false},{prx:0,pry:0,highlight:false})+line('M53 38C37 37 38 64 54 64C69 64 68 43 55 44C46 44 46 57 54 57C61 57 61 49 56 49',C.ink,3)+line('M107 34C91 33 92 60 108 60C123 60 122 39 109 40C100 40 100 53 108 53C115 53 115 45 110 45',C.ink,3),'剧情转折、看晕了的搞怪表达'),
+];
